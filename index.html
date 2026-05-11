@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Verduurzamen - Meta Ads Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-left h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .date-range {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .month-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .month-selector label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .month-selector select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .current-period {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .metric-label {
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .metric-value.leads {
+            color: #555;
+        }
+
+        .metric-value.spend {
+            color: #666;
+        }
+
+        .metric-value.cpl {
+            color: #444;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .tab-button.active {
+            background: #333;
+            color: white;
+        }
+
+        .tab-button:hover {
+            background: #f0f0f0;
+        }
+
+        .tab-button.active:hover {
+            background: #333;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        #charts .chart-container {
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #charts canvas {
+            max-height: 380px !important;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: #f9fafb;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e5e7eb;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #333;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .rank-1 { color: #f59e0b; font-weight: bold; }
+        .rank-2 { color: #667eea; font-weight: bold; }
+        .rank-3 { color: #10b981; font-weight: bold; }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.success {
+            background: #e8e8e8;
+            color: #333;
+        }
+
+        .badge.warning {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .badge.danger {
+            background: #ddd;
+            color: #666;
+        }
+
+        .number {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
+                <p class="date-range" id="periodText">Periode: 1 mei - 11 mei 2026</p>
+            </div>
+            <div class="header-right">
+                <div class="month-selector">
+                    <label>Weergave:</label>
+                    <select id="viewModeSelector" onchange="changeViewMode()">
+                        <option value="month">Per maand</option>
+                        <option value="week">Per week</option>
+                    </select>
+                </div>
+                <div class="month-selector" id="monthSelectorDiv">
+                    <label>Periode:</label>
+                    <select id="monthSelector" onchange="changeMonth()">
+                        <option value="2026-05">Mei 2026</option>
+                    </select>
+                </div>
+                <div class="month-selector" id="weekSelectorDiv" style="display: none;">
+                    <label>Week:</label>
+                    <select id="weekSelector" onchange="changeWeek()">
+                        <option value="">Selecteer week...</option>
+                    </select>
+                </div>
+                <span class="current-period" id="dateRangeInfo"></span>
+            </div>
+        </header>
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid" id="metricsGrid">
+            <div class="metric-card">
+                <div class="metric-label">Totale Uitgaven</div>
+                <div class="metric-value spend" id="totalSpend">€ -</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Totale Leads</div>
+                <div class="metric-value leads" id="totalLeads">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Cost Per Lead</div>
+                <div class="metric-value cpl" id="avgCPL">€ -</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Impressions</div>
+                <div class="metric-value" id="totalImpressions">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Clicks</div>
+                <div class="metric-value" id="totalClicks">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Gemiddelde CTR</div>
+                <div class="metric-value" id="avgCTR">-%</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('campaigns')">Campagnes</button>
+            <button class="tab-button" onclick="switchTab('adsets')">Ad Sets</button>
+            <button class="tab-button" onclick="switchTab('ads')">Advertenties</button>
+            <button class="tab-button" onclick="switchTab('charts')">Grafieken</button>
+            <button class="tab-button" onclick="switchTab('performance')">Performance</button>
+            <button class="tab-button" onclick="switchTab('campaign-info')">Campaign Info</button>
+            <button class="tab-button" onclick="switchTab('change-log')">Change Log</button>
+            <button class="tab-button" onclick="switchTab('organisch')">Organisch</button>
+        </div>
+
+        <!-- Campaigns Tab -->
+        <div id="campaigns" class="tab-content active">
+            <div class="chart-container">
+                <div class="chart-title">Campaign Performance</div>
+                <table id="campaignsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Ad Sets Tab -->
+        <div id="adsets" class="tab-content">
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Filter op Campagne:</label>
+                    <select id="campaignFilter" onchange="filterAdsets()">
+                        <option value="">Alle campagnes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Ad Set Performance</div>
+                <table id="adsetsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Ad Set</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsetsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Ads Tab -->
+        <div id="ads" class="tab-content">
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Filter op Campagne:</label>
+                    <select id="adCampaignFilter" onchange="filterAds()">
+                        <option value="">Alle campagnes</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Filter op Ad Set:</label>
+                    <select id="adSetFilter" onchange="filterAds()">
+                        <option value="">Alle Ad Sets</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Advertentie Performance</div>
+                <table id="adsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Ad Set</th>
+                            <th>Advertentie</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Charts Tab -->
+        <div id="charts" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Spend per Campagne</div>
+                <canvas id="spendChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Leads per Campagne</div>
+                <canvas id="leadsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Cost per Lead per Campagne</div>
+                <canvas id="cplChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Campaign Info Tab -->
+        <div id="campaign-info" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campaign Info & Budget</div>
+                <table id="campaignInfoTable">
+                    <thead>
+                        <tr>
+                            <th>Campagne</th>
+                            <th>DV-Structuur</th>
+                            <th>Budget (€/dag)</th>
+                            <th>Status</th>
+                            <th>Notities</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignInfoList"></tbody>
+                </table>
+                <div style="margin-top: 20px;">
+                    <button onclick="addCampaignInfo()" style="padding: 10px 20px; background: #333; color: white; border: none; border-radius: 6px; cursor: pointer;">+ Campagne toevoegen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Insights Tab -->
+        <div id="performance" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campagnes - Best performing</div>
+                <table id="campaignsTopTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Campagne</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsTopList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Campagnes - Minst performing</div>
+                <table id="campaignsBottomTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Campagne</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsBottomList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Ad Sets - Best performing</div>
+                <table id="adsetsTopTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Ad Set</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsetsTopList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Ad Sets - Minst performing</div>
+                <table id="adsetsBottomTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Ad Set</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsetsBottomList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Advertenties - Best performing</div>
+                <table id="adsTopTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th>Advertentie</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                            <th style="text-align: right;">CTR</th>
+                            <th style="text-align: right;">CPC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsTopList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Advertenties - Minst performing</div>
+                <table id="adsBottomTable" style="font-size: 13px;">
+                    <thead>
+                        <tr>
+                            <th>Advertentie</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                            <th style="text-align: right;">CTR</th>
+                            <th style="text-align: right;">CPC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsBottomList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Change Log Tab -->
+        <div id="change-log" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Change Log - Wijzigingen</div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f9f9f9; border-bottom: 2px solid #ddd;">
+                            <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 12px; color: #333;">Datum</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 12px; color: #333;">Wijziging</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 12px; color: #333;">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="changeLogList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Organisch Tab (iframe) -->
+        <div id="organisch" class="tab-content">
+            <iframe src="organisch-werkzaamheden.html" style="width: 100%; height: 100vh; border: none; border-radius: 12px;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Raw data from Windsor.ai
+        const rawData = [{"date":"2026-04-11","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1A — Dark Navy","ad_id":"120243238875630604","spend":16.31,"impressions":798,"clicks":4,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":4.0775,"ctr":0.005,"reach":611},{"date":"2026-04-11","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1B — Foto","ad_id":"120243247300050604","spend":0.71,"impressions":19,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":19},{"date":"2026-04-11","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":68.61,"impressions":2771,"clicks":45,"actions_lead":1,"cost_per_action_type_lead":68.61,"cpc":1.5247,"ctr":0.0162,"reach":2405},{"date":"2026-04-11","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":16.97,"impressions":978,"clicks":35,"actions_lead":1,"cost_per_action_type_lead":16.97,"cpc":0.4849,"ctr":0.0358,"reach":889},{"date":"2026-04-12","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1A — Dark Navy","ad_id":"120243238875630604","spend":21.54,"impressions":887,"clicks":12,"actions_lead":1,"cost_per_action_type_lead":21.54,"cpc":1.795,"ctr":0.0135,"reach":630},{"date":"2026-04-12","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1B — Foto","ad_id":"120243247300050604","spend":4.45,"impressions":141,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":110},{"date":"2026-04-12","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":92.64,"impressions":4576,"clicks":100,"actions_lead":4,"cost_per_action_type_lead":23.16,"cpc":0.9264,"ctr":0.0219,"reach":3927},{"date":"2026-04-12","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":25.15,"impressions":2035,"clicks":119,"actions_lead":1,"cost_per_action_type_lead":25.15,"cpc":0.2113,"ctr":0.0585,"reach":1765},{"date":"2026-04-13","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1A — Dark Navy","ad_id":"120243238875630604","spend":16.83,"impressions":864,"clicks":17,"actions_lead":1,"cost_per_action_type_lead":16.83,"cpc":0.99,"ctr":0.0197,"reach":658},{"date":"2026-04-13","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1B — Foto","ad_id":"120243247300050604","spend":3.74,"impressions":88,"clicks":2,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.87,"ctr":0.0227,"reach":74},{"date":"2026-04-13","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":90.84,"impressions":4544,"clicks":98,"actions_lead":4,"cost_per_action_type_lead":22.71,"cpc":0.9269,"ctr":0.0216,"reach":3920},{"date":"2026-04-13","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":20.34,"impressions":1519,"clicks":90,"actions_lead":2,"cost_per_action_type_lead":10.17,"cpc":0.226,"ctr":0.0592,"reach":1335},{"date":"2026-04-14","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1A — Dark Navy","ad_id":"120243238875630604","spend":18.4,"impressions":1068,"clicks":9,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":2.0444,"ctr":0.0084,"reach":822},{"date":"2026-04-14","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1B — Foto","ad_id":"120243247300050604","spend":3,"impressions":100,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":89},{"date":"2026-04-14","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"3 Offertes — 3A — Dark Navy","ad_id":"120243247436140604","spend":0.25,"impressions":3,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":3},{"date":"2026-04-14","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"3 Offertes — 3B — Foto","ad_id":"120243247748630604","spend":0.1,"impressions":1,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":1},{"date":"2026-04-14","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":80.04,"impressions":4193,"clicks":73,"actions_lead":3,"cost_per_action_type_lead":26.68,"cpc":1.0964,"ctr":0.0174,"reach":3726},{"date":"2026-04-14","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":31.72,"impressions":2530,"clicks":116,"actions_lead":1,"cost_per_action_type_lead":31.72,"cpc":0.2734,"ctr":0.0458,"reach":2164},{"date":"2026-04-15","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1A — Dark Navy","ad_id":"120243238875630604","spend":7.86,"impressions":396,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":2.62,"ctr":0.0076,"reach":326},{"date":"2026-04-15","campaign_name":"123kozijnenvergelijker","campaign_id":"120243232186720604","adset_name":"Koud — Advantage+ — NL 30-65 — Alle concepten","adset_id":"120243232186730604","ad_name":"Horrenactie — 1B — Foto","ad_id":"120243247300050604","spend":3.14,"impressions":18,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":3.14,"ctr":0.0556,"reach":17},{"date":"2026-04-15","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":75.94,"impressions":2779,"clicks":52,"actions_lead":4,"cost_per_action_type_lead":18.985,"cpc":1.4604,"ctr":0.0187,"reach":2325},{"date":"2026-04-15","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":30,"impressions":1715,"clicks":77,"actions_lead":1,"cost_per_action_type_lead":30,"cpc":0.3896,"ctr":0.0449,"reach":1497},{"date":"2026-04-16","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":76.88,"impressions":3486,"clicks":56,"actions_lead":1,"cost_per_action_type_lead":76.88,"cpc":1.3729,"ctr":0.0161,"reach":2884},{"date":"2026-04-16","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":34.33,"impressions":1753,"clicks":61,"actions_lead":2,"cost_per_action_type_lead":17.165,"cpc":0.5628,"ctr":0.0348,"reach":1512},{"date":"2026-04-17","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":68.87,"impressions":3148,"clicks":42,"actions_lead":3,"cost_per_action_type_lead":22.9567,"cpc":1.6398,"ctr":0.0133,"reach":2753},{"date":"2026-04-17","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":42.07,"impressions":2826,"clicks":66,"actions_lead":2,"cost_per_action_type_lead":21.035,"cpc":0.6374,"ctr":0.0234,"reach":2587},{"date":"2026-04-18","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":55.49,"impressions":2321,"clicks":38,"actions_lead":1,"cost_per_action_type_lead":55.49,"cpc":1.4603,"ctr":0.0164,"reach":2019},{"date":"2026-04-18","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":27.22,"impressions":1572,"clicks":21,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.2962,"ctr":0.0134,"reach":1458},{"date":"2026-04-19","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":81.04,"impressions":3164,"clicks":55,"actions_lead":4,"cost_per_action_type_lead":20.26,"cpc":1.4735,"ctr":0.0174,"reach":2715},{"date":"2026-04-19","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":44.53,"impressions":2275,"clicks":49,"actions_lead":2,"cost_per_action_type_lead":22.265,"cpc":0.9088,"ctr":0.0215,"reach":1972},{"date":"2026-04-20","campaign_name":"DV | Leads | NL | Kozijnen | Video 40 euro per maand","campaign_id":"120243329328210604","adset_name":"DV | Koud | NL | Advantage+ video","adset_id":"120243329328200604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243329328240604","spend":27.58,"impressions":962,"clicks":16,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.7237,"ctr":0.0166,"reach":857},{"date":"2026-04-20","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":95.34,"impressions":4275,"clicks":114,"actions_lead":2,"cost_per_action_type_lead":47.67,"cpc":0.8363,"ctr":0.0267,"reach":3776},{"date":"2026-04-21","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":23.49,"impressions":1211,"clicks":32,"actions_lead":1,"cost_per_action_type_lead":23.49,"cpc":0.7341,"ctr":0.0264,"reach":1103},{"date":"2026-04-21","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"\"DV | Video 01 | Bolks & Dennis | UTM","ad_id":"120244382497290604","spend":78.46,"impressions":4744,"clicks":120,"actions_lead":2,"cost_per_action_type_lead":39.23,"cpc":0.6538,"ctr":0.0253,"reach":3907},{"date":"2026-04-22","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"\"DV | Video 01 | Bolks & Dennis | UTM","ad_id":"120244382497290604","spend":124.3,"impressions":7511,"clicks":184,"actions_lead":1,"cost_per_action_type_lead":124.3,"cpc":0.6755,"ctr":0.0245,"reach":6035},{"date":"2026-04-22","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.85,"impressions":1029,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":1013},{"date":"2026-04-22","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":3.42,"impressions":1989,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.14,"ctr":0.0015,"reach":1969},{"date":"2026-04-23","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"\"DV | Video 01 | Bolks & Dennis | UTM","ad_id":"120244382497290604","spend":120.01,"impressions":6881,"clicks":137,"actions_lead":1,"cost_per_action_type_lead":120.01,"cpc":0.876,"ctr":0.0199,"reach":6027},{"date":"2026-04-23","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":3.8,"impressions":2657,"clicks":6,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.6333,"ctr":0.0023,"reach":2538},{"date":"2026-04-23","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":5.49,"impressions":3809,"clicks":4,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.3725,"ctr":0.0011,"reach":3808},{"date":"2026-04-24","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":58.3,"impressions":3388,"clicks":86,"actions_lead":2,"cost_per_action_type_lead":29.15,"cpc":0.6779,"ctr":0.0254,"reach":3159},{"date":"2026-04-24","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"\"DV | Video 01 | Bolks & Dennis | UTM","ad_id":"120244382497290604","spend":65.83,"impressions":2602,"clicks":47,"actions_lead":1,"cost_per_action_type_lead":65.83,"cpc":1.4006,"ctr":0.0181,"reach":2464},{"date":"2026-04-24","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":3.74,"impressions":2631,"clicks":5,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.748,"ctr":0.0019,"reach":2528},{"date":"2026-04-24","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":5.23,"impressions":3654,"clicks":5,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.046,"ctr":0.0014,"reach":3654},{"date":"2026-04-25","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":57.08,"impressions":2763,"clicks":42,"actions_lead":1,"cost_per_action_type_lead":57.08,"cpc":1.359,"ctr":0.0152,"reach":2577},{"date":"2026-04-25","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.44,"impressions":1022,"clicks":2,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.72,"ctr":0.002,"reach":998},{"date":"2026-04-25","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":8.22,"impressions":5860,"clicks":8,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.0275,"ctr":0.0014,"reach":5834},{"date":"2026-04-26","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":3.84,"impressions":2773,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.28,"ctr":0.0011,"reach":2773},{"date":"2026-04-26","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":6.94,"impressions":4974,"clicks":6,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.1567,"ctr":0.0012,"reach":4974},{"date":"2026-04-27","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.61,"impressions":1191,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.61,"ctr":0.0008,"reach":1124},{"date":"2026-04-27","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":8.43,"impressions":6555,"clicks":10,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.843,"ctr":0.0015,"reach":6398},{"date":"2026-04-28","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":172.48,"impressions":8545,"clicks":152,"actions_lead":1,"cost_per_action_type_lead":172.48,"cpc":1.1347,"ctr":0.0178,"reach":6848},{"date":"2026-04-28","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.75,"impressions":587,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":571},{"date":"2026-04-28","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":8.59,"impressions":6663,"clicks":13,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.6608,"ctr":0.002,"reach":6653},{"date":"2026-04-29","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":160.85,"impressions":8082,"clicks":134,"actions_lead":1,"cost_per_action_type_lead":160.85,"cpc":1.2004,"ctr":0.0166,"reach":6858},{"date":"2026-04-29","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"\"DV | Video 01 | Bolks & Dennis | UTM","ad_id":"120244382497290604","spend":1.94,"impressions":117,"clicks":5,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.388,"ctr":0.0427,"reach":109},{"date":"2026-04-29","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.27,"impressions":212,"clicks":2,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.135,"ctr":0.0094,"reach":206},{"date":"2026-04-29","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":9.01,"impressions":6501,"clicks":10,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.901,"ctr":0.0015,"reach":6290},{"date":"2026-04-30","campaign_name":"DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand","campaign_id":"120243643210870604","adset_name":"DV | Koud | Almelo +40km | Advantage+ video","adset_id":"120243643210880604","ad_name":"DV | Video 01 | Bolks & Dennis","ad_id":"120243643210860604","spend":154.27,"impressions":6095,"clicks":127,"actions_lead":4,"cost_per_action_type_lead":38.5675,"cpc":1.2147,"ctr":0.0208,"reach":5477},{"date":"2026-04-30","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.58,"impressions":387,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":367},{"date":"2026-04-30","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":9.23,"impressions":6595,"clicks":4,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":2.3075,"ctr":0.0006,"reach":6595},{"date":"2026-04-30","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Besparing","ad_id":"120245105491470604","spend":7.8,"impressions":456,"clicks":22,"actions_lead":1,"cost_per_action_type_lead":7.8,"cpc":0.3545,"ctr":0.0482,"reach":352},{"date":"2026-04-30","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Onderhoud","ad_id":"120245106080940604","spend":1.24,"impressions":39,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.24,"ctr":0.0256,"reach":37},{"date":"2026-04-30","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Fomo/urgentie","ad_id":"120245106176790604","spend":0.57,"impressions":25,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.57,"ctr":0.04,"reach":23},{"date":"2026-05-01","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":10.27,"impressions":7400,"clicks":12,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.8558,"ctr":0.0016,"reach":7250},{"date":"2026-05-01","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Besparing","ad_id":"120245105491470604","spend":0.92,"impressions":41,"clicks":5,"actions_lead":1,"cost_per_action_type_lead":0.92,"cpc":0.184,"ctr":0.122,"reach":37},{"date":"2026-05-01","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Onderhoud","ad_id":"120245106080940604","spend":1.87,"impressions":81,"clicks":4,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.4675,"ctr":0.0494,"reach":69},{"date":"2026-05-01","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":8.04,"impressions":775,"clicks":48,"actions_lead":6,"cost_per_action_type_lead":1.34,"cpc":0.1675,"ctr":0.0619,"reach":639},{"date":"2026-05-01","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Fomo/urgentie","ad_id":"120245106176790604","spend":1.41,"impressions":89,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.47,"ctr":0.0337,"reach":78},{"date":"2026-05-01","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":94.39,"impressions":7114,"clicks":142,"actions_lead":3,"cost_per_action_type_lead":31.4633,"cpc":0.6647,"ctr":0.02,"reach":6609},{"date":"2026-05-01","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Onderhoud 2A","ad_id":"120245139097100604","spend":58.16,"impressions":3214,"clicks":101,"actions_lead":2,"cost_per_action_type_lead":29.08,"cpc":0.5758,"ctr":0.0314,"reach":2997},{"date":"2026-05-01","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Besparen 2B","ad_id":"120245139812010604","spend":17.4,"impressions":1129,"clicks":31,"actions_lead":1,"cost_per_action_type_lead":17.4,"cpc":0.5613,"ctr":0.0275,"reach":1053},{"date":"2026-05-01","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Verduurzamen 2C","ad_id":"120245139867120604","spend":23.38,"impressions":1038,"clicks":27,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.8659,"ctr":0.026,"reach":979},{"date":"2026-05-01","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":13.04,"impressions":703,"clicks":15,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.8693,"ctr":0.0213,"reach":669},{"date":"2026-05-02","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.14,"impressions":108,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":101},{"date":"2026-05-02","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":10.34,"impressions":7765,"clicks":7,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.4771,"ctr":0.0009,"reach":7585},{"date":"2026-05-02","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Besparing","ad_id":"120245105491470604","spend":0.04,"impressions":9,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":7},{"date":"2026-05-02","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":3.28,"impressions":370,"clicks":17,"actions_lead":2,"cost_per_action_type_lead":1.64,"cpc":0.1929,"ctr":0.0459,"reach":347},{"date":"2026-05-02","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":0,"impressions":0,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":null,"reach":0},{"date":"2026-05-02","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":50.55,"impressions":2774,"clicks":53,"actions_lead":1,"cost_per_action_type_lead":50.55,"cpc":0.9538,"ctr":0.0191,"reach":2421},{"date":"2026-05-03","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.46,"impressions":405,"clicks":2,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.23,"ctr":0.0049,"reach":403},{"date":"2026-05-03","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":10.4,"impressions":8428,"clicks":9,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.1556,"ctr":0.0011,"reach":8385},{"date":"2026-05-03","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Besparing","ad_id":"120245105491470604","spend":0.22,"impressions":25,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.22,"ctr":0.04,"reach":23},{"date":"2026-05-03","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Onderhoud","ad_id":"120245106080940604","spend":0.27,"impressions":22,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.27,"ctr":0.0455,"reach":21},{"date":"2026-05-03","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":8.71,"impressions":1052,"clicks":47,"actions_lead":4,"cost_per_action_type_lead":2.1775,"cpc":0.1853,"ctr":0.0447,"reach":943},{"date":"2026-05-03","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Fomo/urgentie","ad_id":"120245106176790604","spend":0.23,"impressions":25,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":24},{"date":"2026-05-03","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":59.11,"impressions":2659,"clicks":32,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.8472,"ctr":0.012,"reach":2357},{"date":"2026-05-04","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.97,"impressions":1512,"clicks":2,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.985,"ctr":0.0013,"reach":1476},{"date":"2026-05-04","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":7.56,"impressions":5920,"clicks":12,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.63,"ctr":0.002,"reach":5860},{"date":"2026-05-04","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":16.02,"impressions":2043,"clicks":127,"actions_lead":18,"cost_per_action_type_lead":0.89,"cpc":0.1261,"ctr":0.0622,"reach":1732},{"date":"2026-05-04","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":100.52,"impressions":7812,"clicks":229,"actions_lead":2,"cost_per_action_type_lead":50.26,"cpc":0.439,"ctr":0.0293,"reach":6986},{"date":"2026-05-04","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Horren & HR++ glas | 1D","ad_id":"120245138976960604","spend":0.01,"impressions":2,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":2},{"date":"2026-05-04","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Onderhoud 2A","ad_id":"120245139097100604","spend":0.31,"impressions":14,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":14},{"date":"2026-05-04","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Besparen 2B","ad_id":"120245139812010604","spend":0.13,"impressions":9,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":9},{"date":"2026-05-04","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Horren 2D","ad_id":"120245139880930604","spend":94.94,"impressions":5899,"clicks":145,"actions_lead":3,"cost_per_action_type_lead":31.6467,"cpc":0.6548,"ctr":0.0246,"reach":5462},{"date":"2026-05-04","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":11.76,"impressions":586,"clicks":6,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.96,"ctr":0.0102,"reach":534},{"date":"2026-05-05","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.26,"impressions":949,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.42,"ctr":0.0032,"reach":939},{"date":"2026-05-05","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":8,"impressions":5918,"clicks":6,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.3333,"ctr":0.001,"reach":5692},{"date":"2026-05-05","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":10.5,"impressions":1674,"clicks":76,"actions_lead":9,"cost_per_action_type_lead":1.1667,"cpc":0.1382,"ctr":0.0454,"reach":1535},{"date":"2026-05-05","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":72.53,"impressions":4770,"clicks":123,"actions_lead":1,"cost_per_action_type_lead":72.53,"cpc":0.5897,"ctr":0.0258,"reach":4399},{"date":"2026-05-05","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Horren 2D","ad_id":"120245139880930604","spend":80.38,"impressions":4353,"clicks":128,"actions_lead":2,"cost_per_action_type_lead":40.19,"cpc":0.628,"ctr":0.0294,"reach":3696},{"date":"2026-05-05","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":10.18,"impressions":388,"clicks":10,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.018,"ctr":0.0258,"reach":353},{"date":"2026-05-06","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":1.53,"impressions":1107,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.53,"ctr":0.0009,"reach":1103},{"date":"2026-05-06","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":8.21,"impressions":6001,"clicks":9,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.9122,"ctr":0.0015,"reach":5820},{"date":"2026-05-06","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Besparing","ad_id":"120245105491470604","spend":0.04,"impressions":4,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":4},{"date":"2026-05-06","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":7.19,"impressions":1046,"clicks":66,"actions_lead":8,"cost_per_action_type_lead":0.8988,"cpc":0.1089,"ctr":0.0631,"reach":985},{"date":"2026-05-06","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":80.97,"impressions":5230,"clicks":163,"actions_lead":2,"cost_per_action_type_lead":40.485,"cpc":0.4967,"ctr":0.0312,"reach":4332},{"date":"2026-05-06","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Horren 2D","ad_id":"120245139880930604","spend":87.71,"impressions":4163,"clicks":126,"actions_lead":2,"cost_per_action_type_lead":43.855,"cpc":0.6961,"ctr":0.0303,"reach":3968},{"date":"2026-05-06","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":13.33,"impressions":689,"clicks":17,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.7841,"ctr":0.0247,"reach":658},{"date":"2026-05-07","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.07,"impressions":58,"clicks":1,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.07,"ctr":0.0172,"reach":56},{"date":"2026-05-07","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":9.51,"impressions":6643,"clicks":7,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.3586,"ctr":0.0011,"reach":6641},{"date":"2026-05-07","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":8.32,"impressions":1088,"clicks":57,"actions_lead":7,"cost_per_action_type_lead":1.1886,"cpc":0.146,"ctr":0.0524,"reach":1008},{"date":"2026-05-07","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":71.09,"impressions":4975,"clicks":122,"actions_lead":2,"cost_per_action_type_lead":35.545,"cpc":0.5827,"ctr":0.0245,"reach":4203},{"date":"2026-05-07","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Horren 2D","ad_id":"120245139880930604","spend":81.75,"impressions":4145,"clicks":120,"actions_lead":1,"cost_per_action_type_lead":81.75,"cpc":0.6813,"ctr":0.029,"reach":3543},{"date":"2026-05-07","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":12.68,"impressions":554,"clicks":10,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.268,"ctr":0.0181,"reach":509},{"date":"2026-05-08","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid","ad_id":"120244500731530604","spend":0.42,"impressions":278,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":271},{"date":"2026-05-08","campaign_name":"Direct Verduurzamen | Vacatura Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":9.55,"impressions":6459,"clicks":6,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.5917,"ctr":0.0009,"reach":6346},{"date":"2026-05-08","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":7.36,"impressions":967,"clicks":72,"actions_lead":9,"cost_per_action_type_lead":0.8178,"cpc":0.1022,"ctr":0.0745,"reach":904},{"date":"2026-05-08","campaign_name":"MH | Bel Direct | 09-12 | Almelo 40km MA-VR","campaign_id":"120245115873360604","adset_name":"MH | Bel Direct | 09-12 | Almelo 40km | MA-VR","adset_id":"120245115873370604","ad_name":"MH | Bel Direct | Onderhoud | 1A","ad_id":"120245115873380604","spend":70.77,"impressions":4275,"clicks":120,"actions_lead":3,"cost_per_action_type_lead":23.59,"cpc":0.5897,"ctr":0.0281,"reach":3745},{"date":"2026-05-08","campaign_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","campaign_id":"120245139097090604","adset_name":"MH | Afspraak | 13-17 | Almelo 40km | MA-VR","adset_id":"120245139097140604","ad_name":"MH | Afspraak | Horren 2D","ad_id":"120245139880930604","spend":72.47,"impressions":3600,"clicks":107,"actions_lead":2,"cost_per_action_type_lead":36.235,"cpc":0.6773,"ctr":0.0297,"reach":2896},{"date":"2026-05-08","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":10.82,"impressions":481,"clicks":12,"actions_lead":1,"cost_per_action_type_lead":10.82,"cpc":0.9017,"ctr":0.0249,"reach":440},{"date":"2026-05-09","campaign_name":"Direct Verduurzamen | Vacature Monteur Kozijnen","campaign_id":"120244500731520604","adset_name":"Regio Almelo | Mannen 23-55","adset_id":"120244500731540604","ad_name":"Nieuwe advertentie voor Bekendheid - Kopie","ad_id":"120244501148610604","spend":9,"impressions":6167,"clicks":10,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.9,"ctr":0.0016,"reach":6167},{"date":"2026-05-09","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":10.42,"impressions":1340,"clicks":48,"actions_lead":5,"cost_per_action_type_lead":2.084,"cpc":0.2171,"ctr":0.0358,"reach":1258},{"date":"2026-05-09","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Verduurzamen 3C","ad_id":"120245139996070604","spend":3.5,"impressions":234,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.1667,"ctr":0.0128,"reach":224},{"date":"2026-05-09","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Horren 3D","ad_id":"120245139996080604","spend":5.66,"impressions":301,"clicks":3,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":1.8867,"ctr":0.01,"reach":293},{"date":"2026-05-09","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":30.34,"impressions":1468,"clicks":40,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.7585,"ctr":0.0272,"reach":1294},{"date":"2026-05-10","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Kwaliteit","ad_id":"120245106150910604","spend":7.36,"impressions":869,"clicks":39,"actions_lead":4,"cost_per_action_type_lead":1.84,"cpc":0.1887,"ctr":0.0449,"reach":804},{"date":"2026-05-10","campaign_name":"MH | Winactie | Leads","campaign_id":"120245105491480604","adset_name":"MH | Winactie | Main","adset_id":"120245105491490604","ad_name":"Fomo/urgentie","ad_id":"120245106176790604","spend":0,"impressions":1,"clicks":0,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":null,"ctr":0,"reach":1},{"date":"2026-05-10","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Verduurzamen 3C","ad_id":"120245139996070604","spend":17.36,"impressions":1063,"clicks":21,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.8267,"ctr":0.0198,"reach":937},{"date":"2026-05-10","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Horren 3D","ad_id":"120245139996080604","spend":16.57,"impressions":973,"clicks":23,"actions_lead":1,"cost_per_action_type_lead":16.57,"cpc":0.7204,"ctr":0.0236,"reach":931},{"date":"2026-05-10","campaign_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","campaign_id":"120245139996060604","adset_name":"MH | Info | Avond | Almelo 40km | MA-Do+WE","adset_id":"120245139996050604","ad_name":"MH | Info | Onderhoud 3A","ad_id":"120245139996090604","spend":2.75,"impressions":148,"clicks":5,"actions_lead":null,"cost_per_action_type_lead":null,"cpc":0.55,"ctr":0.0338,"reach":144}];
+
+        let allCampaigns = [];
+        let allAdsets = [];
+        let allAds = [];
+        let selectedMonth = '2026-05';
+        let viewMode = 'month'; // 'month' or 'week'
+        let selectedWeek = null;
+
+        // Filter to only the 3 MH campaigns
+        const targetCampaigns = [
+            'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',
+            'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',
+            'MH | Info | Avond | Almelo 40km | MA-Do+WE'
+        ];
+
+        function getDateRangeForMonth(monthStr) {
+            const [year, month] = monthStr.split('-');
+            const startDate = new Date(year, parseInt(month) - 1, 1);
+            const endDate = new Date(year, parseInt(month), 0);
+            return { startDate, endDate };
+        }
+
+        function formatDate(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function changeMonth() {
+            selectedMonth = document.getElementById('monthSelector').value;
+            const { startDate, endDate } = getDateRangeForMonth(selectedMonth);
+            document.getElementById('periodText').textContent = `Periode: ${startDate.getDate()} ${getMonthName(startDate.getMonth())} - ${endDate.getDate()} ${getMonthName(endDate.getMonth())} ${endDate.getFullYear()}`;
+            aggregateData();
+        }
+
+        function getMonthName(monthIndex) {
+            const months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+            return months[monthIndex];
+        }
+
+        function changeViewMode() {
+            viewMode = document.getElementById('viewModeSelector').value;
+            document.getElementById('monthSelectorDiv').style.display = viewMode === 'month' ? 'flex' : 'none';
+            document.getElementById('weekSelectorDiv').style.display = viewMode === 'week' ? 'flex' : 'none';
+
+            if (viewMode === 'week') {
+                populateWeekSelector();
+            } else {
+                changeMonth();
+            }
+        }
+
+        function getWeeksForMonth(monthStr) {
+            const [year, month] = monthStr.split('-');
+            const weeks = [];
+            const monthNum = parseInt(month);
+
+            // Get all dates in the month
+            const monthDate = new Date(year, monthNum - 1, 1);
+            const lastDay = new Date(year, monthNum, 0).getDate();
+
+            for (let day = 1; day <= lastDay; day++) {
+                const date = new Date(year, monthNum - 1, day);
+                const weekStart = new Date(date);
+                weekStart.setDate(date.getDate() - date.getDay() + 1); // Monday
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6); // Sunday
+
+                const weekKey = `${year}-W${Math.ceil((day + new Date(year, monthNum - 1, 1).getDay()) / 7)}`;
+
+                if (!weeks.find(w => w.key === weekKey)) {
+                    weeks.push({
+                        key: weekKey,
+                        start: new Date(weekStart),
+                        end: new Date(weekEnd),
+                        label: `${weekStart.getDate()} - ${weekEnd.getDate()} ${getMonthName(weekEnd.getMonth())}`
+                    });
+                }
+            }
+
+            return weeks;
+        }
+
+        function populateWeekSelector() {
+            const weekSelector = document.getElementById('weekSelector');
+            weekSelector.innerHTML = '<option value="">Selecteer week...</option>';
+
+            const weeks = getWeeksForMonth(selectedMonth);
+            weeks.forEach(week => {
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify({ start: week.start.toISOString().split('T')[0], end: week.end.toISOString().split('T')[0] });
+                opt.textContent = week.label;
+                weekSelector.appendChild(opt);
+            });
+        }
+
+        function changeWeek() {
+            const weekValue = document.getElementById('weekSelector').value;
+            if (weekValue) {
+                selectedWeek = JSON.parse(weekValue);
+                const startDate = new Date(selectedWeek.start);
+                const endDate = new Date(selectedWeek.end);
+                document.getElementById('periodText').textContent = `Periode: ${startDate.getDate()} - ${endDate.getDate()} ${getMonthName(endDate.getMonth())} ${endDate.getFullYear()}`;
+                aggregateData();
+            }
+        }
+
+        // Aggregate data
+        function aggregateData() {
+            const campaigns = {};
+            const adsets = {};
+            const ads = {};
+
+            let startDate, endDate;
+
+            if (viewMode === 'month') {
+                const range = getDateRangeForMonth(selectedMonth);
+                startDate = range.startDate;
+                endDate = range.endDate;
+            } else if (viewMode === 'week' && selectedWeek) {
+                startDate = new Date(selectedWeek.start);
+                endDate = new Date(selectedWeek.end);
+            } else {
+                return;
+            }
+
+            rawData.forEach(row => {
+                // Only include target campaigns
+                if (!targetCampaigns.includes(row.campaign_name)) return;
+
+                // Filter by date range
+                const rowDate = new Date(row.date);
+                if (rowDate < startDate || rowDate > endDate) return;
+                const cKey = row.campaign_name;
+                const aKey = `${row.campaign_name}|${row.adset_name}`;
+                const dKey = `${row.campaign_name}|${row.adset_name}|${row.ad_name}`;
+
+                // Campaign aggregation
+                if (!campaigns[cKey]) {
+                    campaigns[cKey] = {
+                        name: row.campaign_name,
+                        id: row.campaign_id,
+                        spend: 0,
+                        impressions: 0,
+                        clicks: 0,
+                        leads: 0
+                    };
+                }
+                campaigns[cKey].spend += row.spend;
+                campaigns[cKey].impressions += row.impressions;
+                campaigns[cKey].clicks += row.clicks;
+                if (row.actions_lead) campaigns[cKey].leads += row.actions_lead;
+
+                // Ad Set aggregation
+                if (!adsets[aKey]) {
+                    adsets[aKey] = {
+                        campaign: row.campaign_name,
+                        name: row.adset_name,
+                        id: row.adset_id,
+                        spend: 0,
+                        impressions: 0,
+                        clicks: 0,
+                        leads: 0
+                    };
+                }
+                adsets[aKey].spend += row.spend;
+                adsets[aKey].impressions += row.impressions;
+                adsets[aKey].clicks += row.clicks;
+                if (row.actions_lead) adsets[aKey].leads += row.actions_lead;
+
+                // Ad aggregation
+                if (!ads[dKey]) {
+                    ads[dKey] = {
+                        campaign: row.campaign_name,
+                        adset: row.adset_name,
+                        name: row.ad_name,
+                        id: row.ad_id,
+                        spend: 0,
+                        impressions: 0,
+                        clicks: 0,
+                        leads: 0
+                    };
+                }
+                ads[dKey].spend += row.spend;
+                ads[dKey].impressions += row.impressions;
+                ads[dKey].clicks += row.clicks;
+                if (row.actions_lead) ads[dKey].leads += row.actions_lead;
+            });
+
+            allCampaigns = Object.values(campaigns).sort((a, b) => b.spend - a.spend);
+            allAdsets = Object.values(adsets).sort((a, b) => b.spend - a.spend);
+            allAds = Object.values(ads).sort((a, b) => b.spend - a.spend);
+
+            renderData();
+        }
+
+        function renderData() {
+            renderMetrics();
+            renderCampaigns();
+            renderAdsets();
+            renderAds();
+            renderPerformance();
+            populateFilters();
+            renderCharts();
+        }
+
+        function renderMetrics() {
+            // Only include campaigns with leads
+            const campaignsWithLeads = allCampaigns.filter(c => c.leads > 0);
+            const totals = campaignsWithLeads.reduce((acc, c) => ({
+                spend: acc.spend + c.spend,
+                leads: acc.leads + c.leads,
+                impressions: acc.impressions + c.impressions,
+                clicks: acc.clicks + c.clicks
+            }), { spend: 0, leads: 0, impressions: 0, clicks: 0 });
+
+            const cpl = totals.leads > 0 ? totals.spend / totals.leads : 0;
+            const ctr = totals.impressions > 0 ? (totals.clicks / totals.impressions * 100).toFixed(2) : 0;
+
+            document.getElementById('totalSpend').textContent = '€ ' + totals.spend.toFixed(2);
+            document.getElementById('totalLeads').textContent = totals.leads;
+            document.getElementById('avgCPL').textContent = '€ ' + cpl.toFixed(2);
+            document.getElementById('totalImpressions').textContent = totals.impressions.toLocaleString();
+            document.getElementById('totalClicks').textContent = totals.clicks.toLocaleString();
+            document.getElementById('avgCTR').textContent = ctr + '%';
+        }
+
+        function renderCampaigns() {
+            const tbody = document.getElementById('campaignsList');
+            tbody.innerHTML = '';
+
+            // Filter only campaigns with leads
+            const filtered = allCampaigns.filter(c => c.leads > 0);
+
+            let totalSpend = 0, totalImpressions = 0, totalClicks = 0, totalLeads = 0;
+
+            filtered.forEach((camp, idx) => {
+                const ctr = camp.impressions > 0 ? (camp.clicks / camp.impressions * 100).toFixed(2) : 0;
+                const cpc = camp.clicks > 0 ? (camp.spend / camp.clicks).toFixed(2) : '-';
+                const cpl = camp.leads > 0 ? (camp.spend / camp.leads).toFixed(2) : '-';
+
+                totalSpend += camp.spend;
+                totalImpressions += camp.impressions;
+                totalClicks += camp.clicks;
+                totalLeads += camp.leads;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>${camp.name.substring(0, 50)}</td>
+                    <td>€ ${camp.spend.toFixed(2)}</td>
+                    <td>${camp.impressions.toLocaleString()}</td>
+                    <td>${camp.clicks.toLocaleString()}</td>
+                    <td>${ctr}%</td>
+                    <td>€ ${cpc}</td>
+                    <td><span class="badge ${camp.leads > 0 ? 'success' : 'danger'}">${camp.leads}</span></td>
+                    <td>€ ${cpl}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Add totals row
+            const totalCtr = totalImpressions > 0 ? (totalClicks / totalImpressions * 100).toFixed(2) : 0;
+            const totalCpc = totalClicks > 0 ? (totalSpend / totalClicks).toFixed(2) : '-';
+            const totalCpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '-';
+
+            const totalTr = document.createElement('tr');
+            totalTr.style.fontWeight = 'bold';
+            totalTr.style.backgroundColor = '#f9f9f9';
+            totalTr.innerHTML = `
+                <td></td>
+                <td>TOTAAL</td>
+                <td>€ ${totalSpend.toFixed(2)}</td>
+                <td>${totalImpressions.toLocaleString()}</td>
+                <td>${totalClicks.toLocaleString()}</td>
+                <td>${totalCtr}%</td>
+                <td>€ ${totalCpc}</td>
+                <td><span class="badge success">${totalLeads}</span></td>
+                <td>€ ${totalCpl}</td>
+            `;
+            tbody.appendChild(totalTr);
+        }
+
+        function renderAdsets() {
+            const tbody = document.getElementById('adsetsList');
+            tbody.innerHTML = '';
+
+            let filtered = allAdsets.filter(a => a.leads > 0);
+
+            if (document.getElementById('campaignFilter').value) {
+                filtered = filtered.filter(a => a.campaign === document.getElementById('campaignFilter').value);
+            }
+
+            let totalSpend = 0, totalImpressions = 0, totalClicks = 0, totalLeads = 0;
+
+            filtered.forEach((adset, idx) => {
+                const ctr = adset.impressions > 0 ? (adset.clicks / adset.impressions * 100).toFixed(2) : 0;
+                const cpc = adset.clicks > 0 ? (adset.spend / adset.clicks).toFixed(2) : '-';
+                const cpl = adset.leads > 0 ? (adset.spend / adset.leads).toFixed(2) : '-';
+
+                totalSpend += adset.spend;
+                totalImpressions += adset.impressions;
+                totalClicks += adset.clicks;
+                totalLeads += adset.leads;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>${adset.campaign.substring(0, 35)}</td>
+                    <td>${adset.name.substring(0, 35)}</td>
+                    <td>€ ${adset.spend.toFixed(2)}</td>
+                    <td>${adset.impressions.toLocaleString()}</td>
+                    <td>${adset.clicks.toLocaleString()}</td>
+                    <td>${ctr}%</td>
+                    <td>€ ${cpc}</td>
+                    <td><span class="badge ${adset.leads > 0 ? 'success' : 'danger'}">${adset.leads}</span></td>
+                    <td>€ ${cpl}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Add totals row
+            const totalCtr = totalImpressions > 0 ? (totalClicks / totalImpressions * 100).toFixed(2) : 0;
+            const totalCpc = totalClicks > 0 ? (totalSpend / totalClicks).toFixed(2) : '-';
+            const totalCpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '-';
+
+            const totalTr = document.createElement('tr');
+            totalTr.style.fontWeight = 'bold';
+            totalTr.style.backgroundColor = '#f9f9f9';
+            totalTr.innerHTML = `
+                <td></td>
+                <td colspan="2">TOTAAL</td>
+                <td>€ ${totalSpend.toFixed(2)}</td>
+                <td>${totalImpressions.toLocaleString()}</td>
+                <td>${totalClicks.toLocaleString()}</td>
+                <td>${totalCtr}%</td>
+                <td>€ ${totalCpc}</td>
+                <td><span class="badge success">${totalLeads}</span></td>
+                <td>€ ${totalCpl}</td>
+            `;
+            tbody.appendChild(totalTr);
+        }
+
+        function renderAds() {
+            const tbody = document.getElementById('adsList');
+            tbody.innerHTML = '';
+
+            const campaignFilter = document.getElementById('adCampaignFilter').value;
+            const adsetFilter = document.getElementById('adSetFilter').value;
+
+            let filtered = allAds.filter(a => a.leads > 0);
+            if (campaignFilter) filtered = filtered.filter(a => a.campaign === campaignFilter);
+            if (adsetFilter) filtered = filtered.filter(a => a.adset === adsetFilter);
+
+            let totalSpend = 0, totalImpressions = 0, totalClicks = 0, totalLeads = 0;
+
+            filtered.forEach((ad, idx) => {
+                const ctr = ad.impressions > 0 ? (ad.clicks / ad.impressions * 100).toFixed(2) : 0;
+                const cpc = ad.clicks > 0 ? (ad.spend / ad.clicks).toFixed(2) : '-';
+                const cpl = ad.leads > 0 ? (ad.spend / ad.leads).toFixed(2) : '-';
+
+                totalSpend += ad.spend;
+                totalImpressions += ad.impressions;
+                totalClicks += ad.clicks;
+                totalLeads += ad.leads;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${idx + 1}</td>
+                    <td>${ad.campaign}</td>
+                    <td>${ad.adset}</td>
+                    <td>${ad.name}</td>
+                    <td>€ ${ad.spend.toFixed(2)}</td>
+                    <td>${ad.impressions.toLocaleString()}</td>
+                    <td>${ad.clicks.toLocaleString()}</td>
+                    <td>${ctr}%</td>
+                    <td>€ ${cpc}</td>
+                    <td><span class="badge ${ad.leads > 0 ? 'success' : 'danger'}">${ad.leads}</span></td>
+                    <td>€ ${cpl}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Add totals row
+            const totalCtr = totalImpressions > 0 ? (totalClicks / totalImpressions * 100).toFixed(2) : 0;
+            const totalCpc = totalClicks > 0 ? (totalSpend / totalClicks).toFixed(2) : '-';
+            const totalCpl = totalLeads > 0 ? (totalSpend / totalLeads).toFixed(2) : '-';
+
+            const totalTr = document.createElement('tr');
+            totalTr.style.fontWeight = 'bold';
+            totalTr.style.backgroundColor = '#f9f9f9';
+            totalTr.innerHTML = `
+                <td></td>
+                <td colspan="3">TOTAAL</td>
+                <td>€ ${totalSpend.toFixed(2)}</td>
+                <td>${totalImpressions.toLocaleString()}</td>
+                <td>${totalClicks.toLocaleString()}</td>
+                <td>${totalCtr}%</td>
+                <td>€ ${totalCpc}</td>
+                <td><span class="badge success">${totalLeads}</span></td>
+                <td>€ ${totalCpl}</td>
+            `;
+            tbody.appendChild(totalTr);
+        }
+
+        function renderPerformance() {
+            // Filter items with leads > 0 and calculate metrics
+            const campaignsWithLeads = allCampaigns
+                .filter(c => c.leads > 0)
+                .map(c => ({
+                    ...c,
+                    cpl: c.leads > 0 ? c.spend / c.leads : Infinity
+                }))
+                .sort((a, b) => a.cpl - b.cpl);
+
+            const adsetsWithLeads = allAdsets
+                .filter(a => a.leads > 0)
+                .map(a => ({
+                    ...a,
+                    cpl: a.leads > 0 ? a.spend / a.leads : Infinity
+                }))
+                .sort((a, b) => a.cpl - b.cpl);
+
+            const adsWithLeads = allAds
+                .filter(a => a.leads > 0)
+                .map(a => ({
+                    ...a,
+                    cpl: a.leads > 0 ? a.spend / a.leads : Infinity,
+                    ctr: a.impressions > 0 ? (a.clicks / a.impressions * 100).toFixed(2) : 0,
+                    cpc: a.clicks > 0 ? (a.spend / a.clicks).toFixed(2) : '-'
+                }));
+
+            // Render campaigns
+            renderPerformanceTable('campaignsTopList', campaignsWithLeads.slice(0, 3), 'campaign');
+            renderPerformanceTable('campaignsBottomList', campaignsWithLeads.slice(-3).reverse(), 'campaign');
+
+            // Render ad sets
+            renderPerformanceTable('adsetsTopList', adsetsWithLeads.slice(0, 3), 'adset');
+            renderPerformanceTable('adsetsBottomList', adsetsWithLeads.slice(-3).reverse(), 'adset');
+
+            // Render ads - sorted by leads (descending for top, ascending for bottom)
+            const adsTopByLeads = [...adsWithLeads].sort((a, b) => b.leads - a.leads);
+            const adsBottomByLeads = [...adsWithLeads].sort((a, b) => a.leads - b.leads);
+            renderAdsPerformanceTable('adsTopList', adsTopByLeads.slice(0, 3));
+            renderAdsPerformanceTable('adsBottomList', adsBottomByLeads.slice(0, 3));
+        }
+
+        function renderPerformanceTable(elementId, items, type) {
+            const tbody = document.getElementById(elementId);
+            tbody.innerHTML = '';
+
+            items.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const name = type === 'campaign' ? item.name.substring(0, 35) : item.name.substring(0, 40);
+                tr.style.backgroundColor = idx === 0 ? '#f0f8f0' : (idx === 1 ? '#f8f8f0' : '');
+                tr.innerHTML = `
+                    <td>${name}</td>
+                    <td style="text-align: right; font-weight: 600;">${item.leads}</td>
+                    <td style="text-align: right; color: ${item.cpl < 25 ? '#2d5016' : item.cpl < 40 ? '#666' : '#8b4513'}; font-weight: 600;">€ ${item.cpl.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (items.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="3" style="text-align: center; color: #999; padding: 20px;">Geen data</td>';
+                tbody.appendChild(tr);
+            }
+        }
+
+        function renderAdsPerformanceTable(elementId, items) {
+            const tbody = document.getElementById(elementId);
+            tbody.innerHTML = '';
+
+            items.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.style.backgroundColor = idx === 0 ? '#f0f8f0' : (idx === 1 ? '#f8f8f0' : '');
+                tr.innerHTML = `
+                    <td>${item.name.substring(0, 45)}</td>
+                    <td style="text-align: right; font-weight: 600;">${item.leads}</td>
+                    <td style="text-align: right; color: ${item.cpl < 25 ? '#2d5016' : item.cpl < 40 ? '#666' : '#8b4513'}; font-weight: 600;">€ ${item.cpl.toFixed(2)}</td>
+                    <td style="text-align: right;">${item.ctr}%</td>
+                    <td style="text-align: right;">€ ${item.cpc}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (items.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="5" style="text-align: center; color: #999; padding: 20px;">Geen data</td>';
+                tbody.appendChild(tr);
+            }
+        }
+
+        function populateFilters() {
+            const campaignNames = [...new Set(allCampaigns.filter(c => c.leads > 0).map(c => c.name))];
+
+            const campaignFilter = document.getElementById('campaignFilter');
+            const adCampaignFilter = document.getElementById('adCampaignFilter');
+
+            campaignFilter.innerHTML = '<option value="">Alle campagnes</option>';
+            adCampaignFilter.innerHTML = '<option value="">Alle campagnes</option>';
+
+            campaignNames.forEach(name => {
+                const opt1 = document.createElement('option');
+                opt1.value = name;
+                opt1.textContent = name;
+                campaignFilter.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = name;
+                opt2.textContent = name;
+                adCampaignFilter.appendChild(opt2);
+            });
+        }
+
+        function filterAdsets() {
+            renderAdsets();
+            populateAdsetFilter();
+        }
+
+        function populateAdsetFilter() {
+            const campaignFilter = document.getElementById('adCampaignFilter').value;
+            const adSetFilter = document.getElementById('adSetFilter');
+
+            const adsetNames = [...new Set(
+                allAdsets
+                    .filter(a => a.leads > 0 && (!campaignFilter || a.campaign === campaignFilter))
+                    .map(a => a.name)
+            )];
+
+            adSetFilter.innerHTML = '<option value="">Alle Ad Sets</option>';
+            adsetNames.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                adSetFilter.appendChild(opt);
+            });
+        }
+
+        function filterAds() {
+            renderAds();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderCharts() {
+            const campaignsWithLeads = allCampaigns.filter(c => c.leads > 0);
+
+            // Spend chart
+            const spendCtx = document.getElementById('spendChart').getContext('2d');
+            new Chart(spendCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: campaignsWithLeads.map(c => c.name.substring(0, 32)),
+                    datasets: [{
+                        data: campaignsWithLeads.map(c => c.spend),
+                        backgroundColor: [
+                            '#1b5e20', '#2e7d32', '#388e3c', '#43a047',
+                            '#66bb6a', '#81c784', '#a5d6a7', '#c8e6c9'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 11 },
+                                padding: 12,
+                                boxWidth: 10,
+                                usePointStyle: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Leads chart
+            const leadsCtx = document.getElementById('leadsChart').getContext('2d');
+            new Chart(leadsCtx, {
+                type: 'bar',
+                data: {
+                    labels: campaignsWithLeads.map(c => c.name.substring(0, 35)),
+                    datasets: [{
+                        label: 'Leads',
+                        data: campaignsWithLeads.map(c => c.leads),
+                        backgroundColor: '#43a047'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // CPL chart
+            const cplCtx = document.getElementById('cplChart').getContext('2d');
+            new Chart(cplCtx, {
+                type: 'bar',
+                data: {
+                    labels: campaignsWithLeads.map(c => c.name.substring(0, 35)),
+                    datasets: [{
+                        label: 'Cost per Lead (€)',
+                        data: campaignsWithLeads.map(c => c.leads > 0 ? (c.spend / c.leads).toFixed(2) : 0),
+                        backgroundColor: '#66bb6a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Campaign Info & Change Log Management
+        function loadCampaignInfo() {
+            const saved = localStorage.getItem('campaignInfo');
+            return saved ? JSON.parse(saved) : [
+                { id: 1, name: 'MH | Bel Direct | 09-12 | Almelo 40km MA-VR', dv: 'DV Onderhoud', budget: 80, status: 'Active', notes: '' },
+                { id: 2, name: 'MH | Afspraak | 13-17 | Almelo 40km | MA-VR', dv: 'DV Financieren', budget: 120, status: 'Active', notes: '' },
+                { id: 3, name: 'MH | Info | Avond | Almelo 40km | MA-Do+WE', dv: 'DV Actie', budget: 60, status: 'Active', notes: '' }
+            ];
+        }
+
+        function saveCampaignInfo(data) {
+            localStorage.setItem('campaignInfo', JSON.stringify(data));
+            renderCampaignInfo();
+        }
+
+        function renderCampaignInfo() {
+            const data = loadCampaignInfo();
+            const tbody = document.getElementById('campaignInfoList');
+            tbody.innerHTML = '';
+
+            data.forEach(camp => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${camp.name}</td>
+                    <td><input type="text" value="${camp.dv}" onchange="updateCampaignField(${camp.id}, 'dv', this.value)" style="width: 100%; padding: 4px; border: 1px solid #ddd;"></td>
+                    <td><input type="number" value="${camp.budget}" onchange="updateCampaignField(${camp.id}, 'budget', this.value)" style="width: 80px; padding: 4px; border: 1px solid #ddd;"></td>
+                    <td>
+                        <select onchange="updateCampaignField(${camp.id}, 'status', this.value)" style="padding: 4px; border: 1px solid #ddd;">
+                            <option ${camp.status === 'Active' ? 'selected' : ''}>Active</option>
+                            <option ${camp.status === 'Paused' ? 'selected' : ''}>Paused</option>
+                            <option ${camp.status === 'Testing' ? 'selected' : ''}>Testing</option>
+                        </select>
+                    </td>
+                    <td><input type="text" value="${camp.notes}" onchange="updateCampaignField(${camp.id}, 'notes', this.value)" style="width: 100%; padding: 4px; border: 1px solid #ddd;"></td>
+                    <td><button onclick="deleteCampaignInfo(${camp.id})" style="padding: 4px 8px; background: #ddd; border: none; border-radius: 4px; cursor: pointer;">Verwijderen</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateCampaignField(id, field, value) {
+            const data = loadCampaignInfo();
+            const camp = data.find(c => c.id === id);
+            if (camp) {
+                camp[field] = field === 'budget' ? parseFloat(value) : value;
+                saveCampaignInfo(data);
+            }
+        }
+
+        function deleteCampaignInfo(id) {
+            if (confirm('Zeker?')) {
+                const data = loadCampaignInfo();
+                const filtered = data.filter(c => c.id !== id);
+                saveCampaignInfo(filtered);
+            }
+        }
+
+        function addCampaignInfo() {
+            const data = loadCampaignInfo();
+            data.push({
+                id: Date.now(),
+                name: 'Nieuwe campagne',
+                dv: 'DV Onderhoud',
+                budget: 50,
+                status: 'Testing',
+                notes: ''
+            });
+            saveCampaignInfo(data);
+        }
+
+        // Change Log
+        function loadChangeLog() {
+            const saved = localStorage.getItem('changeLog');
+            return saved ? JSON.parse(saved) : [
+                {
+                    date: '2026-05-01',
+                    target: 'ALLE - Algehele structuurwijziging',
+                    description: 'BASELINE: Targeting aangepast van Almelo +125km naar Almelo +40km. Structuur gewijzigd van 1 campagne 24/7 naar 3 campagnes op gezette tijden:\n\n• MH | Bel Direct | 09-12 | Almelo 40km MA-VR (Ma-Vr 09:00-12:00) - Insteek: z.s.m. bellen\n• MH | Afspraak | 13-17 | Almelo 40km | MA-VR (Ma-Vr 13:00-17:00) - Insteek: zo snel mogelijk bellen\n• MH | Info | Avond | Almelo 40km | MA-Do+WE (Ma-Do 18:00-21:00 + Weekenden informatief, volgende werkdag bellen)',
+                    person: 'Start periode'
+                },
+                {
+                    date: '2026-05-06',
+                    target: 'ALLE - CTA unificatie',
+                    description: 'CTA aangepast van per campagne verschillend naar uniforme: "Wij nemen z.s.m. contact met je op" (alle 3 campagnes)',
+                    person: 'Woensdag'
+                },
+                {
+                    date: '2026-05-09',
+                    target: 'MH | Bel Direct | 09-12 - Formulieroptimalisatie',
+                    description: 'Prestatie "Bel nu" (09:00-12:00) ondermaats met veel fake leads. Formulier uitgebreid om effect hiervan te testen.',
+                    person: 'Jarno'
+                }
+            ];
+        }
+
+        function saveChangeLog(data) {
+            localStorage.setItem('changeLog', JSON.stringify(data));
+            renderChangeLog();
+        }
+
+        function renderChangeLog() {
+            const data = loadChangeLog().sort((a, b) => new Date(b.date) - new Date(a.date));
+            const tbody = document.getElementById('changeLogList');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="4" style="text-align: center; color: #999; padding: 20px;">Nog geen wijzigingen gelogd</td>';
+                tbody.appendChild(tr);
+                return;
+            }
+
+            data.forEach((log, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="width: 12%; font-weight: 600;">${log.date}</td>
+                    <td style="width: 25%; font-weight: 600; color: #333;">${log.target}</td>
+                    <td style="color: #666;">${log.description}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addChangeLog() {
+            const date = document.getElementById('changeDate').value;
+            const target = document.getElementById('changeTarget').value;
+            const description = document.getElementById('changeDescription').value;
+            const person = document.getElementById('changePerson').value;
+
+            if (!date || !target || !description) {
+                alert('Vul minimaal datum, campagne en wijziging in');
+                return;
+            }
+
+            const data = loadChangeLog();
+            data.push({ date, target, description, person });
+            saveChangeLog(data);
+
+            document.getElementById('changeDate').value = '';
+            document.getElementById('changeTarget').value = '';
+            document.getElementById('changeDescription').value = '';
+            document.getElementById('changePerson').value = '';
+        }
+
+        function deleteChangeLog(idx) {
+            if (confirm('Zeker?')) {
+                const data = loadChangeLog();
+                data.splice(idx, 1);
+                saveChangeLog(data);
+            }
+        }
+
+        // Initialize
+        function initializeDashboard() {
+            if (viewMode === 'month') {
+                const { startDate, endDate } = getDateRangeForMonth(selectedMonth);
+                document.getElementById('periodText').textContent = `Periode: ${startDate.getDate()} ${getMonthName(startDate.getMonth())} - ${endDate.getDate()} ${getMonthName(endDate.getMonth())} ${endDate.getFullYear()}`;
+            }
+            aggregateData();
+            renderCampaignInfo();
+            renderChangeLog();
+        }
+
+        initializeDashboard();
+    </script>
+</body>
+</html>
