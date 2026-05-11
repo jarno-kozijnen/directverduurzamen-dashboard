@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktijk Onder de LindeGoogle Ads & SEO Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --success: #34a853;
+            --warning: #f9ab00;
+            --error: #ea4335;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topbar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .topbar-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .topbar-subtitle {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-label:first-child { margin-top: 0; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-top: 3px solid var(--primary);
+        }
+
+        .kpi-card.organic { border-top-color: #10b981; }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-100);
+            padding-bottom: 1rem;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .leads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leads-table thead {
+            background: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .leads-table th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leads-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.9375rem;
+            color: var(--gray-900);
+        }
+
+        .leads-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leads-table .numeric {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        .notes-section {
+            background: #f7f9fc;
+            border: 1px solid #e8eef7;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+
+        .notes-section h4 {
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .notes-section p {
+            color: var(--gray-600);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            padding: 2rem;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .leads-grid { grid-template-columns: 1fr; }
+
+            .container { padding: 1rem; }
+            .section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-left">
+            <div>
+                <div class="topbar-title">Praktijk Onder de Linde</div>
+                <div class="topbar-subtitle">Google Ads & SEO Performance</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Google Ads KPI's -->
+        <div class="section-label">Google Ads Performance 1 tot 10 mei</div>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Budget</div>
+                <div class="kpi-value" id="kpi-ads-spend">€ 0,00</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Clicks</div>
+                <div class="kpi-value" id="kpi-ads-clicks">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Conversies</div>
+                <div class="kpi-value" id="kpi-ads-conversions">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">CPA</div>
+                <div class="kpi-value" id="kpi-ads-cpa">€ 0,00</div>
+            </div>
+        </div>
+
+        <!-- Lead Registrations -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <div class="section-title">Lead Aanmeldingen</div>
+            </div>
+            <table class="leads-table">
+                <thead>
+                    <tr>
+                        <th>Maand</th>
+                        <th class="numeric">Kosten</th>
+                        <th class="numeric">Leads</th>
+                        <th class="numeric">Kosten per Lead</th>
+                    </tr>
+                </thead>
+                <tbody id="leads-tbody">
+                </tbody>
+            </table>
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200);">
+                <p style="font-size: 0.875rem; color: var(--gray-600);">Bron: Praktijk Onder de Linde aanmeldingen</p>
+            </div>
+        </div>
+
+        <!-- Organic 12 Maanden Trend -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <div class="section-title">Organisch VerkeerAfgelopen 12 Maanden</div>
+            </div>
+            <canvas id="organic12MonthChart" style="max-height: 400px;"></canvas>
+        </div>
+
+        <!-- Optimalisaties April -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <div class="section-title">Werkzaamheden April 2026</div>
+            </div>
+            <table class="leads-table">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Wat hebben we gedaan?</th>
+                        <th>Waarom? (voordeel voor jou)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 april</td>
+                        <td>Budget meer op mobiele telefoons gericht</td>
+                        <td>Meeste potentiële klanten zoeken op hun telefoon</td>
+                    </tr>
+                    <tr>
+                        <td>7 april</td>
+                        <td>Irrelevante zoeken uitgesloten</td>
+                        <td>Je advertenties verschijnen alleen bij relevante zoekopdrachten</td>
+                    </tr>
+                    <tr>
+                        <td>8 april</td>
+                        <td>Nieuwe teststrategie gestart (Max Conversies)</td>
+                        <td>Google optimalisert automatisch voor meer aanmeldingen</td>
+                    </tr>
+                    <tr>
+                        <td>8 april</td>
+                        <td>14 nieuwe zoektermen toegevoegd (bijv. "verloskundige Schalkwijk")</td>
+                        <td>Je bereikt meer potentiële klanten op relevante zoektermen</td>
+                    </tr>
+                    <tr>
+                        <td>8 april</td>
+                        <td>Advertenties gemaakt die zich aanpassen aan zoekopdrachten</td>
+                        <td>Hoger klikpercentage omdat advertentie beter aansluit</td>
+                    </tr>
+                    <tr>
+                        <td>8 april</td>
+                        <td>Uitbreidingen toegevoegd (afbeeldingen, links, reviews)</td>
+                        <td>Je advertentie ziet er professioneler uit in zoekresultaten</td>
+                    </tr>
+                    <tr>
+                        <td>9 april</td>
+                        <td>Aanmeldingen nauwkeuriger gemeten</td>
+                        <td>We zien exact hoeveel aanmeldingen je krijgt</td>
+                    </tr>
+                    <tr>
+                        <td>14 april</td>
+                        <td>Niet-relevante zoeken verwijderd uit Engelse campagne</td>
+                        <td>Budget gaat alleen naar zoekopdrachten die aanmeldingen opleveren</td>
+                    </tr>
+                    <tr>
+                        <td>21 april</td>
+                        <td>Zoekwoorden met slecht rendement gepauzeerd</td>
+                        <td>Je bent efficiënter — alleen geld aan goede zoektermen</td>
+                    </tr>
+                    <tr>
+                        <td>28-30 april</td>
+                        <td>Biedingen per zoekwoord verfijnd</td>
+                        <td>Je betaalt minder per klik voor zoektermen met veel aanmeldingen</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Notities -->
+        <div class="notes-section">
+            <h4>Notities</h4>
+            <p id="notes-text">Maandelijks rapport voor Praktijk Onder de Linde.</p>
+        </div>
+
+        <div class="footer">
+            <p>Dashboard automatisch bijgewerkt met Windsor.ai gegevens • Gegenereerd door Marketing Helden</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Datum: <span id="footer-date"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const DATA = {
+            ads: {
+                spend: 194.79,
+                clicks: 161,
+                conversions: 12,
+                cpa: 16.23,
+            },
+            leads: {
+                monthly: [
+                    { month: 'Maart 2026', cost: 774.00, count: 35 },
+                    { month: 'April 2026', cost: 810.00, count: 29 },
+                    { month: 'Mei 2026 (t/m gisteren)', cost: 194.79, count: 16 },
+                ]
+            },
+            organic: {
+                users: 369,
+            },
+            trend: {
+                labels: ['Jun 2025', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec', 'Jan 2026', 'Feb', 'Maart', 'April', 'Mei'],
+                users: [433, 468, 526, 557, 757, 785, 828, 1053, 944, 1049, 1034, 369],
+            }
+        };
+
+        let chart12Month = null;
+
+        document.getElementById('footer-date').textContent = new Date().toLocaleDateString('nl-NL');
+
+
+        function formatCurrency(val) {
+            return '€ ' + parseFloat(val).toFixed(2);
+        }
+
+        function renderLeadsTable() {
+            const tbody = document.getElementById('leads-tbody');
+            tbody.innerHTML = '';
+
+            DATA.leads.monthly.forEach(month => {
+                const cpl = month.cost / month.count;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${month.month}</td>
+                    <td class="numeric">${formatCurrency(month.cost)}</td>
+                    <td class="numeric">${month.count}</td>
+                    <td class="numeric">${formatCurrency(cpl)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderDashboard() {
+            document.getElementById('kpi-ads-spend').textContent = formatCurrency(DATA.ads.spend);
+            document.getElementById('kpi-ads-clicks').textContent = Math.round(DATA.ads.clicks).toLocaleString('nl-NL');
+            document.getElementById('kpi-ads-conversions').textContent = Math.round(DATA.ads.conversions);
+            document.getElementById('kpi-ads-cpa').textContent = formatCurrency(DATA.ads.cpa);
+            renderLeadsTable();
+            render12MonthChart();
+        }
+
+        function render12MonthChart() {
+            const ctx = document.getElementById('organic12MonthChart');
+            if (!ctx) return;
+
+            if (chart12Month) chart12Month.destroy();
+
+            chart12Month = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: DATA.trend.labels,
+                    datasets: [{
+                        label: 'Organic Users',
+                        data: DATA.trend.users,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: 'white',
+                        pointBorderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { type: 'linear', position: 'left', grid: { color: 'rgba(0,0,0,0.05)' } } }
+                }
+            });
+        }
+
+        renderDashboard();
+    </script>
+</body>
+</html>
