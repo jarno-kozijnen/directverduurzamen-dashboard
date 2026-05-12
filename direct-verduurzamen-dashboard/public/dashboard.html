@@ -4,682 +4,418 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Direct Verduurzamen - Meta Ads Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .controls {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .control-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .control-group label {
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .control-group input,
-        .control-group select {
-            padding: 0.6rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-
-        .control-group button {
-            padding: 0.6rem 1.2rem;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .control-group button:hover {
-            background: #2980b9;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .tab {
-            padding: 1rem;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .tab:hover {
-            color: #333;
-        }
-
-        .tab.active {
-            color: #3498db;
-            border-bottom-color: #3498db;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .kpi-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-left: 4px solid #3498db;
-        }
-
-        .kpi-card.spend {
-            border-left-color: #e74c3c;
-        }
-
-        .kpi-card.leads {
-            border-left-color: #27ae60;
-        }
-
-        .kpi-card.cpl {
-            border-left-color: #f39c12;
-        }
-
-        .kpi-label {
-            font-size: 0.85rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .kpi-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        th {
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: #495057;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        th:hover {
-            background: #e9ecef;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid #dee2e6;
-            font-size: 0.9rem;
-        }
-
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-        .numeric {
-            text-align: right;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .status.active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status.inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .kpi-grid {
-                grid-template-columns: 1fr;
-            }
-
-            th, td {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.8rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; padding: 20px; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: flex-start; }
+        .header-left h1 { color: #333; margin-bottom: 10px; font-size: 28px; }
+        .date-range { color: #666; font-size: 14px; }
+        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .month-selector { display: flex; gap: 10px; align-items: center; }
+        .month-selector label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        .month-selector select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; cursor: pointer; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .metric-label { color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .metric-value { font-size: 28px; font-weight: bold; color: #333; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; background: white; padding: 10px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); flex-wrap: wrap; }
+        .tab-button { padding: 12px 24px; border: none; background: transparent; cursor: pointer; font-weight: 500; border-radius: 8px; transition: all 0.3s; color: #666; }
+        .tab-button.active { background: #333; color: white; }
+        .tab-button:hover { background: #f0f0f0; }
+        .tab-button.active:hover { background: #333; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .chart-container { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .chart-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 20px; }
+        table { width: 100%; background: white; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        th { background: #f9fafb; padding: 15px; text-align: left; font-weight: 600; color: #333; border-bottom: 2px solid #e5e7eb; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 12px; border-bottom: 1px solid #e5e7eb; color: #333; font-size: 13px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #f9fafb; }
+        .rank-1 { color: #f59e0b; font-weight: bold; }
+        .rank-2 { color: #667eea; font-weight: bold; }
+        .rank-3 { color: #10b981; font-weight: bold; }
+        .filters { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        .filter-group { display: flex; flex-direction: column; gap: 5px; }
+        .filter-group label { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+        select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
-        <p>Realtime performance data van Meta Ads campagnes</p>
-    </div>
-
     <div class="container">
-        <div class="controls">
-            <div class="control-group">
-                <label>Van:</label>
-                <input type="date" id="dateFrom" value="2026-05-10">
+        <header>
+            <div class="header-left">
+                <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
+                <p class="date-range" id="periodText">Periode: laden...</p>
             </div>
-            <div class="control-group">
-                <label>Tot:</label>
-                <input type="date" id="dateTo" value="2026-05-12">
+        </header>
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Totale Uitgaven</div>
+                <div class="metric-value" id="totalSpend">€ -</div>
             </div>
-            <div class="control-group">
-                <label>Granulariteit:</label>
-                <select id="granularity">
-                    <option value="day" selected>Per dag</option>
-                    <option value="week">Per week</option>
-                    <option value="month">Per maand</option>
-                </select>
+            <div class="metric-card">
+                <div class="metric-label">Totale Leads</div>
+                <div class="metric-value" id="totalLeads">-</div>
             </div>
-            <div class="control-group">
-                <label>Campagne:</label>
-                <select id="campaignFilter">
-                    <option value="">Alle campagnes</option>
-                    <option value="META_CORE_KOZIJNEN_TWENTE_PLUS">META_CORE_KOZIJNEN_TWENTE_PLUS</option>
-                    <option value="MH | Bel Direct | 09-12">MH | Bel Direct | 09-12</option>
-                    <option value="MH | Afspraak | 13-17">MH | Afspraak | 13-17</option>
-                    <option value="MH | Info | Avond">MH | Info | Avond</option>
-                </select>
+            <div class="metric-card">
+                <div class="metric-label">Cost Per Lead</div>
+                <div class="metric-value" id="avgCPL">€ -</div>
             </div>
-            <div class="control-group">
-                <label>
-                    <input type="checkbox" id="activeOnly"> Alleen actieve
-                </label>
+            <div class="metric-card">
+                <div class="metric-label">Total Impressions</div>
+                <div class="metric-value" id="totalImpressions">-</div>
             </div>
-            <div class="control-group">
-                <button onclick="filterData()">🔄 Filteren</button>
+            <div class="metric-card">
+                <div class="metric-label">Total Clicks</div>
+                <div class="metric-value" id="totalClicks">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Gemiddelde CTR</div>
+                <div class="metric-value" id="avgCTR">-%</div>
             </div>
         </div>
 
+        <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('overview')">📊 Overzicht</button>
-            <button class="tab" onclick="switchTab('campaigns')">📈 Campagnes</button>
-            <button class="tab" onclick="switchTab('adsets')">🎯 Ad Sets</button>
-            <button class="tab" onclick="switchTab('ads')">📢 Advertenties</button>
+            <button class="tab-button active" onclick="switchTab('campaigns')">Campagnes</button>
+            <button class="tab-button" onclick="switchTab('adsets')">Ad Sets</button>
+            <button class="tab-button" onclick="switchTab('ads')">Advertenties</button>
+            <button class="tab-button" onclick="switchTab('charts')">Grafieken</button>
+            <button class="tab-button" onclick="switchTab('performance')">Performance</button>
         </div>
 
-        <!-- Overzicht Tab -->
-        <div id="overview" class="tab-content active">
-            <div class="kpi-grid">
-                <div class="kpi-card spend">
-                    <div class="kpi-label">Totale Spend</div>
-                    <div class="kpi-value" id="totalSpend">€2.145,33</div>
-                </div>
-                <div class="kpi-card leads">
-                    <div class="kpi-label">Totale Leads</div>
-                    <div class="kpi-value" id="totalLeads">45</div>
-                </div>
-                <div class="kpi-card cpl">
-                    <div class="kpi-label">Gemiddelde CPL</div>
-                    <div class="kpi-value" id="avgCPL">€47,67</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Totale Clicks</div>
-                    <div class="kpi-value" id="totalClicks">782</div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th onclick="sortTable('date')">Datum ↕</th>
-                                <th onclick="sortTable('campaign')">Campagne ↕</th>
-                                <th onclick="sortTable('spend')">Spend ↕</th>
-                                <th onclick="sortTable('impressions')">Impressies ↕</th>
-                                <th onclick="sortTable('reach')">Reach ↕</th>
-                                <th onclick="sortTable('clicks')">Clicks ↕</th>
-                                <th onclick="sortTable('conversions')">Leads ↕</th>
-                                <th onclick="sortTable('cpm')">CPM ↕</th>
-                                <th onclick="sortTable('cpc')">CPC ↕</th>
-                                <th onclick="sortTable('ctr')">CTR ↕</th>
-                                <th onclick="sortTable('frequency')">Frequency ↕</th>
-                                <th onclick="sortTable('status')">Status ↕</th>
-                            </tr>
-                        </thead>
-                        <tbody id="overviewTable">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Campagnes Tab -->
-        <div id="campaigns" class="tab-content">
-            <div class="table-container">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Campagne</th>
-                                <th onclick="sortTable('spend')">Spend ↕</th>
-                                <th onclick="sortTable('impressions')">Impressies ↕</th>
-                                <th onclick="sortTable('reach')">Reach ↕</th>
-                                <th onclick="sortTable('clicks')">Clicks ↕</th>
-                                <th onclick="sortTable('conversions')">Leads ↕</th>
-                                <th onclick="sortTable('cpm')">CPM ↕</th>
-                                <th onclick="sortTable('cpc')">CPC ↕</th>
-                                <th onclick="sortTable('ctr')">CTR ↕</th>
-                                <th onclick="sortTable('frequency')">Frequency ↕</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="campaignTable">
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Campaigns Tab -->
+        <div id="campaigns" class="tab-content active">
+            <div class="chart-container">
+                <div class="chart-title">Campaign Performance</div>
+                <table id="campaignsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsList"></tbody>
+                </table>
             </div>
         </div>
 
         <!-- Ad Sets Tab -->
         <div id="adsets" class="tab-content">
-            <div class="table-container">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Campagne</th>
-                                <th>Ad Set</th>
-                                <th onclick="sortTable('spend')">Spend ↕</th>
-                                <th onclick="sortTable('impressions')">Impressies ↕</th>
-                                <th onclick="sortTable('clicks')">Clicks ↕</th>
-                                <th onclick="sortTable('conversions')">Leads ↕</th>
-                                <th onclick="sortTable('cpc')">CPC ↕</th>
-                                <th onclick="sortTable('ctr')">CTR ↕</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adsettable">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="chart-container">
+                <div class="chart-title">Ad Set Performance</div>
+                <table id="adsetsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Ad Set</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsetsList"></tbody>
+                </table>
             </div>
         </div>
 
         <!-- Ads Tab -->
         <div id="ads" class="tab-content">
-            <div class="table-container">
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Campagne</th>
-                                <th>Ad Set</th>
-                                <th>Advertentie</th>
-                                <th onclick="sortTable('spend')">Spend ↕</th>
-                                <th onclick="sortTable('impressions')">Impressies ↕</th>
-                                <th onclick="sortTable('clicks')">Clicks ↕</th>
-                                <th onclick="sortTable('conversions')">Leads ↕</th>
-                                <th onclick="sortTable('cpc')">CPC ↕</th>
-                                <th onclick="sortTable('ctr')">CTR ↕</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adstable">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="chart-container">
+                <div class="chart-title">Advertentie Performance</div>
+                <table id="adsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Campagne</th>
+                            <th>Ad Set</th>
+                            <th>Advertentie</th>
+                            <th>Spend</th>
+                            <th>Impressions</th>
+                            <th>Clicks</th>
+                            <th>CTR</th>
+                            <th>CPC</th>
+                            <th>Leads</th>
+                            <th>CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Charts Tab -->
+        <div id="charts" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Spend per Campagne</div>
+                <canvas id="spendChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Leads per Campagne</div>
+                <canvas id="leadsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campagnes - Best performing</div>
+                <table id="campaignsTopTable">
+                    <thead>
+                        <tr>
+                            <th>Campagne</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsTopList"></tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Advertenties - Best performing</div>
+                <table id="adsTopTable">
+                    <thead>
+                        <tr>
+                            <th>Advertentie</th>
+                            <th style="text-align: right;">Leads</th>
+                            <th style="text-align: right;">CPL</th>
+                            <th style="text-align: right;">CTR</th>
+                            <th style="text-align: right;">CPC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsTopList"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <script>
-        // Mock data
-        const mockData = [
-            // HOOK_ACHTERAF_BETALEN_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 52.30, impressions: 3120, reach: 2650, clicks: 218, conversions: 14, cpm: 16.76, cpc: 0.24, ctr: 6.99, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 48.75, impressions: 2950, reach: 2500, clicks: 205, conversions: 13, cpm: 16.53, cpc: 0.24, ctr: 6.95, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 51.20, impressions: 3050, reach: 2580, clicks: 215, conversions: 13, cpm: 16.77, cpc: 0.24, ctr: 7.05, frequency: 1.18, campaignStatus: 'ACTIVE' },
+        let allData = [];
 
-            // HOOK_0_RENTE_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 45.60, impressions: 2820, reach: 2380, clicks: 192, conversions: 11, cpm: 16.16, cpc: 0.24, ctr: 6.81, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 43.20, impressions: 2680, reach: 2270, clicks: 182, conversions: 10, cpm: 16.12, cpc: 0.24, ctr: 6.79, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 46.80, impressions: 2890, reach: 2450, clicks: 198, conversions: 12, cpm: 16.20, cpc: 0.24, ctr: 6.85, frequency: 1.18, campaignStatus: 'ACTIVE' },
-
-            // HOOK_GRATIS_HORREN_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 55.40, impressions: 3350, reach: 2800, clicks: 238, conversions: 15, cpm: 16.54, cpc: 0.23, ctr: 7.10, frequency: 1.19, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 51.80, impressions: 3180, reach: 2650, clicks: 225, conversions: 14, cpm: 16.29, cpc: 0.23, ctr: 7.08, frequency: 1.19, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 54.10, impressions: 3280, reach: 2750, clicks: 232, conversions: 14, cpm: 16.50, cpc: 0.23, ctr: 7.07, frequency: 1.19, campaignStatus: 'ACTIVE' },
-
-            // HOOK_GEEN_AANBETALING_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 49.90, impressions: 3010, reach: 2540, clicks: 208, conversions: 12, cpm: 16.58, cpc: 0.24, ctr: 6.91, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 47.30, impressions: 2880, reach: 2430, clicks: 198, conversions: 11, cpm: 16.41, cpc: 0.24, ctr: 6.88, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 50.60, impressions: 3060, reach: 2580, clicks: 212, conversions: 13, cpm: 16.54, cpc: 0.24, ctr: 6.93, frequency: 1.18, campaignStatus: 'ACTIVE' },
-
-            // HOOK_VERGELIJKEN_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 42.80, impressions: 2620, reach: 2210, clicks: 178, conversions: 9, cpm: 16.34, cpc: 0.24, ctr: 6.79, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 40.50, impressions: 2490, reach: 2100, clicks: 168, conversions: 8, cpm: 16.27, cpc: 0.24, ctr: 6.74, frequency: 1.18, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 43.20, impressions: 2640, reach: 2230, clicks: 182, conversions: 9, cpm: 16.36, cpc: 0.24, ctr: 6.89, frequency: 1.18, campaignStatus: 'ACTIVE' },
-
-            // HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC (ACTIVE)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 53.70, impressions: 3240, reach: 2720, clicks: 228, conversions: 14, cpm: 16.58, cpc: 0.24, ctr: 7.04, frequency: 1.19, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 50.20, impressions: 3080, reach: 2580, clicks: 215, conversions: 13, cpm: 16.30, cpc: 0.23, ctr: 6.97, frequency: 1.19, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 52.40, impressions: 3160, reach: 2650, clicks: 222, conversions: 13, cpm: 16.56, cpc: 0.24, ctr: 7.03, frequency: 1.19, campaignStatus: 'ACTIVE' },
-
-            // Advertenties zonder vertoningen (live maar geen traffic)
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_MONTAGE_1A_STATIC', spend: 0, impressions: 0, reach: 0, clicks: 0, conversions: 0, cpm: 0, cpc: 0, ctr: 0, frequency: 0, campaignStatus: 'ACTIVE' },
-            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_MAATWERK_1A_STATIC', spend: 0, impressions: 0, reach: 0, clicks: 0, conversions: 0, cpm: 0, cpc: 0, ctr: 0, frequency: 0, campaignStatus: 'ACTIVE' },
-
-            // MH | Bel Direct | 09-12 (INACTIVE)
-            { date: '2026-05-09', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V1', spend: 45.50, impressions: 2150, reach: 1890, clicks: 156, conversions: 8, cpm: 21.16, cpc: 0.29, ctr: 7.26, frequency: 1.14, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-08', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V1', spend: 42.30, impressions: 2010, reach: 1750, clicks: 145, conversions: 7, cpm: 21.04, cpc: 0.29, ctr: 7.21, frequency: 1.15, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-07', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V2', spend: 48.75, impressions: 2340, reach: 2050, clicks: 172, conversions: 9, cpm: 20.81, cpc: 0.28, ctr: 7.35, frequency: 1.14, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-09', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V2', spend: 50.20, impressions: 2400, reach: 2100, clicks: 180, conversions: 10, cpm: 20.92, cpc: 0.28, ctr: 7.50, frequency: 1.14, campaignStatus: 'INACTIVE' },
-
-            // MH | Afspraak | 13-17 (INACTIVE)
-            { date: '2026-05-09', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V1', spend: 55.80, impressions: 2680, reach: 2340, clicks: 198, conversions: 12, cpm: 20.82, cpc: 0.28, ctr: 7.38, frequency: 1.14, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-08', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V1', spend: 52.40, impressions: 2500, reach: 2180, clicks: 185, conversions: 11, cpm: 20.96, cpc: 0.28, ctr: 7.40, frequency: 1.15, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-07', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V2', spend: 58.90, impressions: 2810, reach: 2450, clicks: 210, conversions: 13, cpm: 20.96, cpc: 0.28, ctr: 7.47, frequency: 1.14, campaignStatus: 'INACTIVE' },
-
-            // MH | Info | Avond (INACTIVE)
-            { date: '2026-05-09', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V1', spend: 38.50, impressions: 1950, reach: 1680, clicks: 142, conversions: 6, cpm: 19.74, cpc: 0.27, ctr: 7.28, frequency: 1.16, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-08', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V1', spend: 35.20, impressions: 1800, reach: 1550, clicks: 132, conversions: 5, cpm: 19.56, cpc: 0.27, ctr: 7.33, frequency: 1.16, campaignStatus: 'INACTIVE' },
-            { date: '2026-05-07', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V2', spend: 42.75, impressions: 2150, reach: 1850, clicks: 158, conversions: 7, cpm: 19.88, cpc: 0.27, ctr: 7.35, frequency: 1.16, campaignStatus: 'INACTIVE' },
-        ];
-
-        let filteredData = [...mockData];
-        let sortConfig = { field: 'date', direction: 'desc' };
-
-        function filterData() {
-            const dateFrom = document.getElementById('dateFrom').value;
-            const dateTo = document.getElementById('dateTo').value;
-            const campaignFilter = document.getElementById('campaignFilter').value;
-            const activeOnly = document.getElementById('activeOnly').checked;
-
-            filteredData = mockData.filter(row => {
-                const rowDate = new Date(row.date);
-                const from = new Date(dateFrom);
-                const to = new Date(dateTo);
-
-                const dateMatch = rowDate >= from && rowDate <= to;
-                const campaignMatch = !campaignFilter || row.campaign === campaignFilter;
-                const statusMatch = !activeOnly || row.campaignStatus === 'ACTIVE';
-
-                return dateMatch && campaignMatch && statusMatch;
-            });
-
-            renderAllTables();
-        }
-
-        function renderAllTables() {
-            renderOverviewTable();
-            renderCampaignsTable();
-            renderAdsetsTable();
-            renderAdsTable();
-            updateKPIs();
-        }
-
-        function updateKPIs() {
-            const spend = filteredData.reduce((sum, r) => sum + r.spend, 0);
-            const leads = filteredData.reduce((sum, r) => sum + r.conversions, 0);
-            const clicks = filteredData.reduce((sum, r) => sum + r.clicks, 0);
-            const cpl = leads > 0 ? spend / leads : 0;
-
-            document.getElementById('totalSpend').textContent = '€' + spend.toFixed(2);
-            document.getElementById('totalLeads').textContent = leads;
-            document.getElementById('totalClicks').textContent = clicks;
-            document.getElementById('avgCPL').textContent = '€' + cpl.toFixed(2);
-        }
-
-        function renderOverviewTable() {
-            const tbody = document.getElementById('overviewTable');
-            tbody.innerHTML = filteredData.map(row => {
-                const statusClass = row.campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
-                return `
-                <tr>
-                    <td>${row.date}</td>
-                    <td><strong>${row.campaign}</strong></td>
-                    <td class="numeric">€${row.spend.toFixed(2)}</td>
-                    <td class="numeric">${row.impressions.toLocaleString()}</td>
-                    <td class="numeric">${row.reach.toLocaleString()}</td>
-                    <td class="numeric">${row.clicks}</td>
-                    <td class="numeric">${row.conversions}</td>
-                    <td class="numeric">€${row.cpm.toFixed(2)}</td>
-                    <td class="numeric">€${row.cpc.toFixed(2)}</td>
-                    <td class="numeric">${row.ctr.toFixed(2)}%</td>
-                    <td class="numeric">${row.frequency.toFixed(2)}</td>
-                    <td><span class="status ${statusClass}">${row.campaignStatus}</span></td>
-                </tr>
-            `;
-            }).join('');
-        }
-
-        function renderCampaignsTable() {
-            const grouped = {};
-            filteredData.forEach(row => {
-                if (!grouped[row.campaign]) {
-                    grouped[row.campaign] = [];
+        async function loadData() {
+            try {
+                const response = await fetch('/api/data?dateFrom=2026-04-11&dateTo=2026-05-11');
+                const result = await response.json();
+                if (result.success) {
+                    allData = result.data;
+                    renderDashboard();
+                } else {
+                    console.error('API error:', result.error);
                 }
-                grouped[row.campaign].push(row);
-            });
-
-            const tbody = document.getElementById('campaignTable');
-            tbody.innerHTML = Object.entries(grouped).map(([campaign, rows]) => {
-                const spend = rows.reduce((sum, r) => sum + r.spend, 0);
-                const impressions = rows.reduce((sum, r) => sum + r.impressions, 0);
-                const reach = rows.reduce((sum, r) => sum + r.reach, 0);
-                const clicks = rows.reduce((sum, r) => sum + r.clicks, 0);
-                const conversions = rows.reduce((sum, r) => sum + r.conversions, 0);
-                const cpm = spend / (impressions / 1000);
-                const cpc = spend / clicks;
-                const ctr = (clicks / impressions * 100);
-                const frequency = rows.reduce((sum, r) => sum + r.frequency, 0) / rows.length;
-                const campaignStatus = rows[0].campaignStatus;
-                const statusClass = campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
-
-                return `
-                    <tr>
-                        <td><strong>${campaign}</strong></td>
-                        <td class="numeric">€${spend.toFixed(2)}</td>
-                        <td class="numeric">${impressions.toLocaleString()}</td>
-                        <td class="numeric">${reach.toLocaleString()}</td>
-                        <td class="numeric">${clicks}</td>
-                        <td class="numeric">${conversions}</td>
-                        <td class="numeric">€${cpm.toFixed(2)}</td>
-                        <td class="numeric">€${cpc.toFixed(2)}</td>
-                        <td class="numeric">${ctr.toFixed(2)}%</td>
-                        <td class="numeric">${frequency.toFixed(2)}</td>
-                        <td><span class="status ${statusClass}">${campaignStatus}</span></td>
-                    </tr>
-                `;
-            }).join('');
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
         }
 
-        function renderAdsetsTable() {
+        function renderDashboard() {
+            updateMetrics();
+            renderCampaigns();
+            renderAdsets();
+            renderAds();
+            renderCharts();
+            renderPerformance();
+        }
+
+        function updateMetrics() {
+            let totalSpend = 0, totalLeads = 0, totalImpressions = 0, totalClicks = 0;
+            allData.forEach(row => {
+                totalSpend += row.spend || 0;
+                totalLeads += row.actions_lead || 0;
+                totalImpressions += row.impressions || 0;
+                totalClicks += row.clicks || 0;
+            });
+            const avgCPL = totalLeads > 0 ? totalSpend / totalLeads : 0;
+            const avgCTR = totalImpressions > 0 ? (totalClicks / totalImpressions * 100) : 0;
+            document.getElementById('totalSpend').textContent = '€ ' + totalSpend.toFixed(2);
+            document.getElementById('totalLeads').textContent = totalLeads;
+            document.getElementById('avgCPL').textContent = '€ ' + avgCPL.toFixed(2);
+            document.getElementById('totalImpressions').textContent = totalImpressions.toLocaleString();
+            document.getElementById('totalClicks').textContent = totalClicks;
+            document.getElementById('avgCTR').textContent = avgCTR.toFixed(2) + '%';
+            document.getElementById('periodText').textContent = 'Periode: 11 april - 11 mei 2026';
+        }
+
+        function renderCampaigns() {
             const grouped = {};
-            filteredData.forEach(row => {
-                if (!grouped[row.adset]) {
-                    grouped[row.adset] = [];
+            allData.forEach(row => {
+                const campaign = row.campaign_name;
+                if (!grouped[campaign]) {
+                    grouped[campaign] = { spend: 0, impressions: 0, clicks: 0, leads: 0 };
                 }
-                grouped[row.adset].push(row);
+                grouped[campaign].spend += row.spend || 0;
+                grouped[campaign].impressions += row.impressions || 0;
+                grouped[campaign].clicks += row.clicks || 0;
+                grouped[campaign].leads += row.actions_lead || 0;
             });
 
-            const tbody = document.getElementById('adsettable');
-            tbody.innerHTML = Object.entries(grouped).map(([adset, rows]) => {
-                const spend = rows.reduce((sum, r) => sum + r.spend, 0);
-                const impressions = rows.reduce((sum, r) => sum + r.impressions, 0);
-                const clicks = rows.reduce((sum, r) => sum + r.clicks, 0);
-                const conversions = rows.reduce((sum, r) => sum + r.conversions, 0);
-                const cpc = spend / clicks;
-                const ctr = (clicks / impressions * 100);
-                const campaignStatus = rows[0].campaignStatus;
-                const statusClass = campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
-
-                return `
-                    <tr>
-                        <td>${rows[0].campaign}</td>
-                        <td><strong>${adset}</strong></td>
-                        <td class="numeric">€${spend.toFixed(2)}</td>
-                        <td class="numeric">${impressions.toLocaleString()}</td>
-                        <td class="numeric">${clicks}</td>
-                        <td class="numeric">${conversions}</td>
-                        <td class="numeric">€${cpc.toFixed(2)}</td>
-                        <td class="numeric">${ctr.toFixed(2)}%</td>
-                        <td><span class="status ${statusClass}">${campaignStatus}</span></td>
-                    </tr>
-                `;
-            }).join('');
+            const tbody = document.getElementById('campaignsList');
+            let rank = 1;
+            tbody.innerHTML = Object.entries(grouped)
+                .sort((a, b) => b[1].leads - a[1].leads)
+                .map(([campaign, data]) => {
+                    const ctr = data.impressions > 0 ? (data.clicks / data.impressions * 100) : 0;
+                    const cpc = data.clicks > 0 ? (data.spend / data.clicks) : 0;
+                    const cpl = data.leads > 0 ? (data.spend / data.leads) : 0;
+                    const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                    return `<tr><td class="${rankClass}">${rank++}</td><td>${campaign}</td><td>€${data.spend.toFixed(2)}</td><td>${data.impressions.toLocaleString()}</td><td>${data.clicks}</td><td>${ctr.toFixed(2)}%</td><td>€${cpc.toFixed(2)}</td><td>${data.leads}</td><td>€${cpl.toFixed(2)}</td></tr>`;
+                }).join('');
         }
 
-        function renderAdsTable() {
-            const tbody = document.getElementById('adstable');
-            tbody.innerHTML = filteredData.map(row => {
-                const statusClass = row.campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
-                return `
-                <tr>
-                    <td>${row.campaign}</td>
-                    <td>${row.adset}</td>
-                    <td><strong>${row.ad}</strong></td>
-                    <td class="numeric">€${row.spend.toFixed(2)}</td>
-                    <td class="numeric">${row.impressions.toLocaleString()}</td>
-                    <td class="numeric">${row.clicks}</td>
-                    <td class="numeric">${row.conversions}</td>
-                    <td class="numeric">€${row.cpc.toFixed(2)}</td>
-                    <td class="numeric">${row.ctr.toFixed(2)}%</td>
-                    <td><span class="status ${statusClass}">${row.campaignStatus}</span></td>
-                </tr>
-            `;
-            }).join('');
+        function renderAdsets() {
+            const grouped = {};
+            allData.forEach(row => {
+                const key = `${row.campaign_name}|${row.adset_name}`;
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        campaign: row.campaign_name,
+                        adset: row.adset_name,
+                        spend: 0, impressions: 0, clicks: 0, leads: 0
+                    };
+                }
+                grouped[key].spend += row.spend || 0;
+                grouped[key].impressions += row.impressions || 0;
+                grouped[key].clicks += row.clicks || 0;
+                grouped[key].leads += row.actions_lead || 0;
+            });
+
+            const tbody = document.getElementById('adsetsList');
+            let rank = 1;
+            tbody.innerHTML = Object.values(grouped)
+                .sort((a, b) => b.leads - a.leads)
+                .map(data => {
+                    const ctr = data.impressions > 0 ? (data.clicks / data.impressions * 100) : 0;
+                    const cpc = data.clicks > 0 ? (data.spend / data.clicks) : 0;
+                    const cpl = data.leads > 0 ? (data.spend / data.leads) : 0;
+                    const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                    return `<tr><td class="${rankClass}">${rank++}</td><td>${data.campaign}</td><td>${data.adset}</td><td>€${data.spend.toFixed(2)}</td><td>${data.impressions.toLocaleString()}</td><td>${data.clicks}</td><td>${ctr.toFixed(2)}%</td><td>€${cpc.toFixed(2)}</td><td>${data.leads}</td><td>€${cpl.toFixed(2)}</td></tr>`;
+                }).join('');
+        }
+
+        function renderAds() {
+            const tbody = document.getElementById('adsList');
+            let rank = 1;
+            tbody.innerHTML = allData
+                .sort((a, b) => (b.actions_lead || 0) - (a.actions_lead || 0))
+                .map(row => {
+                    const ctr = row.impressions > 0 ? (row.clicks / row.impressions * 100) : 0;
+                    const cpc = row.clicks > 0 ? (row.spend / row.clicks) : 0;
+                    const cpl = (row.actions_lead && row.actions_lead > 0) ? (row.spend / row.actions_lead) : 0;
+                    const rankClass = rank <= 3 ? `rank-${rank}` : '';
+                    return `<tr><td class="${rankClass}">${rank++}</td><td>${row.campaign_name}</td><td>${row.adset_name}</td><td>${row.ad_name}</td><td>€${row.spend.toFixed(2)}</td><td>${row.impressions}</td><td>${row.clicks}</td><td>${ctr.toFixed(2)}%</td><td>€${cpc.toFixed(2)}</td><td>${row.actions_lead || 0}</td><td>€${cpl.toFixed(2)}</td></tr>`;
+                }).join('');
+        }
+
+        function renderCharts() {
+            const grouped = {};
+            allData.forEach(row => {
+                const campaign = row.campaign_name;
+                if (!grouped[campaign]) {
+                    grouped[campaign] = { spend: 0, leads: 0 };
+                }
+                grouped[campaign].spend += row.spend || 0;
+                grouped[campaign].leads += row.actions_lead || 0;
+            });
+
+            const labels = Object.keys(grouped);
+            const spendData = labels.map(c => grouped[c].spend);
+            const leadsData = labels.map(c => grouped[c].leads);
+
+            if (window.spendChartInstance) window.spendChartInstance.destroy();
+            if (window.leadsChartInstance) window.leadsChartInstance.destroy();
+
+            window.spendChartInstance = new Chart(document.getElementById('spendChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Spend (€)',
+                        data: spendData,
+                        backgroundColor: '#3498db'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+
+            window.leadsChartInstance = new Chart(document.getElementById('leadsChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Leads',
+                        data: leadsData,
+                        backgroundColor: '#27ae60'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+        }
+
+        function renderPerformance() {
+            const grouped = {};
+            allData.forEach(row => {
+                const campaign = row.campaign_name;
+                if (!grouped[campaign]) {
+                    grouped[campaign] = { spend: 0, leads: 0 };
+                }
+                grouped[campaign].spend += row.spend || 0;
+                grouped[campaign].leads += row.actions_lead || 0;
+            });
+
+            const campaignsTop = Object.entries(grouped)
+                .sort((a, b) => b[1].leads - a[1].leads)
+                .slice(0, 5)
+                .map(([c, d]) => ({
+                    campaign: c,
+                    leads: d.leads,
+                    cpl: d.leads > 0 ? (d.spend / d.leads) : 0
+                }));
+
+            const adsTop = allData
+                .sort((a, b) => (b.actions_lead || 0) - (a.actions_lead || 0))
+                .slice(0, 5)
+                .map(row => ({
+                    ad: row.ad_name,
+                    leads: row.actions_lead || 0,
+                    cpl: (row.actions_lead && row.actions_lead > 0) ? (row.spend / row.actions_lead) : 0,
+                    ctr: row.impressions > 0 ? (row.clicks / row.impressions * 100) : 0,
+                    cpc: row.clicks > 0 ? (row.spend / row.clicks) : 0
+                }));
+
+            document.getElementById('campaignsTopList').innerHTML = campaignsTop
+                .map(c => `<tr><td>${c.campaign}</td><td style="text-align: right;">${c.leads}</td><td style="text-align: right;">€${c.cpl.toFixed(2)}</td></tr>`)
+                .join('');
+
+            document.getElementById('adsTopList').innerHTML = adsTop
+                .map(a => `<tr><td>${a.ad}</td><td style="text-align: right;">${a.leads}</td><td style="text-align: right;">€${a.cpl.toFixed(2)}</td><td style="text-align: right;">${a.ctr.toFixed(2)}%</td><td style="text-align: right;">€${a.cpc.toFixed(2)}</td></tr>`)
+                .join('');
         }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-            event.target.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        function sortTable(field) {
-            sortConfig.direction = sortConfig.field === field ?
-                (sortConfig.direction === 'asc' ? 'desc' : 'asc') : 'desc';
-            sortConfig.field = field;
-
-            filteredData.sort((a, b) => {
-                const aVal = a[field];
-                const bVal = b[field];
-
-                if (typeof aVal === 'number') {
-                    return sortConfig.direction === 'asc' ? aVal - bVal : bVal - aVal;
-                }
-                return sortConfig.direction === 'asc' ?
-                    String(aVal).localeCompare(String(bVal)) :
-                    String(bVal).localeCompare(String(aVal));
-            });
-
-            renderAllTables();
-        }
-
-        // Initialize
-        filterData();
+        window.addEventListener('load', loadData);
     </script>
 </body>
 </html>
