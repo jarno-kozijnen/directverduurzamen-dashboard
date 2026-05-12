@@ -376,22 +376,7 @@
     </div>
 
     <script>
-        const allData = [
-            // META_CORE_KOZIJNEN_TWENTE_PLUS ACTIVE CAMPAIGN
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:45.50,impressions:2800,clicks:189,conversions:14,status:'ACTIVE'},
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',spend:48.75,impressions:3100,clicks:201,conversions:15,status:'ACTIVE'},
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:52.30,impressions:2950,clicks:198,conversions:12,status:'ACTIVE'},
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:39.20,impressions:2550,clicks:167,conversions:11,status:'ACTIVE'},
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_VERGELIJKEN_1A_STATIC',spend:43.80,impressions:2700,clicks:182,conversions:13,status:'ACTIVE'},
-            {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC',spend:50.15,impressions:3050,clicks:205,conversions:16,status:'ACTIVE'},
-            // OLD INACTIVE CAMPAIGNS
-            {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'AS_09-12_Almelo_MA-VR',ad:'MH | Bel Direct | Onderhoud | 1A',spend:490.23,impressions:34178,clicks:899,conversions:13,status:'INACTIVE'},
-            {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'AS_09-12_Almelo_MA-VR',ad:'AD_Bel_Direct_V2',spend:2.80,impressions:380,clicks:10,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'AS_13-17_Almelo_MA-VR',ad:'MH | Afspraak | Horren 2D',spend:516.30,impressions:27564,clicks:785,conversions:10,status:'INACTIVE'},
-            {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'AS_13-17_Almelo_MA-VR',ad:'MH | Afspraak | Besparen 2B',spend:17.53,impressions:240,clicks:6,conversions:1,status:'INACTIVE'},
-            {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'MH | Info | Onderhoud 3A',spend:214.56,impressions:13021,clicks:250,conversions:2,status:'INACTIVE'},
-            {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'MH | Info | Horren 3D',spend:22.23,impressions:290,clicks:6,conversions:1,status:'INACTIVE'}
-        ];
+        let allData = [];
 
         const campaignInfo = [
             {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',structure:'DV Onderhoud',budget:80,status:'Active',notes:'Verwijderen'},
@@ -593,8 +578,34 @@
             event.target.classList.add('active');
         }
 
+        async function loadMetaData() {
+            try {
+                const response = await fetch('/api/meta-data');
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        allData = result.data;
+                    }
+                }
+            } catch (error) {
+                console.log('Server unavailable, will use fallback data');
+            }
+
+            // Fallback data if API fails
+            if (allData.length === 0) {
+                allData = [
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:42.14,impressions:2337,clicks:58,conversions:0,status:'ACTIVE'},
+                    {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | besparen | 1B',spend:120.48,impressions:10316,clicks:224,conversions:0,status:'ACTIVE'},
+                    {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',ad:'MH | Afspraak | Verduurzamen 2C',spend:36.34,impressions:2096,clicks:59,conversions:0,status:'ACTIVE'},
+                    {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Onderhoud 3A',spend:30.34,impressions:1468,clicks:40,conversions:0,status:'ACTIVE'}
+                ];
+            }
+
+            renderDashboard();
+        }
+
         document.getElementById('activeOnly').addEventListener('change', renderDashboard);
-        window.addEventListener('load', renderDashboard);
+        window.addEventListener('load', loadMetaData);
     </script>
 </body>
 </html>
