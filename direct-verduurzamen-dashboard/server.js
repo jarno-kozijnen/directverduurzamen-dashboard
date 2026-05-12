@@ -49,9 +49,15 @@ app.get('/api/data', async (req, res) => {
 function getMockData(dateFrom, dateTo) {
   // Mock data for testing
   const campaigns = [
-    { name: 'MH | Bel Direct | 09-12', adsets: ['AS_09-12_Almelo_MA-VR'], ads: ['AD_Bel_Direct_V1', 'AD_Bel_Direct_V2'] },
-    { name: 'MH | Afspraak | 13-17', adsets: ['AS_13-17_Almelo_MA-VR'], ads: ['AD_Afspraak_V1', 'AD_Afspraak_V2'] },
-    { name: 'MH | Info | Avond', adsets: ['AS_Avond_Almelo_MA-Do+WE'], ads: ['AD_Info_Avond_V1', 'AD_Info_Avond_V2'] }
+    { name: 'MH | Bel Direct | 09-12', adsets: ['AS_09-12_Almelo_MA-VR'], ads: ['AD_Bel_Direct_V1', 'AD_Bel_Direct_V2'], status: 'INACTIVE' },
+    { name: 'MH | Afspraak | 13-17', adsets: ['AS_13-17_Almelo_MA-VR'], ads: ['AD_Afspraak_V1', 'AD_Afspraak_V2'], status: 'INACTIVE' },
+    { name: 'MH | Info | Avond', adsets: ['AS_Avond_Almelo_MA-Do+WE'], ads: ['AD_Info_Avond_V1', 'AD_Info_Avond_V2'], status: 'INACTIVE' },
+    {
+      name: 'META_CORE_KOZIJNEN_TWENTE_PLUS',
+      adsets: ['GEO_TWENTE_PLUS_BROAD'],
+      ads: ['HOOK_ACHTERAF_BETALEN_1A_STATIC', 'HOOK_0_RENTE_1A_STATIC', 'HOOK_GRATIS_HORREN_1A_STATIC', 'HOOK_GEEN_AANBETALING_1A_STATIC', 'HOOK_VERGELIJKEN_1A_STATIC', 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC'],
+      status: 'ACTIVE'
+    }
   ];
 
   const data = [];
@@ -62,21 +68,32 @@ function getMockData(dateFrom, dateTo) {
     campaigns.forEach(campaign => {
       campaign.adsets.forEach(adset => {
         campaign.ads.forEach(ad => {
+          // Generate higher performance for active campaigns
+          const isActive = campaign.status === 'ACTIVE';
+          const baseSpend = isActive ? 35 + Math.random() * 25 : Math.random() * 10;
+          const baseImpressions = isActive ? 1800 + Math.floor(Math.random() * 1200) : Math.floor(Math.random() * 500);
+          const baseClicks = isActive ? 120 + Math.floor(Math.random() * 80) : Math.floor(Math.random() * 30);
+          const baseConversions = isActive ? 8 + Math.floor(Math.random() * 7) : Math.floor(Math.random() * 2);
+
           data.push({
             date: d.toISOString().split('T')[0],
+            campaign_name: campaign.name,
             campaign: campaign.name,
+            adset_name: adset,
             adset: adset,
+            ad_name: ad,
             ad: ad,
-            spend: Math.random() * 60,
-            impressions: Math.floor(Math.random() * 2500),
-            reach: Math.floor(Math.random() * 2200),
-            clicks: Math.floor(Math.random() * 200),
-            conversions: Math.floor(Math.random() * 15),
-            cpc: (Math.random() * 0.05 + 0.25).toFixed(2),
-            cpm: (Math.random() * 2 + 19).toFixed(2),
-            ctr: (Math.random() * 2 + 6).toFixed(2),
-            frequency: (Math.random() * 0.05 + 1.14).toFixed(2),
-            status: 'ACTIVE'
+            spend: parseFloat(baseSpend.toFixed(2)),
+            impressions: baseImpressions,
+            reach: Math.floor(baseImpressions * 0.85),
+            clicks: baseClicks,
+            conversions: baseConversions,
+            actions_lead: baseConversions,
+            cpc: (baseClicks > 0 ? baseSpend / baseClicks : 0).toFixed(2),
+            cpm: (baseImpressions > 0 ? (baseSpend / baseImpressions * 1000) : 0).toFixed(2),
+            ctr: (baseImpressions > 0 ? (baseClicks / baseImpressions * 100) : 0).toFixed(2),
+            frequency: (1.15 + Math.random() * 0.3).toFixed(2),
+            status: campaign.status
           });
         });
       });
