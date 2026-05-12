@@ -237,6 +237,7 @@
             <button class="tab-button" onclick="switchTab('performance')">Performance</button>
             <button class="tab-button" onclick="switchTab('info')">Campaign Info</button>
             <button class="tab-button" onclick="switchTab('changelog')">Change Log</button>
+            <button class="tab-button" onclick="switchTab('manager')">Campaign Manager</button>
             <button class="tab-button" onclick="switchTab('organisch')">Organisch</button>
         </div>
 
@@ -370,6 +371,25 @@
             </div>
         </div>
 
+        <div id="manager" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campaign Manager - In/Uitschakelen</div>
+                <p style="color: #666; margin-bottom: 20px; font-size: 13px;">Toggle campagnes hieronder om ze actief of inactief te maken. Inactieve campagnes worden verborgen tenzij je "Alleen actieve campagnes" uitschakelt.</p>
+                <table id="managerTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">Status</th>
+                            <th>Campagne</th>
+                            <th>Ad Set</th>
+                            <th style="text-align: right;">Spend</th>
+                            <th style="text-align: right;">Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="managerBody"></tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="organisch" class="tab-content">
             <iframe src="organisch-werkzaamheden.html" style="width: 100%; height: 900px; border: none; border-radius: 12px;"></iframe>
         </div>
@@ -390,9 +410,23 @@
             {date:'2026-05-01',change:'ALLE - Algehele structuurwijziging',details:'BASELINE: Targeting aangepast van Almelo +125km naar Almelo +40km. Structuur gewijzigd van 1 campagne 24/7 naar 3 campagnes op gezette tijden'}
         ];
 
+        function getCampaignStatus(campaignName) {
+            const stored = localStorage.getItem(`campaign-${campaignName}`);
+            if (stored !== null) return stored === 'true';
+            return true; // Default to active
+        }
+
+        function setCampaignStatus(campaignName, isActive) {
+            localStorage.setItem(`campaign-${campaignName}`, isActive);
+        }
+
         function getFilteredData() {
             const activeOnly = document.getElementById('activeOnly').checked;
-            return activeOnly ? allData.filter(d => d.status === 'ACTIVE') : allData;
+            return allData.filter(d => {
+                const isEnabled = getCampaignStatus(d.campaign);
+                if (activeOnly) return d.status === 'ACTIVE' && isEnabled;
+                return isEnabled;
+            });
         }
 
         function updateMetrics() {
@@ -523,6 +557,39 @@
             });
         }
 
+        function renderCampaignManager() {
+            const tbody = document.getElementById('managerBody');
+            const campaigns = {};
+
+            // Group data by campaign and adset
+            allData.forEach(row => {
+                const key = `${row.campaign}|${row.adset}`;
+                if (!campaigns[key]) {
+                    campaigns[key] = { campaign: row.campaign, adset: row.adset, spend: 0, clicks: 0 };
+                }
+                campaigns[key].spend += row.spend || 0;
+                campaigns[key].clicks += row.clicks || 0;
+            });
+
+            tbody.innerHTML = Object.values(campaigns).map(d => {
+                const isEnabled = getCampaignStatus(d.campaign);
+                return `<tr>
+                    <td>
+                        <input type="checkbox" ${isEnabled ? 'checked' : ''} onchange="toggleCampaign('${d.campaign.replace(/'/g, "\\'")}', this.checked)">
+                    </td>
+                    <td><strong>${d.campaign}</strong></td>
+                    <td>${d.adset}</td>
+                    <td style="text-align: right;">€${d.spend.toFixed(2)}</td>
+                    <td style="text-align: right;">${d.clicks}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function toggleCampaign(campaignName, isActive) {
+            setCampaignStatus(campaignName, isActive);
+            renderDashboard();
+        }
+
         function renderPerformance() {
             const data = getFilteredData();
             const campaignGrouped = {};
@@ -569,6 +636,7 @@
             renderPerformance();
             renderCampaignInfo();
             renderChangelog();
+            renderCampaignManager();
         }
 
         function switchTab(tabName) {
