@@ -11,7 +11,7 @@ app.get('/api/meta-data', async (req, res) => {
   try {
     const liveData = [
       // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:42.14,impressions:2337,clicks:58,conversions:0,status:'ACTIVE',date:'2026-05-12'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:42.14,impressions:2337,clicks:58,conversions:1,status:'ACTIVE',date:'2026-05-12'},
       // MH | Bel Direct - ACTIVE
       {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | besparen | 1B',spend:120.48,impressions:10316,clicks:224,conversions:0,status:'ACTIVE',date:'2026-05-12'},
       {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | Horren & HR++ glas | 1D',spend:8.03,impressions:727,clicks:12,conversions:0,status:'ACTIVE',date:'2026-05-11'},
