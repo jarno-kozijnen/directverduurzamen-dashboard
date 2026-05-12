@@ -86,11 +86,6 @@
             background: #2980b9;
         }
 
-        .control-group button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-        }
-
         .tabs {
             display: flex;
             gap: 0.5rem;
@@ -225,11 +220,6 @@
             color: #155724;
         }
 
-        .status.paused {
-            background: #fff3cd;
-            color: #856404;
-        }
-
         .status.inactive {
             background: #f8d7da;
             color: #721c24;
@@ -243,37 +233,6 @@
             display: block;
         }
 
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            border: 1px solid #f5c6cb;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.5rem;
@@ -282,15 +241,6 @@
             .controls {
                 flex-direction: column;
                 align-items: flex-start;
-            }
-
-            .control-group {
-                width: 100%;
-            }
-
-            .control-group input,
-            .control-group select {
-                width: 100%;
             }
 
             .kpi-grid {
@@ -311,16 +261,14 @@
     </div>
 
     <div class="container">
-        <div id="errorContainer"></div>
-
         <div class="controls">
             <div class="control-group">
                 <label>Van:</label>
-                <input type="date" id="dateFrom">
+                <input type="date" id="dateFrom" value="2026-05-10">
             </div>
             <div class="control-group">
                 <label>Tot:</label>
-                <input type="date" id="dateTo">
+                <input type="date" id="dateTo" value="2026-05-12">
             </div>
             <div class="control-group">
                 <label>Granulariteit:</label>
@@ -334,13 +282,19 @@
                 <label>Campagne:</label>
                 <select id="campaignFilter">
                     <option value="">Alle campagnes</option>
+                    <option value="META_CORE_KOZIJNEN_TWENTE_PLUS">META_CORE_KOZIJNEN_TWENTE_PLUS</option>
                     <option value="MH | Bel Direct | 09-12">MH | Bel Direct | 09-12</option>
                     <option value="MH | Afspraak | 13-17">MH | Afspraak | 13-17</option>
                     <option value="MH | Info | Avond">MH | Info | Avond</option>
                 </select>
             </div>
             <div class="control-group">
-                <button id="loadBtn" onclick="loadData()">🔄 Laden</button>
+                <label>
+                    <input type="checkbox" id="activeOnly"> Alleen actieve
+                </label>
+            </div>
+            <div class="control-group">
+                <button onclick="filterData()">🔄 Filteren</button>
             </div>
         </div>
 
@@ -356,19 +310,19 @@
             <div class="kpi-grid">
                 <div class="kpi-card spend">
                     <div class="kpi-label">Totale Spend</div>
-                    <div class="kpi-value" id="totalSpend">€0,00</div>
+                    <div class="kpi-value" id="totalSpend">€2.145,33</div>
                 </div>
                 <div class="kpi-card leads">
                     <div class="kpi-label">Totale Leads</div>
-                    <div class="kpi-value" id="totalLeads">0</div>
+                    <div class="kpi-value" id="totalLeads">45</div>
                 </div>
                 <div class="kpi-card cpl">
                     <div class="kpi-label">Gemiddelde CPL</div>
-                    <div class="kpi-value" id="avgCPL">€0,00</div>
+                    <div class="kpi-value" id="avgCPL">€47,67</div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-label">Totale Clicks</div>
-                    <div class="kpi-value" id="totalClicks">0</div>
+                    <div class="kpi-value" id="totalClicks">782</div>
                 </div>
             </div>
 
@@ -392,7 +346,6 @@
                             </tr>
                         </thead>
                         <tbody id="overviewTable">
-                            <tr><td colspan="12" class="loading">Klik "Laden" om data op te halen...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -420,7 +373,6 @@
                             </tr>
                         </thead>
                         <tbody id="campaignTable">
-                            <tr><td colspan="11" class="loading">Klik "Laden" om data op te halen...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -446,7 +398,6 @@
                             </tr>
                         </thead>
                         <tbody id="adsettable">
-                            <tr><td colspan="9" class="loading">Klik "Laden" om data op te halen...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -473,7 +424,6 @@
                             </tr>
                         </thead>
                         <tbody id="adstable">
-                            <tr><td colspan="10" class="loading">Klik "Laden" om data op te halen...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -482,61 +432,78 @@
     </div>
 
     <script>
-        let allData = [];
-        let filteredData = [];
+        // Mock data
+        const mockData = [
+            // HOOK_ACHTERAF_BETALEN_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 52.30, impressions: 3120, reach: 2650, clicks: 218, conversions: 14, cpm: 16.76, cpc: 0.24, ctr: 6.99, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 48.75, impressions: 2950, reach: 2500, clicks: 205, conversions: 13, cpm: 16.53, cpc: 0.24, ctr: 6.95, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_ACHTERAF_BETALEN_1A_STATIC', spend: 51.20, impressions: 3050, reach: 2580, clicks: 215, conversions: 13, cpm: 16.77, cpc: 0.24, ctr: 7.05, frequency: 1.18, campaignStatus: 'ACTIVE' },
+
+            // HOOK_0_RENTE_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 45.60, impressions: 2820, reach: 2380, clicks: 192, conversions: 11, cpm: 16.16, cpc: 0.24, ctr: 6.81, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 43.20, impressions: 2680, reach: 2270, clicks: 182, conversions: 10, cpm: 16.12, cpc: 0.24, ctr: 6.79, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_0_RENTE_1A_STATIC', spend: 46.80, impressions: 2890, reach: 2450, clicks: 198, conversions: 12, cpm: 16.20, cpc: 0.24, ctr: 6.85, frequency: 1.18, campaignStatus: 'ACTIVE' },
+
+            // HOOK_GRATIS_HORREN_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 55.40, impressions: 3350, reach: 2800, clicks: 238, conversions: 15, cpm: 16.54, cpc: 0.23, ctr: 7.10, frequency: 1.19, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 51.80, impressions: 3180, reach: 2650, clicks: 225, conversions: 14, cpm: 16.29, cpc: 0.23, ctr: 7.08, frequency: 1.19, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_HORREN_1A_STATIC', spend: 54.10, impressions: 3280, reach: 2750, clicks: 232, conversions: 14, cpm: 16.50, cpc: 0.23, ctr: 7.07, frequency: 1.19, campaignStatus: 'ACTIVE' },
+
+            // HOOK_GEEN_AANBETALING_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 49.90, impressions: 3010, reach: 2540, clicks: 208, conversions: 12, cpm: 16.58, cpc: 0.24, ctr: 6.91, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 47.30, impressions: 2880, reach: 2430, clicks: 198, conversions: 11, cpm: 16.41, cpc: 0.24, ctr: 6.88, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GEEN_AANBETALING_1A_STATIC', spend: 50.60, impressions: 3060, reach: 2580, clicks: 212, conversions: 13, cpm: 16.54, cpc: 0.24, ctr: 6.93, frequency: 1.18, campaignStatus: 'ACTIVE' },
+
+            // HOOK_VERGELIJKEN_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 42.80, impressions: 2620, reach: 2210, clicks: 178, conversions: 9, cpm: 16.34, cpc: 0.24, ctr: 6.79, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 40.50, impressions: 2490, reach: 2100, clicks: 168, conversions: 8, cpm: 16.27, cpc: 0.24, ctr: 6.74, frequency: 1.18, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_VERGELIJKEN_1A_STATIC', spend: 43.20, impressions: 2640, reach: 2230, clicks: 182, conversions: 9, cpm: 16.36, cpc: 0.24, ctr: 6.89, frequency: 1.18, campaignStatus: 'ACTIVE' },
+
+            // HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC (ACTIVE)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 53.70, impressions: 3240, reach: 2720, clicks: 228, conversions: 14, cpm: 16.58, cpc: 0.24, ctr: 7.04, frequency: 1.19, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-11', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 50.20, impressions: 3080, reach: 2580, clicks: 215, conversions: 13, cpm: 16.30, cpc: 0.23, ctr: 6.97, frequency: 1.19, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-10', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC', spend: 52.40, impressions: 3160, reach: 2650, clicks: 222, conversions: 13, cpm: 16.56, cpc: 0.24, ctr: 7.03, frequency: 1.19, campaignStatus: 'ACTIVE' },
+
+            // Advertenties zonder vertoningen (live maar geen traffic)
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_GRATIS_MONTAGE_1A_STATIC', spend: 0, impressions: 0, reach: 0, clicks: 0, conversions: 0, cpm: 0, cpc: 0, ctr: 0, frequency: 0, campaignStatus: 'ACTIVE' },
+            { date: '2026-05-12', campaign: 'META_CORE_KOZIJNEN_TWENTE_PLUS', adset: 'GEO_TWENTE_PLUS_BROAD', ad: 'HOOK_MAATWERK_1A_STATIC', spend: 0, impressions: 0, reach: 0, clicks: 0, conversions: 0, cpm: 0, cpc: 0, ctr: 0, frequency: 0, campaignStatus: 'ACTIVE' },
+
+            // MH | Bel Direct | 09-12 (INACTIVE)
+            { date: '2026-05-09', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V1', spend: 45.50, impressions: 2150, reach: 1890, clicks: 156, conversions: 8, cpm: 21.16, cpc: 0.29, ctr: 7.26, frequency: 1.14, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-08', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V1', spend: 42.30, impressions: 2010, reach: 1750, clicks: 145, conversions: 7, cpm: 21.04, cpc: 0.29, ctr: 7.21, frequency: 1.15, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-07', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V2', spend: 48.75, impressions: 2340, reach: 2050, clicks: 172, conversions: 9, cpm: 20.81, cpc: 0.28, ctr: 7.35, frequency: 1.14, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-09', campaign: 'MH | Bel Direct | 09-12', adset: 'AS_09-12_Almelo_MA-VR', ad: 'AD_Bel_Direct_V2', spend: 50.20, impressions: 2400, reach: 2100, clicks: 180, conversions: 10, cpm: 20.92, cpc: 0.28, ctr: 7.50, frequency: 1.14, campaignStatus: 'INACTIVE' },
+
+            // MH | Afspraak | 13-17 (INACTIVE)
+            { date: '2026-05-09', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V1', spend: 55.80, impressions: 2680, reach: 2340, clicks: 198, conversions: 12, cpm: 20.82, cpc: 0.28, ctr: 7.38, frequency: 1.14, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-08', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V1', spend: 52.40, impressions: 2500, reach: 2180, clicks: 185, conversions: 11, cpm: 20.96, cpc: 0.28, ctr: 7.40, frequency: 1.15, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-07', campaign: 'MH | Afspraak | 13-17', adset: 'AS_13-17_Almelo_MA-VR', ad: 'AD_Afspraak_V2', spend: 58.90, impressions: 2810, reach: 2450, clicks: 210, conversions: 13, cpm: 20.96, cpc: 0.28, ctr: 7.47, frequency: 1.14, campaignStatus: 'INACTIVE' },
+
+            // MH | Info | Avond (INACTIVE)
+            { date: '2026-05-09', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V1', spend: 38.50, impressions: 1950, reach: 1680, clicks: 142, conversions: 6, cpm: 19.74, cpc: 0.27, ctr: 7.28, frequency: 1.16, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-08', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V1', spend: 35.20, impressions: 1800, reach: 1550, clicks: 132, conversions: 5, cpm: 19.56, cpc: 0.27, ctr: 7.33, frequency: 1.16, campaignStatus: 'INACTIVE' },
+            { date: '2026-05-07', campaign: 'MH | Info | Avond', adset: 'AS_Avond_Almelo_MA-Do+WE', ad: 'AD_Info_Avond_V2', spend: 42.75, impressions: 2150, reach: 1850, clicks: 158, conversions: 7, cpm: 19.88, cpc: 0.27, ctr: 7.35, frequency: 1.16, campaignStatus: 'INACTIVE' },
+        ];
+
+        let filteredData = [...mockData];
         let sortConfig = { field: 'date', direction: 'desc' };
 
-        // Set default dates (last 30 days)
-        function setDefaultDates() {
-            const today = new Date();
-            const thirtyDaysAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
-
-            document.getElementById('dateFrom').valueAsDate = thirtyDaysAgo;
-            document.getElementById('dateTo').valueAsDate = today;
-        }
-
-        async function loadData() {
+        function filterData() {
             const dateFrom = document.getElementById('dateFrom').value;
             const dateTo = document.getElementById('dateTo').value;
-            const granularity = document.getElementById('granularity').value;
-            const btn = document.getElementById('loadBtn');
-
-            if (!dateFrom || !dateTo) {
-                showError('Selecteer beide datums');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span>Laden...';
-            clearError();
-
-            try {
-                const url = `/api/data?dateFrom=${dateFrom}&dateTo=${dateTo}&granularity=${granularity}`;
-                const response = await fetch(url);
-                const result = await response.json();
-
-                if (result.success) {
-                    allData = result.data;
-                    filterData();
-                    btn.innerHTML = '🔄 Laden';
-                } else {
-                    showError(`Fout: ${result.error}`);
-                    btn.innerHTML = '🔄 Laden';
-                }
-            } catch (error) {
-                showError(`Fout bij laden: ${error.message}`);
-                btn.innerHTML = '🔄 Laden';
-            } finally {
-                btn.disabled = false;
-            }
-        }
-
-        function filterData() {
             const campaignFilter = document.getElementById('campaignFilter').value;
+            const activeOnly = document.getElementById('activeOnly').checked;
 
-            filteredData = allData.filter(row => {
+            filteredData = mockData.filter(row => {
+                const rowDate = new Date(row.date);
+                const from = new Date(dateFrom);
+                const to = new Date(dateTo);
+
+                const dateMatch = rowDate >= from && rowDate <= to;
                 const campaignMatch = !campaignFilter || row.campaign === campaignFilter;
-                return campaignMatch;
+                const statusMatch = !activeOnly || row.campaignStatus === 'ACTIVE';
+
+                return dateMatch && campaignMatch && statusMatch;
             });
 
             renderAllTables();
@@ -564,12 +531,9 @@
 
         function renderOverviewTable() {
             const tbody = document.getElementById('overviewTable');
-            if (filteredData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="12" class="loading">Geen data beschikbaar</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = filteredData.map(row => `
+            tbody.innerHTML = filteredData.map(row => {
+                const statusClass = row.campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
+                return `
                 <tr>
                     <td>${row.date}</td>
                     <td><strong>${row.campaign}</strong></td>
@@ -582,9 +546,10 @@
                     <td class="numeric">€${row.cpc.toFixed(2)}</td>
                     <td class="numeric">${row.ctr.toFixed(2)}%</td>
                     <td class="numeric">${row.frequency.toFixed(2)}</td>
-                    <td><span class="status ${row.status.toLowerCase()}">${row.status}</span></td>
+                    <td><span class="status ${statusClass}">${row.campaignStatus}</span></td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function renderCampaignsTable() {
@@ -597,21 +562,18 @@
             });
 
             const tbody = document.getElementById('campaignTable');
-            if (Object.keys(grouped).length === 0) {
-                tbody.innerHTML = '<tr><td colspan="11" class="loading">Geen data beschikbaar</td></tr>';
-                return;
-            }
-
             tbody.innerHTML = Object.entries(grouped).map(([campaign, rows]) => {
                 const spend = rows.reduce((sum, r) => sum + r.spend, 0);
                 const impressions = rows.reduce((sum, r) => sum + r.impressions, 0);
                 const reach = rows.reduce((sum, r) => sum + r.reach, 0);
                 const clicks = rows.reduce((sum, r) => sum + r.clicks, 0);
                 const conversions = rows.reduce((sum, r) => sum + r.conversions, 0);
-                const cpm = impressions > 0 ? (spend / impressions * 1000) : 0;
-                const cpc = clicks > 0 ? spend / clicks : 0;
-                const ctr = impressions > 0 ? (clicks / impressions * 100) : 0;
+                const cpm = spend / (impressions / 1000);
+                const cpc = spend / clicks;
+                const ctr = (clicks / impressions * 100);
                 const frequency = rows.reduce((sum, r) => sum + r.frequency, 0) / rows.length;
+                const campaignStatus = rows[0].campaignStatus;
+                const statusClass = campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
 
                 return `
                     <tr>
@@ -625,7 +587,7 @@
                         <td class="numeric">€${cpc.toFixed(2)}</td>
                         <td class="numeric">${ctr.toFixed(2)}%</td>
                         <td class="numeric">${frequency.toFixed(2)}</td>
-                        <td><span class="status active">ACTIVE</span></td>
+                        <td><span class="status ${statusClass}">${campaignStatus}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -641,18 +603,15 @@
             });
 
             const tbody = document.getElementById('adsettable');
-            if (Object.keys(grouped).length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="loading">Geen data beschikbaar</td></tr>';
-                return;
-            }
-
             tbody.innerHTML = Object.entries(grouped).map(([adset, rows]) => {
                 const spend = rows.reduce((sum, r) => sum + r.spend, 0);
                 const impressions = rows.reduce((sum, r) => sum + r.impressions, 0);
                 const clicks = rows.reduce((sum, r) => sum + r.clicks, 0);
                 const conversions = rows.reduce((sum, r) => sum + r.conversions, 0);
-                const cpc = clicks > 0 ? spend / clicks : 0;
-                const ctr = impressions > 0 ? (clicks / impressions * 100) : 0;
+                const cpc = spend / clicks;
+                const ctr = (clicks / impressions * 100);
+                const campaignStatus = rows[0].campaignStatus;
+                const statusClass = campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
 
                 return `
                     <tr>
@@ -664,7 +623,7 @@
                         <td class="numeric">${conversions}</td>
                         <td class="numeric">€${cpc.toFixed(2)}</td>
                         <td class="numeric">${ctr.toFixed(2)}%</td>
-                        <td><span class="status active">ACTIVE</span></td>
+                        <td><span class="status ${statusClass}">${campaignStatus}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -672,12 +631,9 @@
 
         function renderAdsTable() {
             const tbody = document.getElementById('adstable');
-            if (filteredData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" class="loading">Geen data beschikbaar</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = filteredData.map(row => `
+            tbody.innerHTML = filteredData.map(row => {
+                const statusClass = row.campaignStatus === 'ACTIVE' ? 'active' : 'inactive';
+                return `
                 <tr>
                     <td>${row.campaign}</td>
                     <td>${row.adset}</td>
@@ -688,9 +644,10 @@
                     <td class="numeric">${row.conversions}</td>
                     <td class="numeric">€${row.cpc.toFixed(2)}</td>
                     <td class="numeric">${row.ctr.toFixed(2)}%</td>
-                    <td><span class="status ${row.status.toLowerCase()}">${row.status}</span></td>
+                    <td><span class="status ${statusClass}">${row.campaignStatus}</span></td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
         function switchTab(tabName) {
@@ -721,17 +678,8 @@
             renderAllTables();
         }
 
-        function showError(message) {
-            const container = document.getElementById('errorContainer');
-            container.innerHTML = `<div class="error">${message}</div>`;
-        }
-
-        function clearError() {
-            document.getElementById('errorContainer').innerHTML = '';
-        }
-
         // Initialize
-        setDefaultDates();
+        filterData();
     </script>
 </body>
 </html>
