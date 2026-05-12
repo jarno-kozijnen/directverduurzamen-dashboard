@@ -234,6 +234,9 @@
             <button class="tab-button" onclick="switchTab('adsets')">Ad Sets</button>
             <button class="tab-button" onclick="switchTab('ads')">Advertenties</button>
             <button class="tab-button" onclick="switchTab('charts')">Grafieken</button>
+            <button class="tab-button" onclick="switchTab('performance')">Performance</button>
+            <button class="tab-button" onclick="switchTab('info')">Campaign Info</button>
+            <button class="tab-button" onclick="switchTab('changelog')">Change Log</button>
         </div>
 
         <div id="campaigns" class="tab-content active">
@@ -320,6 +323,51 @@
                 <canvas id="cplChart"></canvas>
             </div>
         </div>
+
+        <div id="performance" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campagnes - Best performing</div>
+                <table id="campaignsBestTable">
+                    <thead>
+                        <tr><th>Campagne</th><th style="text-align:right">Leads</th><th style="text-align:right">CPL</th></tr>
+                    </thead>
+                    <tbody id="campaignsBest"></tbody>
+                </table>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Advertenties - Best performing</div>
+                <table id="adsBestTable">
+                    <thead>
+                        <tr><th>Advertentie</th><th style="text-align:right">Leads</th><th style="text-align:right">CPL</th><th style="text-align:right">CTR</th><th style="text-align:right">CPC</th></tr>
+                    </thead>
+                    <tbody id="adsBest"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="info" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Campaign Info & Budget</div>
+                <table id="campaignInfoTable">
+                    <thead>
+                        <tr><th>Campagne</th><th>DV-Structuur</th><th>Budget (€/dag)</th><th>Status</th><th>Notities</th></tr>
+                    </thead>
+                    <tbody id="campaignInfo"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="changelog" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Wijzigingen - Change Log</div>
+                <table id="changelogTable">
+                    <thead>
+                        <tr><th>Datum</th><th>Wijziging</th><th>Details</th></tr>
+                    </thead>
+                    <tbody id="changelogBody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -332,12 +380,24 @@
             {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_VERGELIJKEN_1A_STATIC',spend:43.80,impressions:2700,clicks:182,conversions:13,status:'ACTIVE'},
             {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC',spend:50.15,impressions:3050,clicks:205,conversions:16,status:'ACTIVE'},
             // OLD INACTIVE CAMPAIGNS
-            {campaign:'MH | Bel Direct | 09-12',adset:'AS_09-12_Almelo_MA-VR',ad:'AD_Bel_Direct_V1',spend:3.50,impressions:450,clicks:12,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Bel Direct | 09-12',adset:'AS_09-12_Almelo_MA-VR',ad:'AD_Bel_Direct_V2',spend:2.80,impressions:380,clicks:10,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Afspraak | 13-17',adset:'AS_13-17_Almelo_MA-VR',ad:'AD_Afspraak_V1',spend:2.80,impressions:380,clicks:10,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Afspraak | 13-17',adset:'AS_13-17_Almelo_MA-VR',ad:'AD_Afspraak_V2',spend:3.20,impressions:420,clicks:11,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Info | Avond',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'AD_Info_Avond_V1',spend:4.20,impressions:520,clicks:14,conversions:0,status:'INACTIVE'},
-            {campaign:'MH | Info | Avond',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'AD_Info_Avond_V2',spend:3.80,impressions:480,clicks:13,conversions:0,status:'INACTIVE'}
+            {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'AS_09-12_Almelo_MA-VR',ad:'MH | Bel Direct | Onderhoud | 1A',spend:490.23,impressions:34178,clicks:899,conversions:13,status:'INACTIVE'},
+            {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'AS_09-12_Almelo_MA-VR',ad:'AD_Bel_Direct_V2',spend:2.80,impressions:380,clicks:10,conversions:0,status:'INACTIVE'},
+            {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'AS_13-17_Almelo_MA-VR',ad:'MH | Afspraak | Horren 2D',spend:516.30,impressions:27564,clicks:785,conversions:10,status:'INACTIVE'},
+            {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'AS_13-17_Almelo_MA-VR',ad:'MH | Afspraak | Besparen 2B',spend:17.53,impressions:240,clicks:6,conversions:1,status:'INACTIVE'},
+            {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'MH | Info | Onderhoud 3A',spend:214.56,impressions:13021,clicks:250,conversions:2,status:'INACTIVE'},
+            {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'AS_Avond_Almelo_MA-Do+WE',ad:'MH | Info | Horren 3D',spend:22.23,impressions:290,clicks:6,conversions:1,status:'INACTIVE'}
+        ];
+
+        const campaignInfo = [
+            {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',structure:'DV Onderhoud',budget:80,status:'Active',notes:'Verwijderen'},
+            {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',structure:'DV Financieren',budget:120,status:'Active',notes:'Verwijderen'},
+            {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',structure:'DV Actie',budget:60,status:'Active',notes:'Verwijderen'}
+        ];
+
+        const changelog = [
+            {date:'2026-05-09',change:'MH | Bel Direct | 09-12 - Formulieroptimalisatie',details:'Prestatie "Bel nu" (09:00-12:00) ondermaats met veel fake leads. Formulier uitgebreid om effect hiervan te testen.'},
+            {date:'2026-05-06',change:'ALLE - CTA unificatie',details:'CTA aangepast van per campagne verschillend naar uniforme: "Wij nemen z.s.m. contact met je op" (alle 3 campagnes)'},
+            {date:'2026-05-01',change:'ALLE - Algehele structuurwijziging',details:'BASELINE: Targeting aangepast van Almelo +125km naar Almelo +40km. Structuur gewijzigd van 1 campagne 24/7 naar 3 campagnes op gezette tijden'}
         ];
 
         function getFilteredData() {
@@ -473,12 +533,52 @@
             });
         }
 
+        function renderPerformance() {
+            const data = getFilteredData();
+            const campaignGrouped = {};
+            const adsData = [];
+
+            data.forEach(row => {
+                const campaign = row.campaign;
+                if (!campaignGrouped[campaign]) {
+                    campaignGrouped[campaign] = { spend: 0, conversions: 0 };
+                }
+                campaignGrouped[campaign].spend += row.spend || 0;
+                campaignGrouped[campaign].conversions += row.conversions || 0;
+                adsData.push({ad: row.ad, spend: row.spend, conversions: row.conversions, clicks: row.clicks, impressions: row.impressions});
+            });
+
+            const campaignsList = Object.entries(campaignGrouped)
+                .map(([c, d]) => ({campaign: c, leads: d.conversions, cpl: d.conversions > 0 ? d.spend / d.conversions : 0}))
+                .sort((a, b) => b.leads - a.leads);
+
+            const adsList = adsData
+                .sort((a, b) => (b.conversions || 0) - (a.conversions || 0))
+                .map(a => ({ad: a.ad, leads: a.conversions || 0, cpl: a.conversions > 0 ? a.spend / a.conversions : 0, ctr: a.impressions > 0 ? (a.clicks / a.impressions * 100) : 0, cpc: a.clicks > 0 ? a.spend / a.clicks : 0}));
+
+            document.getElementById('campaignsBest').innerHTML = campaignsList.slice(0, 3).map(c => `<tr><td>${c.campaign}</td><td style="text-align:right">${c.leads}</td><td style="text-align:right">€ ${c.cpl.toFixed(2)}</td></tr>`).join('');
+            document.getElementById('adsBest').innerHTML = adsList.slice(0, 3).map(a => `<tr><td>${a.ad}</td><td style="text-align:right">${a.leads}</td><td style="text-align:right">€ ${a.cpl.toFixed(2)}</td><td style="text-align:right">${a.ctr.toFixed(2)}%</td><td style="text-align:right">€ ${a.cpc.toFixed(2)}</td></tr>`).join('');
+        }
+
+        function renderCampaignInfo() {
+            const tbody = document.getElementById('campaignInfo');
+            tbody.innerHTML = campaignInfo.map(c => `<tr><td>${c.campaign}</td><td>${c.structure}</td><td>€ ${c.budget}</td><td>${c.status}</td><td>${c.notes}</td></tr>`).join('');
+        }
+
+        function renderChangelog() {
+            const tbody = document.getElementById('changelogBody');
+            tbody.innerHTML = changelog.map(c => `<tr><td>${c.date}</td><td>${c.change}</td><td>${c.details}</td></tr>`).join('');
+        }
+
         function renderDashboard() {
             updateMetrics();
             renderCampaigns();
             renderAdsets();
             renderAds();
             renderCharts();
+            renderPerformance();
+            renderCampaignInfo();
+            renderChangelog();
         }
 
         function switchTab(tabName) {
