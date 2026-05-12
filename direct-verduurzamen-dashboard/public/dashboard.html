@@ -375,73 +375,27 @@
     </div>
 
     <script>
-        let allData = [];
-
-        function generateMockData(dateFrom, dateTo) {
-            const campaigns = [
-                { name: 'MH | Bel Direct | 09-12', adsets: ['AS_09-12_Almelo_MA-VR'], ads: ['AD_Bel_Direct_V1', 'AD_Bel_Direct_V2'], status: 'INACTIVE' },
-                { name: 'MH | Afspraak | 13-17', adsets: ['AS_13-17_Almelo_MA-VR'], ads: ['AD_Afspraak_V1', 'AD_Afspraak_V2'], status: 'INACTIVE' },
-                { name: 'MH | Info | Avond', adsets: ['AS_Avond_Almelo_MA-Do+WE'], ads: ['AD_Info_Avond_V1', 'AD_Info_Avond_V2'], status: 'INACTIVE' },
-                {
-                    name: 'META_CORE_KOZIJNEN_TWENTE_PLUS',
-                    adsets: ['GEO_TWENTE_PLUS_BROAD'],
-                    ads: ['HOOK_ACHTERAF_BETALEN_1A_STATIC', 'HOOK_0_RENTE_1A_STATIC', 'HOOK_GRATIS_HORREN_1A_STATIC', 'HOOK_GEEN_AANBETALING_1A_STATIC', 'HOOK_VERGELIJKEN_1A_STATIC', 'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC'],
-                    status: 'ACTIVE'
-                }
-            ];
-
-            const data = [];
-            const from = new Date(dateFrom);
-            const to = new Date(dateTo);
-
-            for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
-                campaigns.forEach(campaign => {
-                    campaign.adsets.forEach(adset => {
-                        campaign.ads.forEach(ad => {
-                            const isActive = campaign.status === 'ACTIVE';
-                            const baseSpend = isActive ? 35 + Math.random() * 25 : Math.random() * 10;
-                            const baseImpressions = isActive ? 1800 + Math.floor(Math.random() * 1200) : Math.floor(Math.random() * 500);
-                            const baseClicks = isActive ? 120 + Math.floor(Math.random() * 80) : Math.floor(Math.random() * 30);
-                            const baseConversions = isActive ? 8 + Math.floor(Math.random() * 7) : Math.floor(Math.random() * 2);
-
-                            data.push({
-                                date: d.toISOString().split('T')[0],
-                                campaign_name: campaign.name,
-                                adset_name: adset,
-                                ad_name: ad,
-                                spend: parseFloat(baseSpend.toFixed(2)),
-                                impressions: baseImpressions,
-                                reach: Math.floor(baseImpressions * 0.85),
-                                clicks: baseClicks,
-                                conversions: baseConversions,
-                                actions_lead: baseConversions,
-                                cpc: (baseClicks > 0 ? baseSpend / baseClicks : 0).toFixed(2),
-                                cpm: (baseImpressions > 0 ? (baseSpend / baseImpressions * 1000) : 0).toFixed(2),
-                                ctr: (baseImpressions > 0 ? (baseClicks / baseImpressions * 100) : 0).toFixed(2),
-                                frequency: (1.15 + Math.random() * 0.3).toFixed(2),
-                                status: campaign.status
-                            });
-                        });
-                    });
-                });
-            }
-
-            return data;
-        }
+        let allData = [
+            // META_CORE_KOZIJNEN_TWENTE_PLUS ACTIVE CAMPAIGN
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:45.50,impressions:2800,reach:2380,clicks:189,conversions:14,actions_lead:14,cpc:0.24,cpm:16.25,ctr:6.75,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_0_RENTE_1A_STATIC',spend:48.75,impressions:3100,reach:2635,clicks:201,conversions:15,actions_lead:15,cpc:0.24,cpm:15.73,ctr:6.48,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_GRATIS_HORREN_1A_STATIC',spend:52.30,impressions:2950,reach:2507,clicks:198,conversions:12,actions_lead:12,cpc:0.26,cpm:17.73,ctr:6.71,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:39.20,impressions:2550,reach:2167,clicks:167,conversions:11,actions_lead:11,cpc:0.23,cpm:15.37,ctr:6.55,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_VERGELIJKEN_1A_STATIC',spend:43.80,impressions:2700,reach:2295,clicks:182,conversions:13,actions_lead:13,cpc:0.24,cpm:16.22,ctr:6.74,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-01',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC',spend:50.15,impressions:3050,reach:2592,clicks:205,conversions:16,actions_lead:16,cpc:0.24,cpm:16.44,ctr:6.72,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-02',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:42.30,impressions:2650,reach:2252,clicks:178,conversions:13,actions_lead:13,cpc:0.24,cpm:15.96,ctr:6.72,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-02',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_0_RENTE_1A_STATIC',spend:49.60,impressions:3050,reach:2592,clicks:210,conversions:16,actions_lead:16,cpc:0.24,cpm:16.26,ctr:6.89,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-02',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_GRATIS_HORREN_1A_STATIC',spend:44.85,impressions:2800,reach:2380,clicks:189,conversions:14,actions_lead:14,cpc:0.24,cpm:16.02,ctr:6.75,frequency:1.18,status:'ACTIVE'},
+            {date:'2026-05-02',campaign_name:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset_name:'GEO_TWENTE_PLUS_BROAD',ad_name:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:38.70,impressions:2450,reach:2082,clicks:162,conversions:10,actions_lead:10,cpc:0.24,cpm:15.80,ctr:6.61,frequency:1.18,status:'ACTIVE'},
+            // OLD INACTIVE CAMPAIGNS
+            {date:'2026-05-01',campaign_name:'MH | Bel Direct | 09-12',adset_name:'AS_09-12_Almelo_MA-VR',ad_name:'AD_Bel_Direct_V1',spend:3.50,impressions:450,reach:382,clicks:12,conversions:0,actions_lead:0,cpc:0.29,cpm:7.78,ctr:2.67,frequency:1.18,status:'INACTIVE'},
+            {date:'2026-05-01',campaign_name:'MH | Afspraak | 13-17',adset_name:'AS_13-17_Almelo_MA-VR',ad_name:'AD_Afspraak_V1',spend:2.80,impressions:380,reach:323,clicks:10,conversions:0,actions_lead:0,cpc:0.28,cpm:7.37,ctr:2.63,frequency:1.18,status:'INACTIVE'},
+            {date:'2026-05-01',campaign_name:'MH | Info | Avond',adset_name:'AS_Avond_Almelo_MA-Do+WE',ad_name:'AD_Info_Avond_V1',spend:4.20,impressions:520,reach:442,clicks:14,conversions:0,actions_lead:0,cpc:0.30,cpm:8.08,ctr:2.69,frequency:1.18,status:'INACTIVE'},
+            {date:'2026-05-02',campaign_name:'MH | Bel Direct | 09-12',adset_name:'AS_09-12_Almelo_MA-VR',ad_name:'AD_Bel_Direct_V1',spend:3.20,impressions:420,reach:357,clicks:11,conversions:0,actions_lead:0,cpc:0.29,cpm:7.62,ctr:2.62,frequency:1.18,status:'INACTIVE'}
+        ];
 
         async function loadData() {
-            try {
-                const response = await fetch('/api/data?dateFrom=2026-04-11&dateTo=2026-05-11');
-                const result = await response.json();
-                if (result.success) {
-                    allData = result.data;
-                } else {
-                    throw new Error('API failed');
-                }
-            } catch (error) {
-                console.log('Using generated mock data');
-                allData = generateMockData('2026-04-11', '2026-05-11');
-            }
+            // Data is already loaded above, just render it
             renderDashboard();
         }
 
