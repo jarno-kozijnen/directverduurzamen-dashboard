@@ -192,7 +192,7 @@
     <div class="container">
         <header>
             <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
-            <p class="date-range">Periode: 1 mei - 11 mei 2026</p>
+            <p class="date-range">Periode: 1 mei - 14 mei 2026</p>
         </header>
 
         <div class="metrics-grid">
@@ -659,19 +659,20 @@
                 console.log('Server unavailable, will use fallback data');
             }
 
-            // Fallback data - Live data from Windsor.ai (Meta Ads)
+            // Fallback data - Live data from Windsor.ai (Meta Ads, 1-14 mei 2026)
             if (allData.length === 0) {
                 allData = [
-                    // META_CORE_KOZIJNEN_TWENTE_PLUS - All 9 hook variants
+                    // META_CORE_KOZIJNEN_TWENTE_PLUS - All 9 hook variants (1-14 mei)
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_VERGELIJKEN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:699.48,impressions:28101,clicks:541,conversions:0,status:'ACTIVE'}
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:1.42,impressions:17,clicks:2,conversions:0,status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:0.87,impressions:75,clicks:1,conversions:0,status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:276.96,impressions:9144,clicks:241,conversions:0,status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:1.81,impressions:67,clicks:0,conversions:0,status:'ACTIVE'}
                 ];
             }
 
