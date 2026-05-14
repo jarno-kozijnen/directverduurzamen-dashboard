@@ -11,7 +11,10 @@ app.get('/api/meta-data', async (req, res) => {
   try {
     const liveData = [
       // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:42.14,impressions:2337,clicks:58,conversions:1,status:'ACTIVE',date:'2026-05-12'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:286.00,impressions:9354,clicks:248,conversions:4,status:'ACTIVE',date:'2026-05-14'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:1.81,impressions:43,clicks:4,conversions:1,status:'ACTIVE',date:'2026-05-14'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:2.77,impressions:116,clicks:1,conversions:0,status:'ACTIVE',date:'2026-05-14'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:3.35,impressions:207,clicks:3,conversions:0,status:'ACTIVE',date:'2026-05-14'},
       // MH | Bel Direct - ACTIVE
       {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | besparen | 1B',spend:120.48,impressions:10316,clicks:224,conversions:0,status:'ACTIVE',date:'2026-05-12'},
       {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | Horren & HR++ glas | 1D',spend:8.03,impressions:727,clicks:12,conversions:0,status:'ACTIVE',date:'2026-05-11'},
