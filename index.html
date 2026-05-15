@@ -234,6 +234,7 @@
             <button class="tab-button" onclick="switchTab('adsets')">Ad Sets</button>
             <button class="tab-button" onclick="switchTab('ads')">Advertenties</button>
             <button class="tab-button" onclick="switchTab('charts')">Grafieken</button>
+            <button class="tab-button" onclick="switchTab('daily')">Daily Performance</button>
             <button class="tab-button" onclick="switchTab('performance')">Performance</button>
             <button class="tab-button" onclick="switchTab('info')">Campaign Info</button>
             <button class="tab-button" onclick="switchTab('changelog')">Change Log</button>
@@ -326,6 +327,21 @@
             </div>
         </div>
 
+        <div id="daily" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Daily Spend Trend</div>
+                <canvas id="dailySpendChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Daily Conversions Trend</div>
+                <canvas id="dailyConversionsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-title">Daily Clicks Trend</div>
+                <canvas id="dailyClicksChart"></canvas>
+            </div>
+        </div>
+
         <div id="performance" class="tab-content">
             <div class="chart-container">
                 <div class="chart-title">Campagnes - Best performing</div>
@@ -405,6 +421,13 @@
         const changelog = [
             {date:'2026-05-14',change:'META_CORE_KOZIJNEN_TWENTE_PLUS - 9 hooks live',details:'Launch van 9 hook variants (4 static + 3 video) op €125/dag. 4 advertenties hebben al data.'},
             {date:'2026-05-01',change:'META_CORE_KOZIJNEN_TWENTE_PLUS - Campaign gestart',details:'Nieuwe campagne voor kozijnen Twente met geo-targeting (Almelo +40km). Budget €125/dag'}
+        ];
+
+        const dailyData = [
+            {date:'2026-05-12',HOOK_FINANCIERING_1A_VIDEO:{spend:78.36,clicks:84,conversions:2},HOOK_ONDERHOUD_1A_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_FINANCIERING_1B_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_ISOLATIE_1A_VIDEO:{spend:0,clicks:0,conversions:0}},
+            {date:'2026-05-13',HOOK_FINANCIERING_1A_VIDEO:{spend:155.87,clicks:125,conversions:2},HOOK_ONDERHOUD_1A_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_FINANCIERING_1B_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_ISOLATIE_1A_VIDEO:{spend:0,clicks:0,conversions:0}},
+            {date:'2026-05-14',HOOK_FINANCIERING_1A_VIDEO:{spend:63.2,clicks:48,conversions:0},HOOK_ONDERHOUD_1A_VIDEO:{spend:14.47,clicks:19,conversions:1},HOOK_FINANCIERING_1B_VIDEO:{spend:39.86,clicks:38,conversions:1},HOOK_ISOLATIE_1A_VIDEO:{spend:23.54,clicks:14,conversions:1}},
+            {date:'2026-05-15',HOOK_FINANCIERING_1A_VIDEO:{spend:1.63,clicks:0,conversions:0},HOOK_ONDERHOUD_1A_VIDEO:{spend:3.17,clicks:0,conversions:0},HOOK_FINANCIERING_1B_VIDEO:{spend:12.58,clicks:9,conversions:1},HOOK_ISOLATIE_1A_VIDEO:{spend:3.93,clicks:0,conversions:0}}
         ];
 
         function getCampaignStatus(campaignName) {
@@ -614,6 +637,72 @@
             document.getElementById('adsBest').innerHTML = adsList.slice(0, 3).map(a => `<tr><td>${a.ad}</td><td style="text-align:right">${a.leads}</td><td style="text-align:right">€ ${a.cpl.toFixed(2)}</td><td style="text-align:right">${a.ctr.toFixed(2)}%</td><td style="text-align:right">€ ${a.cpc.toFixed(2)}</td></tr>`).join('');
         }
 
+        function renderDailyPerformance() {
+            const dates = dailyData.map(d => d.date);
+            const ads = ['HOOK_FINANCIERING_1A_VIDEO', 'HOOK_ONDERHOUD_1A_VIDEO', 'HOOK_FINANCIERING_1B_VIDEO', 'HOOK_ISOLATIE_1A_VIDEO'];
+
+            const spendByAd = {};
+            const clicksByAd = {};
+            const conversionsByAd = {};
+
+            ads.forEach(ad => {
+                spendByAd[ad] = dailyData.map(d => d[ad]?.spend || 0);
+                clicksByAd[ad] = dailyData.map(d => d[ad]?.clicks || 0);
+                conversionsByAd[ad] = dailyData.map(d => d[ad]?.conversions || 0);
+            });
+
+            const colors = ['#3498db', '#27ae60', '#f39c12', '#e74c3c'];
+
+            if (window.dailySpendInstance) window.dailySpendInstance.destroy();
+            if (window.dailyClicksInstance) window.dailyClicksInstance.destroy();
+            if (window.dailyConversionsInstance) window.dailyConversionsInstance.destroy();
+
+            window.dailySpendInstance = new Chart(document.getElementById('dailySpendChart'), {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: ads.map((ad, i) => ({
+                        label: ad,
+                        data: spendByAd[ad],
+                        borderColor: colors[i],
+                        backgroundColor: colors[i] + '20',
+                        tension: 0.4
+                    }))
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+            });
+
+            window.dailyClicksInstance = new Chart(document.getElementById('dailyClicksChart'), {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: ads.map((ad, i) => ({
+                        label: ad,
+                        data: clicksByAd[ad],
+                        borderColor: colors[i],
+                        backgroundColor: colors[i] + '20',
+                        tension: 0.4
+                    }))
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+            });
+
+            window.dailyConversionsInstance = new Chart(document.getElementById('dailyConversionsChart'), {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: ads.map((ad, i) => ({
+                        label: ad,
+                        data: conversionsByAd[ad],
+                        borderColor: colors[i],
+                        backgroundColor: colors[i] + '20',
+                        tension: 0.4
+                    }))
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
+            });
+        }
+
         function renderCampaignInfo() {
             const tbody = document.getElementById('campaignInfo');
             tbody.innerHTML = campaignInfo.map(c => `<tr><td>${c.campaign}</td><td>${c.structure}</td><td>€ ${c.budget}</td><td>${c.status}</td><td>${c.notes}</td></tr>`).join('');
@@ -630,6 +719,7 @@
             renderAdsets();
             renderAds();
             renderCharts();
+            renderDailyPerformance();
             renderPerformance();
             renderCampaignInfo();
             renderChangelog();
