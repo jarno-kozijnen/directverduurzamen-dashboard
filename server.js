@@ -10,11 +10,14 @@ app.use(express.static('.'));
 app.get('/api/meta-data', async (req, res) => {
   try {
     const liveData = [
-      // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE (1-15 mei 2026)
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:299.03,impressions:9602,clicks:257,conversions:4,status:'ACTIVE',date:'2026-05-15'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:17.63,impressions:790,clicks:19,conversions:1,status:'ACTIVE',date:'2026-05-15'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:52.25,impressions:3019,clicks:47,conversions:2,status:'ACTIVE',date:'2026-05-15'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:27.45,impressions:1332,clicks:14,conversions:1,status:'ACTIVE',date:'2026-05-15'},
+      // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE (1-16 mei 2026)
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:299.31,impressions:9620,clicks:257,conversions:4,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:25.11,impressions:954,clicks:23,conversions:1,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:68.65,impressions:3874,clicks:57,conversions:3,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:35.48,impressions:1640,clicks:21,conversions:3,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:0.01,impressions:3,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:0.13,impressions:9,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:0.18,impressions:5,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
     ];
 
     res.json({
