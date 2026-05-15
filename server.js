@@ -18,6 +18,9 @@ app.get('/api/meta-data', async (req, res) => {
       {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:0.01,impressions:3,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
       {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:0.13,impressions:9,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
       {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:0.18,impressions:5,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_VERGELIJKEN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_NOOIT_MEER_SCHILDEREN_1A_STATIC',spend:0,impressions:0,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-16'},
     ];
 
     res.json({
