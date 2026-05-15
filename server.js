@@ -10,11 +10,11 @@ app.use(express.static('.'));
 app.get('/api/meta-data', async (req, res) => {
   try {
     const liveData = [
-      // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:286.00,impressions:9354,clicks:248,conversions:4,status:'ACTIVE',date:'2026-05-14'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:1.81,impressions:43,clicks:4,conversions:1,status:'ACTIVE',date:'2026-05-14'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:2.77,impressions:116,clicks:1,conversions:0,status:'ACTIVE',date:'2026-05-14'},
-      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:3.35,impressions:207,clicks:3,conversions:0,status:'ACTIVE',date:'2026-05-14'},
+      // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIVE (15 mei 2026)
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:1.6,impressions:27,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-15'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:3.16,impressions:81,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-15'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:12.39,impressions:679,clicks:9,conversions:1,status:'ACTIVE',date:'2026-05-15'},
+      {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:3.91,impressions:178,clicks:0,conversions:0,status:'ACTIVE',date:'2026-05-15'},
     ];
 
     res.json({
