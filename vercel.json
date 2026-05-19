@@ -1,4 +1,13 @@
 {
   "name": "directverduurzamen-dashboard",
-  "public": true
+  "public": true,
+  "buildCommand": "echo 'Static HTML site'",
+  "outputDirectory": ".",
+  "framework": null,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
