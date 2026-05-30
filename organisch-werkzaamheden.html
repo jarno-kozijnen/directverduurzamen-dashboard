@@ -230,9 +230,24 @@
             gap: 10px;
         }
 
-        .checklist-item input[type="checkbox"] {
-            margin-top: 3px;
-            cursor: pointer;
+        .checklist-item .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .checklist-item .status-icon.done {
+            background: #1b5e20;
+            color: white;
+        }
+        .checklist-item .status-icon.pending {
+            background: #e0e0e0;
+            color: #bbb;
         }
 
         .checklist-item label {
@@ -677,47 +692,43 @@
             return defaultData;
         }
 
+        function autoSave(input) {
+            // Update vinkje live op basis van URL/tekst
+            const icon = input.closest('.checklist-item').querySelector('.status-icon');
+            if (icon) {
+                const filled = !!input.value.trim();
+                icon.className = 'status-icon ' + (filled ? 'done' : 'pending');
+            }
+            saveData();
+        }
+
         function saveData() {
             const month = localStorage.getItem('currentMonth') || '2026-05';
             const key = `organisch-${month}`;
             const data = getData();
 
-            // Update task checklist items
+            // Update task checklist items via data-type en data-idx
             document.querySelectorAll('#newBlogsList .checklist-item, #rewriteList .checklist-item, #googleList .checklist-item, #websiteList .checklist-item, #socialList .checklist-item').forEach((item) => {
-                const checkbox = item.querySelector('input[type="checkbox"]');
-                const inputs = item.querySelectorAll('input[type="text"]');
-                const type = checkbox.dataset.type;
+                const input = item.querySelector('input[type="text"]');
+                if (!input) return;
+                const type = input.dataset.type;
+                const idx = parseInt(input.dataset.idx);
 
-                if (type === 'newBlogs') {
-                    const idx = Array.from(document.getElementById('newBlogsList').children).indexOf(item);
-                    if (data.newBlogs[idx]) {
-                        data.newBlogs[idx].done = checkbox.checked;
-                        if (inputs[0]) data.newBlogs[idx].url = inputs[0].value;
-                    }
-                } else if (type === 'rewrite') {
-                    const idx = Array.from(document.getElementById('rewriteList').children).indexOf(item);
-                    if (data.rewrite[idx]) {
-                        data.rewrite[idx].done = checkbox.checked;
-                        if (inputs[0]) data.rewrite[idx].url = inputs[0].value;
-                    }
-                } else if (type === 'googleProfile') {
-                    const idx = Array.from(document.getElementById('googleList').children).indexOf(item);
-                    if (data.googleProfile[idx]) {
-                        data.googleProfile[idx].done = checkbox.checked;
-                        if (inputs[0]) data.googleProfile[idx].notes = inputs[0].value;
-                    }
-                } else if (type === 'websiteProject') {
-                    const idx = Array.from(document.getElementById('websiteList').children).indexOf(item);
-                    if (data.websiteProjects[idx]) {
-                        data.websiteProjects[idx].done = checkbox.checked;
-                        if (inputs[0]) data.websiteProjects[idx].url = inputs[0].value;
-                    }
-                } else if (type === 'socialProject') {
-                    const idx = Array.from(document.getElementById('socialList').children).indexOf(item);
-                    if (data.socialProjects[idx]) {
-                        data.socialProjects[idx].done = checkbox.checked;
-                        if (inputs[0]) data.socialProjects[idx].url = inputs[0].value;
-                    }
+                if (type === 'newBlogs' && data.newBlogs[idx]) {
+                    data.newBlogs[idx].url = input.value;
+                    data.newBlogs[idx].done = !!input.value;
+                } else if (type === 'rewrite' && data.rewrite[idx]) {
+                    data.rewrite[idx].url = input.value;
+                    data.rewrite[idx].done = !!input.value;
+                } else if (type === 'googleProfile' && data.googleProfile[idx]) {
+                    data.googleProfile[idx].notes = input.value;
+                    data.googleProfile[idx].done = !!input.value;
+                } else if (type === 'websiteProject' && data.websiteProjects[idx]) {
+                    data.websiteProjects[idx].url = input.value;
+                    data.websiteProjects[idx].done = !!input.value;
+                } else if (type === 'socialProject' && data.socialProjects[idx]) {
+                    data.socialProjects[idx].url = input.value;
+                    data.socialProjects[idx].done = !!input.value;
                 }
             });
 
@@ -761,9 +772,10 @@
             data.newBlogs.forEach((blog, idx) => {
                 const item = document.createElement('div');
                 item.className = 'checklist-item';
+                const done = !!blog.url;
                 item.innerHTML = `
-                    <input type="checkbox" data-type="newBlogs" ${blog.done ? 'checked' : ''} onchange="saveData()">
-                    <input type="text" placeholder="URL" value="${blog.url}" onchange="saveData()">
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '✓'}</span>
+                    <input type="text" placeholder="URL" value="${blog.url}" oninput="autoSave(this)" data-type="newBlogs" data-idx="${idx}">
                 `;
                 document.getElementById('newBlogsList').appendChild(item);
             });
@@ -782,9 +794,10 @@
             data.rewrite.forEach((blog, idx) => {
                 const item = document.createElement('div');
                 item.className = 'checklist-item';
+                const done = !!blog.url;
                 item.innerHTML = `
-                    <input type="checkbox" data-type="rewrite" ${blog.done ? 'checked' : ''} onchange="saveData()">
-                    <input type="text" placeholder="URL" value="${blog.url}" onchange="saveData()">
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '✓'}</span>
+                    <input type="text" placeholder="URL" value="${blog.url}" oninput="autoSave(this)" data-type="rewrite" data-idx="${idx}">
                 `;
                 document.getElementById('rewriteList').appendChild(item);
             });
@@ -803,9 +816,10 @@
             data.googleProfile.forEach((post, idx) => {
                 const item = document.createElement('div');
                 item.className = 'checklist-item';
+                const done = !!post.notes;
                 item.innerHTML = `
-                    <input type="checkbox" data-type="googleProfile" ${post.done ? 'checked' : ''} onchange="saveData()">
-                    <input type="text" placeholder="Notities" value="${post.notes}" onchange="saveData()">
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '✓'}</span>
+                    <input type="text" placeholder="Notities" value="${post.notes}" oninput="autoSave(this)" data-type="googleProfile" data-idx="${idx}">
                 `;
                 document.getElementById('googleList').appendChild(item);
             });
@@ -824,9 +838,10 @@
             data.websiteProjects.forEach((project, idx) => {
                 const item = document.createElement('div');
                 item.className = 'checklist-item';
+                const done = !!project.url;
                 item.innerHTML = `
-                    <input type="checkbox" data-type="websiteProject" ${project.done ? 'checked' : ''} onchange="saveData()">
-                    <input type="text" placeholder="URL" value="${project.url}" onchange="saveData()">
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '✓'}</span>
+                    <input type="text" placeholder="URL" value="${project.url}" oninput="autoSave(this)" data-type="websiteProject" data-idx="${idx}">
                 `;
                 document.getElementById('websiteList').appendChild(item);
             });
@@ -845,9 +860,10 @@
             data.socialProjects.forEach((project, idx) => {
                 const item = document.createElement('div');
                 item.className = 'checklist-item';
+                const done = !!project.url;
                 item.innerHTML = `
-                    <input type="checkbox" data-type="socialProject" ${project.done ? 'checked' : ''} onchange="saveData()">
-                    <input type="text" placeholder="URL" value="${project.url}" onchange="saveData()">
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : '✓'}</span>
+                    <input type="text" placeholder="URL" value="${project.url}" oninput="autoSave(this)" data-type="socialProject" data-idx="${idx}">
                 `;
                 document.getElementById('socialList').appendChild(item);
             });
@@ -951,31 +967,31 @@
             const data = getData();
 
             // Nieuwe Blogs
-            const newBlogsDone = data.newBlogs.filter(b => b.done).length;
+            const newBlogsDone = data.newBlogs.filter(b => !!b.url).length;
             document.getElementById('newBlogsProgress').textContent = `${newBlogsDone}/5`;
             document.getElementById('newBlogsText').textContent = `${newBlogsDone} van 5 voltooid`;
             document.getElementById('newBlogsBar').style.width = `${(newBlogsDone / 5) * 100}%`;
 
             // Herschreven
-            const rewriteDone = data.rewrite.filter(b => b.done).length;
+            const rewriteDone = data.rewrite.filter(b => !!b.url).length;
             document.getElementById('rewriteProgress').textContent = `${rewriteDone}/5`;
             document.getElementById('rewriteText').textContent = `${rewriteDone} van 5 voltooid`;
             document.getElementById('rewriteBar').style.width = `${(rewriteDone / 5) * 100}%`;
 
             // Google Profile
-            const googleDone = data.googleProfile.filter(p => p.done).length;
+            const googleDone = data.googleProfile.filter(p => !!p.notes).length;
             document.getElementById('googleProgress').textContent = `${googleDone}/4`;
             document.getElementById('googleText').textContent = `${googleDone} van 4 voltooid`;
             document.getElementById('googleBar').style.width = `${(googleDone / 4) * 100}%`;
 
             // Website Projects
-            const websiteDone = data.websiteProjects.filter(p => p.done).length;
+            const websiteDone = data.websiteProjects.filter(p => !!p.url).length;
             document.getElementById('websiteProgress').textContent = `${websiteDone}/5`;
             document.getElementById('websiteText').textContent = `${websiteDone} van 5 voltooid`;
             document.getElementById('websiteBar').style.width = `${(websiteDone / 5) * 100}%`;
 
             // Social Projects
-            const socialDone = data.socialProjects.filter(p => p.done).length;
+            const socialDone = data.socialProjects.filter(p => !!p.url).length;
             document.getElementById('socialProgress').textContent = `${socialDone}/5`;
             document.getElementById('socialText').textContent = `${socialDone} van 5 voltooid`;
             document.getElementById('socialBar').style.width = `${(socialDone / 5) * 100}%`;
