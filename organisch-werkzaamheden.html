@@ -628,7 +628,13 @@
                     { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: false },
                     { title: 'Week 5', url: '', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
-                socialProjects: Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
+                socialProjects: month === '2026-05' ? [
+                    { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: false },
+                    { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: false },
+                    { title: 'Week 3', url: '', done: false },
+                    { title: 'Week 4', url: '', done: false },
+                    { title: 'Week 5', url: '', done: false }
+                ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 adhocItems: [],
                 linkbuilding: []
             };
@@ -650,6 +656,17 @@
                         merged.websiteProjects = merged.websiteProjects.map((p, i) => ({
                             ...p,
                             url: p.url || urls[i] || ''
+                        }));
+                    }
+                    if (month === '2026-05') {
+                        const socialUrls = [
+                            'https://www.facebook.com/913604654948329/posts/1014937398148387',
+                            'https://www.facebook.com/913604654948329/posts/1008894632085997',
+                            '', '', ''
+                        ];
+                        merged.socialProjects = merged.socialProjects.map((p, i) => ({
+                            ...p,
+                            url: p.url || socialUrls[i] || ''
                         }));
                     }
                     return merged;
