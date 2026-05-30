@@ -618,7 +618,13 @@
             const month = localStorage.getItem('currentMonth') || '2026-05';
             const key = `organisch-${month}`;
             const defaultData = {
-                newBlogs: Array(5).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
+                newBlogs: month === '2026-05' ? [
+                    { title: 'Hoelang gaan kunststof kozijnen mee', url: 'https://directverduurzamen.nl/hoelang-gaan-kunststof-kozijnen-mee/', done: true },
+                    { title: 'Montagefoam of compriband', url: '/montagefoam-of-compriband-kozijnen/', done: false },
+                    { title: 'Woning voorbereiden kozijnen vervangen', url: '/woning-voorbereiden-kozijnen-vervangen/', done: false },
+                    { title: 'Inbraakwerend glas P4A P5A', url: '/inbraakwerend-glas-p4a-p5a/', done: false },
+                    { title: 'Kunststof kozijnen jaren 70 woning', url: '/kunststof-kozijnen-jaren-70-woning/', done: false }
+                ] : Array(5).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: month === '2026-05' ? [
                     { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
                     { title: 'SVOH Subsidie', url: '/subsidie/svoh-subsidie/', done: false },
