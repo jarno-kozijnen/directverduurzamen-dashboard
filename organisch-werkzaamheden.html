@@ -683,14 +683,10 @@
                 linkbuilding: month === '2026-05' ? [
                     {
                         url_plaatsing: 'https://almelogids.nl/bouwbedrijf/je-woning-in-almelo-verduurzamen-zonder-je-spaargeld-aan-te-breken-zo-doe-je-dat-tegen-09-rente/',
-                        anchor: 'kozijnen eenvoudig per maand betalen',
-                        url_doel: 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/',
-                        done: true
-                    },
-                    {
-                        url_plaatsing: 'https://almelogids.nl/bouwbedrijf/je-woning-in-almelo-verduurzamen-zonder-je-spaargeld-aan-te-breken-zo-doe-je-dat-tegen-09-rente/',
-                        anchor: 'Bij Direct Verduurzamen in Almelo',
-                        url_doel: 'https://directverduurzamen.nl/',
+                        anchor_1: 'kozijnen eenvoudig per maand betalen',
+                        url_1: 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/',
+                        anchor_2: 'Bij Direct Verduurzamen in Almelo',
+                        url_2: 'https://directverduurzamen.nl/',
                         done: true
                     }
                 ] : []
@@ -773,8 +769,10 @@
             const linkbuildingRows = document.querySelectorAll('.linkbuilding-row');
             data.linkbuilding = Array.from(linkbuildingRows).map(row => ({
                 url_plaatsing: row.querySelector('[data-field="url_plaatsing"]').value,
-                anchor: row.querySelector('[data-field="anchor"]').value,
-                url_doel: row.querySelector('[data-field="url_doel"]').value,
+                anchor_1: row.querySelector('[data-field="anchor_1"]') ? row.querySelector('[data-field="anchor_1"]').value : '',
+                url_1: row.querySelector('[data-field="url_1"]') ? row.querySelector('[data-field="url_1"]').value : '',
+                anchor_2: row.querySelector('[data-field="anchor_2"]') ? row.querySelector('[data-field="anchor_2"]').value : '',
+                url_2: row.querySelector('[data-field="url_2"]') ? row.querySelector('[data-field="url_2"]').value : '',
                 done: row.querySelector('input[type="checkbox"]').checked
             }));
 
@@ -933,8 +931,10 @@
                         <tr>
                             <th style="width: 40px;">✓</th>
                             <th>URL Plaatsing</th>
-                            <th>Anchor</th>
-                            <th>URL (doel)</th>
+                            <th>Anchor 1</th>
+                            <th>URL 1</th>
+                            <th>Anchor 2</th>
+                            <th>URL 2</th>
                             <th style="width: 50px;"></th>
                         </tr>
                     </thead>
@@ -955,11 +955,19 @@
         function createLinkbuildingRow(link, idx) {
             const row = document.createElement('tr');
             row.className = 'linkbuilding-row';
+            const a1 = link.anchor_1 || link.anchor || '';
+            const u1 = link.url_1 || link.url_doel || '';
+            const a2 = link.anchor_2 || '';
+            const u2 = link.url_2 || '';
+            const plaatsing = link.url_plaatsing || '';
             row.innerHTML = `
                 <td><input type="checkbox" ${link.done ? 'checked' : ''} onchange="saveData()"></td>
-                <td><input type="text" data-field="url_plaatsing" value="${link.url_plaatsing}" placeholder="https://..." onchange="saveData()"></td>
-                <td><input type="text" data-field="anchor" value="${link.anchor}" placeholder="Anchor text" onchange="saveData()"></td>
-                <td><input type="text" data-field="url_doel" value="${link.url_doel}" placeholder="https://..." onchange="saveData()"></td>
+                <td>${plaatsing ? `<a href="${plaatsing}" target="_blank" style="font-size:12px; color:#1b5e20; word-break:break-all;">${plaatsing}</a>` : '<input type="text" data-field="url_plaatsing" placeholder="https://..." onchange="saveData()" style="width:100%;">'}
+                    <input type="hidden" data-field="url_plaatsing" value="${plaatsing}"></td>
+                <td><input type="text" data-field="anchor_1" value="${a1}" placeholder="Anchor 1" onchange="saveData()"></td>
+                <td>${u1 ? `<a href="${u1}" target="_blank" style="font-size:12px; color:#1b5e20; word-break:break-all;">${u1}</a><input type="hidden" data-field="url_1" value="${u1}">` : '<input type="text" data-field="url_1" placeholder="https://..." onchange="saveData()" style="width:100%;">'}</td>
+                <td><input type="text" data-field="anchor_2" value="${a2}" placeholder="Anchor 2" onchange="saveData()"></td>
+                <td>${u2 ? `<a href="${u2}" target="_blank" style="font-size:12px; color:#1b5e20; word-break:break-all;">${u2}</a><input type="hidden" data-field="url_2" value="${u2}">` : '<input type="text" data-field="url_2" placeholder="https://..." onchange="saveData()" style="width:100%;">'}</td>
                 <td><button class="delete-btn" onclick="deleteLinkbuildingRow(this)">Delete</button></td>
             `;
             return row;
@@ -977,7 +985,7 @@
 
         function addLinkbuildingRow() {
             const tbody = document.getElementById('linkbuildingRows');
-            const newLink = { url_plaatsing: '', anchor: '', url_doel: '', done: false };
+            const newLink = { url_plaatsing: '', anchor_1: '', url_1: '', anchor_2: '', url_2: '', done: false };
             const row = createLinkbuildingRow(newLink, tbody.children.length);
             tbody.appendChild(row);
             saveData();
