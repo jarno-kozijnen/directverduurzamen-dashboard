@@ -622,15 +622,15 @@
                 rewrite: Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
                 websiteProjects: month === '2026-05' ? [
-                    { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: false },
-                    { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: false },
-                    { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: false },
-                    { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: false },
+                    { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
+                    { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
+                    { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: true },
+                    { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: true },
                     { title: 'Week 5', url: '', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 socialProjects: month === '2026-05' ? [
-                    { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: false },
-                    { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: false },
+                    { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: true },
+                    { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: true },
                     { title: 'Week 3', url: '', done: false },
                     { title: 'Week 4', url: '', done: false },
                     { title: 'Week 5', url: '', done: false }
@@ -653,9 +653,11 @@
                             'https://directverduurzamen.nl/project/rotterdam/',
                             ''
                         ];
+                        const websiteDone = [true, true, true, true, false];
                         merged.websiteProjects = merged.websiteProjects.map((p, i) => ({
                             ...p,
-                            url: p.url || urls[i] || ''
+                            url: p.url || urls[i] || '',
+                            done: p.url ? p.done : (websiteDone[i] || false)
                         }));
                     }
                     if (month === '2026-05') {
@@ -664,9 +666,11 @@
                             'https://www.facebook.com/913604654948329/posts/1008894632085997',
                             '', '', ''
                         ];
+                        const socialDone = [true, true, false, false, false];
                         merged.socialProjects = merged.socialProjects.map((p, i) => ({
                             ...p,
-                            url: p.url || socialUrls[i] || ''
+                            url: p.url || socialUrls[i] || '',
+                            done: p.url ? p.done : (socialDone[i] || false)
                         }));
                     }
                     return merged;
