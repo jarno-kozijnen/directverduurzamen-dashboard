@@ -471,7 +471,8 @@
             '2026-02': { gscClicks: 880, gscImpressions: 124758, users: 4, conversions: 9, ctr: 0.0071, position: 22.6 },
             '2026-03': { gscClicks: 902, gscImpressions: 119664, users: 31, conversions: 16, ctr: 0.0075, position: 17.4 },
             '2026-04': { gscClicks: 881, gscImpressions: 105563, users: 27, conversions: 10, ctr: 0.0083, position: 16.9 },
-            '2026-05': { gscClicks: 1045, gscImpressions: 121522, users: 125, conversions: 14, ctr: 0.0086, position: 17.3 }
+            '2026-05': { gscClicks: 1045, gscImpressions: 121522, users: 125, conversions: 14, ctr: 0.0086, position: 17.3 },
+            '2026-06': { gscClicks: 0, gscImpressions: 0, users: 0, conversions: 0, ctr: 0, position: 0 }
         };
 
         let leadsChart = null;
@@ -531,6 +532,9 @@
                 let monthLabel = MONTHS[month];
                 if (month === '2026-05') {
                     monthLabel += ' (t/m 29)';
+                }
+                if (month === '2026-06') {
+                    monthLabel += ' (lopend)';
                 }
 
                 const row = document.createElement('tr');
@@ -648,14 +652,26 @@
                     { title: 'SEEH Subsidie', url: '/subsidie/seeh-subsidie/', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
-                websiteProjects: month === '2026-05' ? [
+                websiteProjects: month === '2026-06' ? [
+                    { title: '3 juni', url: 'https://directverduurzamen.nl/project/purmerend/', done: false },
+                    { title: '10 juni', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
+                    { title: 'Week 3', url: '', done: false },
+                    { title: 'Week 4', url: '', done: false },
+                    { title: 'Week 5', url: '', done: false }
+                ] : month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
                     { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
                     { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: true },
                     { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: true },
                     { title: 'Week 5', url: '', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
-                socialProjects: month === '2026-05' ? [
+                socialProjects: month === '2026-06' ? [
+                    { title: '3 juni | Rotterdam', url: 'Facebook & Instagram', done: false },
+                    { title: '10 juni | Daarleveen', url: 'Facebook & Instagram', done: false },
+                    { title: '17 juni | Purmerend', url: 'Facebook & Instagram', done: false },
+                    { title: '24 juni | Vroomshoop', url: 'Facebook & Instagram', done: false },
+                    { title: 'Week 5', url: '', done: false }
+                ] : month === '2026-05' ? [
                     { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: true },
                     { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: true },
                     { title: 'Week 3', url: '', done: false },
@@ -670,8 +686,8 @@
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
-                    // Voor mei 2026: gebruik altijd defaultData als basis, bewaar alleen done-status
-                    if (month === '2026-05') {
+                    // Voor mei/juni 2026: gebruik altijd defaultData als basis, bewaar alleen done-status
+                    if (month === '2026-05' || month === '2026-06') {
                         const result = JSON.parse(JSON.stringify(defaultData));
                         if (parsed.adhocItems) result.adhocItems = parsed.adhocItems;
                         if (parsed.linkbuilding) result.linkbuilding = parsed.linkbuilding;
