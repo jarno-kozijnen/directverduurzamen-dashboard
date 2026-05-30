@@ -621,7 +621,13 @@
                 newBlogs: Array(5).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
-                websiteProjects: Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
+                websiteProjects: month === '2026-05' ? [
+                    { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: false },
+                    { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: false },
+                    { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: false },
+                    { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: false },
+                    { title: 'Week 5', url: '', done: false }
+                ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 socialProjects: Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 adhocItems: [],
                 linkbuilding: []
@@ -631,7 +637,22 @@
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
-                    return { ...defaultData, ...parsed };
+                    const merged = { ...defaultData, ...parsed };
+                    // Vul lege websiteProjects URLs in voor mei 2026
+                    if (month === '2026-05') {
+                        const urls = [
+                            'https://directverduurzamen.nl/project/epe/',
+                            'https://directverduurzamen.nl/project/deventer/',
+                            'https://directverduurzamen.nl/project/daarleveen/',
+                            'https://directverduurzamen.nl/project/rotterdam/',
+                            ''
+                        ];
+                        merged.websiteProjects = merged.websiteProjects.map((p, i) => ({
+                            ...p,
+                            url: p.url || urls[i] || ''
+                        }));
+                    }
+                    return merged;
                 } catch (e) {
                     return defaultData;
                 }
