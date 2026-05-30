@@ -701,15 +701,13 @@
                     { title: '3 juni', url: 'https://directverduurzamen.nl/project/purmerend/', done: false },
                     { title: '10 juni', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
                     { title: 'Week 3', url: '', done: false },
-                    { title: 'Week 4', url: '', done: false },
-                    { title: 'Week 5', url: '', done: false }
+                    { title: 'Week 4', url: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
                     { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
                     { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: true },
-                    { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: true },
-                    { title: 'Week 5', url: '', done: false }
-                ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
+                    { title: 'Project Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: true }
+                ] : Array(4).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 socialProjects: month === '2026-06' ? [
                     { title: '3 juni | Rotterdam', url: 'https://directverduurzamen.nl/project/rotterdam/', done: false },
                     { title: '10 juni | Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: false },
@@ -900,7 +898,7 @@
             const websiteCard = document.createElement('div');
             websiteCard.className = 'card';
             websiteCard.innerHTML = `
-                <h3>🌐 Website Updates <span id="websiteProgress">0/5</span></h3>
+                <h3>🌐 Website Updates <span id="websiteProgress">0/4</span></h3>
                 <div class="progress-bar"><div class="progress-fill" id="websiteBar" style="width: 0%"></div></div>
                 <div class="progress-text" id="websiteText">0 van 5 voltooid</div>
                 <div class="checklist" id="websiteList"></div>
@@ -1083,9 +1081,9 @@
 
             // Website Projects
             const websiteDone = data.websiteProjects.filter(p => !!p.url).length;
-            document.getElementById('websiteProgress').textContent = `${websiteDone}/5`;
-            document.getElementById('websiteText').textContent = `${websiteDone} van 5 voltooid`;
-            document.getElementById('websiteBar').style.width = `${(websiteDone / 5) * 100}%`;
+            document.getElementById('websiteProgress').textContent = `${websiteDone}/4`;
+            document.getElementById('websiteText').textContent = `${websiteDone} van 4 voltooid`;
+            document.getElementById('websiteBar').style.width = `${(websiteDone / 4) * 100}%`;
 
             // Social Projects
             const socialDone = data.socialProjects.filter(p => !!p.url).length;
