@@ -679,11 +679,10 @@
             const defaultData = {
                 newBlogs: month === '2026-05' ? [
                     { title: 'Hoelang gaan kunststof kozijnen mee', url: 'https://directverduurzamen.nl/hoelang-gaan-kunststof-kozijnen-mee/', done: true },
-                    { title: 'Montagefoam of compriband', url: '/montagefoam-of-compriband-kozijnen/', done: false },
                     { title: 'Woning voorbereiden kozijnen vervangen', url: '/woning-voorbereiden-kozijnen-vervangen/', done: false },
                     { title: 'Inbraakwerend glas P4A P5A', url: '/inbraakwerend-glas-p4a-p5a/', done: false },
                     { title: 'Kunststof kozijnen jaren 70 woning', url: '/kunststof-kozijnen-jaren-70-woning/', done: false }
-                ] : Array(5).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
+                ] : Array(4).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: month === '2026-05' ? [
                     { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
                     { title: 'SVOH Subsidie', url: '/subsidie/svoh-subsidie/', done: false },
@@ -832,7 +831,7 @@
             const newBlogsCard = document.createElement('div');
             newBlogsCard.className = 'card';
             newBlogsCard.innerHTML = `
-                <h3>📝 Nieuwe Blogs <span id="newBlogsProgress">0/5</span></h3>
+                <h3>📝 Nieuwe Blogs <span id="newBlogsProgress">0/4</span></h3>
                 <div class="progress-bar"><div class="progress-fill" id="newBlogsBar" style="width: 0%"></div></div>
                 <div class="progress-text" id="newBlogsText">0 van 5 voltooid</div>
                 <div class="checklist" id="newBlogsList"></div>
@@ -1063,9 +1062,9 @@
 
             // Nieuwe Blogs
             const newBlogsDone = data.newBlogs.filter(b => !!b.url).length;
-            document.getElementById('newBlogsProgress').textContent = `${newBlogsDone}/5`;
-            document.getElementById('newBlogsText').textContent = `${newBlogsDone} van 5 voltooid`;
-            document.getElementById('newBlogsBar').style.width = `${(newBlogsDone / 5) * 100}%`;
+            document.getElementById('newBlogsProgress').textContent = `${newBlogsDone}/4`;
+            document.getElementById('newBlogsText').textContent = `${newBlogsDone} van 4 voltooid`;
+            document.getElementById('newBlogsBar').style.width = `${(newBlogsDone / 4) * 100}%`;
 
             // Herschreven
             const rewriteDone = data.rewrite.filter(b => !!b.url).length;
