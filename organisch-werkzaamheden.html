@@ -372,6 +372,7 @@
                     <option value="2026-11">November 2026</option>
                     <option value="2026-12">December 2026</option>
                 </select>
+                <button onclick="resetMonthData()" style="margin-left:12px; padding:7px 14px; background:#f5f5f5; border:1px solid #ddd; border-radius:6px; font-size:12px; color:#666; cursor:pointer;" title="Reset lokale data voor deze maand en laad standaardwaarden opnieuw">↺ Reset maand</button>
             </div>
         </header>
 
@@ -957,6 +958,16 @@
                 <td><button class="delete-btn" onclick="deleteLinkbuildingRow(this)">Delete</button></td>
             `;
             return row;
+        }
+
+        function resetMonthData() {
+            const month = localStorage.getItem('currentMonth') || '2026-05';
+            const key = `organisch-${month}`;
+            if (confirm(`Weet je zeker dat je de lokale data voor ${month} wilt resetten? Alle vinkjes en handmatige invoer worden gewist.`)) {
+                localStorage.removeItem(key);
+                renderCards();
+                updateProgress();
+            }
         }
 
         function addLinkbuildingRow() {
