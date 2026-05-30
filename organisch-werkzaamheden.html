@@ -619,7 +619,13 @@
             const key = `organisch-${month}`;
             const defaultData = {
                 newBlogs: Array(5).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
-                rewrite: Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
+                rewrite: month === '2026-05' ? [
+                    { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
+                    { title: 'SVOH Subsidie', url: '/subsidie/svoh-subsidie/', done: false },
+                    { title: 'DUMAVA Subsidie', url: '/subsidie/dumava-subsidie/', done: false },
+                    { title: 'SVVE Subsidie', url: '/subsidie/svve-subsidie/', done: false },
+                    { title: 'SEEH Subsidie', url: '/subsidie/seeh-subsidie/', done: false }
+                ] : Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
                 websiteProjects: month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
@@ -776,7 +782,7 @@
             const rewriteCard = document.createElement('div');
             rewriteCard.className = 'card';
             rewriteCard.innerHTML = `
-                <h3>♻️ Herschreven Blogs <span id="rewriteProgress">0/5</span></h3>
+                <h3>♻️ Herschreven blogs <span id="rewriteProgress">0/5</span></h3>
                 <div class="progress-bar"><div class="progress-fill" id="rewriteBar" style="width: 0%"></div></div>
                 <div class="progress-text" id="rewriteText">0 van 5 voltooid</div>
                 <div class="checklist" id="rewriteList"></div>
