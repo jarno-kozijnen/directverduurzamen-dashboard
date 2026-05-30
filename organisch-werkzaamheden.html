@@ -679,7 +679,20 @@
                     { title: 'Week 5', url: '', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 adhocItems: [],
-                linkbuilding: []
+                linkbuilding: month === '2026-05' ? [
+                    {
+                        url_plaatsing: 'https://almelogids.nl/bouwbedrijf/je-woning-in-almelo-verduurzamen-zonder-je-spaargeld-aan-te-breken-zo-doe-je-dat-tegen-09-rente/',
+                        anchor: 'kozijnen eenvoudig per maand betalen',
+                        url_doel: 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/',
+                        done: true
+                    },
+                    {
+                        url_plaatsing: 'https://almelogids.nl/bouwbedrijf/je-woning-in-almelo-verduurzamen-zonder-je-spaargeld-aan-te-breken-zo-doe-je-dat-tegen-09-rente/',
+                        anchor: 'Bij Direct Verduurzamen in Almelo',
+                        url_doel: 'https://directverduurzamen.nl/',
+                        done: true
+                    }
+                ] : []
             };
 
             const stored = localStorage.getItem(key);
@@ -690,7 +703,7 @@
                     if (month === '2026-05' || month === '2026-06') {
                         const result = JSON.parse(JSON.stringify(defaultData));
                         if (parsed.adhocItems) result.adhocItems = parsed.adhocItems;
-                        if (parsed.linkbuilding) result.linkbuilding = parsed.linkbuilding;
+                        if (parsed.linkbuilding && parsed.linkbuilding.length > 0) result.linkbuilding = parsed.linkbuilding;
                         ['newBlogs','rewrite','websiteProjects','socialProjects','googleProfile'].forEach(function(k) {
                             if (parsed[k]) {
                                 result[k] = result[k].map(function(item, i) {
