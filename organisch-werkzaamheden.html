@@ -691,7 +691,12 @@
                     { title: 'SVVE Subsidie', url: '/subsidie/svve-subsidie/', done: false },
                     { title: 'SEEH Subsidie', url: '/subsidie/seeh-subsidie/', done: false }
                 ] : Array(5).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
-                googleProfile: Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
+                googleProfile: month === '2026-05' ? [
+                    { title: 'Post 1', notes: 'https://directverduurzamen.nl/project/epe/', done: false },
+                    { title: 'Post 2', notes: 'https://directverduurzamen.nl/project/deventer/', done: false },
+                    { title: 'Post 3', notes: 'https://directverduurzamen.nl/project/daarleveen/', done: false },
+                    { title: 'Post 4', notes: 'https://directverduurzamen.nl/project/rotterdam/', done: false }
+                ] : Array(4).fill(null).map((_, i) => ({ title: `Post ${i+1}`, notes: '', done: false })),
                 websiteProjects: month === '2026-06' ? [
                     { title: '3 juni', url: 'https://directverduurzamen.nl/project/purmerend/', done: false },
                     { title: '10 juni', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
