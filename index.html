@@ -193,7 +193,7 @@
     <div class="container">
         <header>
             <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
-            <p class="date-range">Periode: 1 mei - 19 mei 2026</p>
+            <p class="date-range">Periode: mei 2026 | Bijgewerkt: 30 mei 2026</p>
         </header>
 
         <div class="metrics-grid">
@@ -436,7 +436,7 @@
         ];
 
         const changelog = [
-            {date:'2026-05-19',change:'Dashboard update: Actuele Meta Ads data (Windsor.ai)',details:'META_CORE_KOZIJNEN_TWENTE_PLUS: €851.79 spend, 32.009 impressions, 677 clicks. Vacature: €88.69 spend. Totaal regio Almelo: €940.48.'},
+            {date:'2026-05-30',change:'Dashboard update: Volledige mei 2026 data (Windsor.ai)',details:'Alle campagnes bijgewerkt. META_CORE: €2.208 spend, 56 leads. Retargeting campagne toegevoegd: €123 spend, 4 leads. Gepauzeerde campagnes volledig opgenomen (MH Bel Direct, Afspraak, Info, Winactie, Vacature).'},details:'META_CORE_KOZIJNEN_TWENTE_PLUS: €851.79 spend, 32.009 impressions, 677 clicks. Vacature: €88.69 spend. Totaal regio Almelo: €940.48.'},
             {date:'2026-05-18',change:'Dashboard update: 19 april - 18 mei data',details:'Meta Ads cijfers bijgewerkt. META_CORE_KOZIJNEN_TWENTE_PLUS: €1.228 spend, 40.561 impressions, 910 clicks. DV Leads campaign: €1.113 spend.'},
             {date:'2026-05-14',change:'META_CORE_KOZIJNEN_TWENTE_PLUS - 9 hooks live',details:'Launch van 9 hook variants (4 static + 3 video) op €125/dag. Video hooks (Financiering, Onderhoud, Isolatie) actief.'},
             {date:'2026-05-01',change:'META_CORE_KOZIJNEN_TWENTE_PLUS - Campaign gestart',details:'Nieuwe campagne voor kozijnen Twente met geo-targeting (Almelo +40km). Budget €125/dag'},
@@ -780,22 +780,44 @@
                 console.log('Server unavailable, will use fallback data');
             }
 
-            // Fallback data - Live data from Windsor.ai (Meta Ads, 1 mei - 19 mei 2026)
-            // META_CORE_KOZIJNEN_TWENTE_PLUS with GEO_TWENTE_PLUS_BROAD adset - All HOOK_ ads
+            // Live data van Windsor.ai - Meta Ads account 627183079667838
+            // Bijgewerkt: 30 mei 2026 | Periode: mei 2026 (this_monthT)
             if (allData.length === 0) {
                 allData = [
-                    // Video Hooks - Live data
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:322.92,impressions:10391,clicks:280,conversions:0,frequency:1.21,cpm:31.08,form:'Financiering Kozijnen',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:31.71,impressions:1089,clicks:24,conversions:0,frequency:1.31,cpm:29.12,form:'Onderhoud Kozijnen',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:302.74,impressions:15432,clicks:285,conversions:0,frequency:1.66,cpm:19.62,form:'Financiering Variant B',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:68.78,impressions:3340,clicks:44,conversions:0,frequency:1.23,cpm:20.59,form:'Isolatie Kozijnen',status:'ACTIVE'},
-                    // Static Hooks
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:43.77,impressions:793,clicks:20,conversions:0,frequency:1.46,cpm:55.20,form:'Gratis Horren',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:20.29,impressions:395,clicks:12,conversions:0,frequency:1.38,cpm:51.37,form:'Geen Aanbetaling',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:25.25,impressions:657,clicks:9,conversions:0,frequency:1.43,cpm:38.43,form:'Achteraf Betalen',status:'ACTIVE'},
-                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',spend:36.33,impressions:754,clicks:13,conversions:0,frequency:1.39,cpm:48.18,form:'0% Rente',status:'ACTIVE'},
-                    // Vacature Monteur
-                    {campaign:'DV_VACATURE_MONTEUR_KOZIJNEN',adset:'Regio Almelo | Mannen 23-55',ad:'Vacature Ad Copy',spend:88.69,impressions:65118,clicks:87,conversions:0,frequency:1.28,cpm:1.36,form:'Vacature Monteur',status:'ACTIVE'}
+                    // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIEF
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:324.13,impressions:10402,clicks:280,conversions:5,frequency:1.10,cpm:31.16,form:'Financiering Kozijnen',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:1445.97,impressions:62865,clicks:1163,conversions:40,frequency:1.17,cpm:23.00,form:'Financiering Variant B',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',spend:58.94,impressions:1570,clicks:44,conversions:3,frequency:1.16,cpm:37.54,form:'Onderhoud Kozijnen',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',spend:131.33,impressions:5343,clicks:96,conversions:3,frequency:1.09,cpm:24.58,form:'Isolatie Kozijnen',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',spend:102.13,impressions:1555,clicks:37,conversions:3,frequency:1.23,cpm:65.68,form:'Gratis Horren',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',spend:44.90,impressions:913,clicks:23,conversions:0,frequency:1.23,cpm:49.18,form:'Geen Aanbetaling',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:39.70,impressions:1110,clicks:19,conversions:1,frequency:1.25,cpm:35.77,form:'Achteraf Betalen',status:'ACTIVE'},
+                    {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',spend:61.24,impressions:1263,clicks:27,conversions:1,frequency:1.20,cpm:48.49,form:'0% Rente',status:'ACTIVE'},
+                    // META_RETARGETING_KOZIJNEN_TWENTE_PLUS - ACTIEF (nieuw)
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_FINANCIERING_1B_VIDEO',spend:83.39,impressions:1820,clicks:40,conversions:3,frequency:1.34,cpm:45.82,form:'Financiering Retargeting',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_FINANCIERING_1A_VIDEO',spend:14.16,impressions:154,clicks:5,conversions:1,frequency:1.33,cpm:91.95,form:'Financiering RT A',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_ACHTERAF_BETALEN_1A_STATIC',spend:12.55,impressions:199,clicks:1,conversions:0,frequency:1.29,cpm:63.07,form:'Achteraf Betalen RT',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_ISOLATIE_1A_VIDEO',spend:8.22,impressions:124,clicks:3,conversions:0,frequency:1.14,cpm:66.29,form:'Isolatie RT',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_GRATIS_HORREN_1A_STATIC',spend:0.70,impressions:43,clicks:2,conversions:0,frequency:1.26,cpm:16.28,form:'Gratis Horren RT',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_ONDERHOUD_1A_VIDEO',spend:3.98,impressions:50,clicks:5,conversions:0,frequency:1.16,cpm:79.60,form:'Onderhoud RT',status:'ACTIVE'},
+                    {campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_0_RENTE_1A_STATIC',spend:0.10,impressions:10,clicks:0,conversions:0,frequency:1.67,cpm:10.00,form:'0% Rente RT',status:'ACTIVE'},
+                    // GEPAUZEERDE CAMPAGNES
+                    {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | Onderhoud | 1A',spend:490.27,impressions:34176,clicks:899,conversions:13,frequency:1.13,cpm:14.35,form:'Bel Direct',status:'PAUSED'},
+                    {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | besparen | 1B',spend:121.12,impressions:10400,clicks:226,conversions:5,frequency:1.14,cpm:11.65,form:'Bel Direct',status:'PAUSED'},
+                    {campaign:'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',adset:'MH | Bel Direct | 09-12 | Almelo 40km | MA-VR',ad:'MH | Bel Direct | Horren & HR++ glas | 1D',spend:8.04,impressions:729,clicks:12,conversions:0,frequency:1.04,cpm:11.03,form:'Bel Direct',status:'PAUSED'},
+                    {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',ad:'MH | Afspraak | Horren 2D',spend:417.25,impressions:22160,clicks:626,conversions:10,frequency:1.14,cpm:18.83,form:'Afspraak',status:'PAUSED'},
+                    {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',ad:'MH | Afspraak | Verduurzamen 2C',spend:72.79,impressions:4076,clicks:122,conversions:3,frequency:1.11,cpm:17.86,form:'Afspraak',status:'PAUSED'},
+                    {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',ad:'MH | Afspraak | Onderhoud 2A',spend:58.47,impressions:3228,clicks:101,conversions:2,frequency:1.08,cpm:18.11,form:'Afspraak',status:'PAUSED'},
+                    {campaign:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',adset:'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',ad:'MH | Afspraak | Besparen 2B',spend:17.53,impressions:1138,clicks:31,conversions:1,frequency:1.07,cpm:15.40,form:'Afspraak',status:'PAUSED'},
+                    {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Onderhoud 3A',spend:214.56,impressions:10450,clicks:200,conversions:2,frequency:1.12,cpm:20.53,form:'Info',status:'PAUSED'},
+                    {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Horren 3D',spend:22.28,impressions:1278,clicks:26,conversions:1,frequency:1.04,cpm:17.43,form:'Info',status:'PAUSED'},
+                    {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Verduurzamen 3C',spend:20.88,impressions:1302,clicks:24,conversions:0,frequency:1.12,cpm:16.04,form:'Info',status:'PAUSED'},
+                    {campaign:'MH | Winactie | Leads',adset:'MH | Winactie | Main',ad:'Kwaliteit',spend:99.49,impressions:12737,clicks:681,conversions:79,frequency:1.10,cpm:7.81,form:'Winactie',status:'PAUSED'},
+                    {campaign:'MH | Winactie | Leads',adset:'MH | Winactie | Main',ad:'Besparing',spend:1.22,impressions:79,clicks:6,conversions:1,frequency:1.11,cpm:15.44,form:'Winactie',status:'PAUSED'},
+                    {campaign:'MH | Winactie | Leads',adset:'MH | Winactie | Main',ad:'Onderhoud',spend:2.15,impressions:105,clicks:5,conversions:0,frequency:1.14,cpm:20.48,form:'Winactie',status:'PAUSED'},
+                    {campaign:'MH | Winactie | Leads',adset:'MH | Winactie | Main',ad:'Fomo/urgentie',spend:1.64,impressions:115,clicks:3,conversions:0,frequency:1.12,cpm:14.26,form:'Winactie',status:'PAUSED'},
+                    {campaign:'Direct Verduurzamen | Vacature Monteur Kozijnen',adset:'Regio Almelo | Mannen 23-55',ad:'Nieuwe advertentie voor Bekendheid',spend:5.85,impressions:4417,clicks:9,conversions:0,frequency:1.02,cpm:1.32,form:'Vacature',status:'PAUSED'},
+                    {campaign:'Direct Verduurzamen | Vacature Monteur Kozijnen',adset:'Regio Almelo | Mannen 23-55',ad:'Nieuwe advertentie voor Bekendheid - Kopie',spend:82.84,impressions:60701,clicks:78,conversions:0,frequency:1.02,cpm:1.36,form:'Vacature',status:'PAUSED'}
                 ];
             }
 
