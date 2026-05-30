@@ -423,6 +423,27 @@
             </div>
         </div>
 
+        <div id="maandoverzicht" class="tab-content">
+            <div class="chart-container">
+                <div class="chart-title">Maandoverzicht Meta Ads</div>
+                <table id="maandTable" style="width:100%; border-collapse:collapse; font-size:13px;">
+                    <thead>
+                        <tr style="border-bottom:2px solid #eee;">
+                            <th style="padding:10px 12px; text-align:left; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">Maand</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">Spend</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">Leads</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">CPL</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">Impressies</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">Clicks</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">CTR</th>
+                            <th style="padding:10px 12px; text-align:right; font-size:11px; color:#999; text-transform:uppercase; letter-spacing:.07em;">CPC</th>
+                        </tr>
+                    </thead>
+                    <tbody id="maandBody"></tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="organisch" class="tab-content">
             <iframe src="organisch-werkzaamheden.html" style="width: 100%; height: 900px; border: none; border-radius: 12px;"></iframe>
         </div>
@@ -442,6 +463,10 @@
             {date:'2026-05-01',change:'META_CORE_KOZIJNEN_TWENTE_PLUS - Campaign gestart',details:'Nieuwe campagne voor kozijnen Twente met geo-targeting (Almelo +40km). Budget €125/dag'},
             {date:'2026-04-19',change:'DV Leads & Vacature campagnes actief',details:'Video lead gen campagne (€40/dag) en Vacature Monteur recruitment ads live.'}
         ];
+
+        const MONTHLY_DATA = {
+            '2026-05': { label: 'Mei 2026 (t/m 29)', spend: 2331.43, leads: 60, impressions: 89369, clicks: 1565, note: 'Campagne opstart. META_CORE + Retargeting actief.' }
+        };
 
         const dailyData = [
             {date:'2026-05-01',HOOK_FINANCIERING_1A_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_ONDERHOUD_1A_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_FINANCIERING_1B_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_ISOLATIE_1A_VIDEO:{spend:0,clicks:0,conversions:0},HOOK_GRATIS_HORREN_1A_STATIC:{spend:0,clicks:0,conversions:0}},
@@ -745,6 +770,40 @@
         function renderChangelog() {
             const tbody = document.getElementById('changelogBody');
             tbody.innerHTML = changelog.map(c => `<tr><td>${c.date}</td><td>${c.change}</td><td>${c.details}</td></tr>`).join('');
+        }
+
+        function renderMaandoverzicht() {
+            const tbody = document.getElementById('maandBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            const months = Object.entries(MONTHLY_DATA).reverse();
+            months.forEach(([key, d]) => {
+                const cpl = d.leads > 0 ? (d.spend / d.leads).toFixed(2) : '-';
+                const ctr = d.impressions > 0 ? (d.clicks / d.impressions * 100).toFixed(2) + '%' : '-';
+                const cpc = d.clicks > 0 ? (d.spend / d.clicks).toFixed(2) : '-';
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #f5f5f5';
+                tr.onmouseenter = () => tr.style.background = '#fafafa';
+                tr.onmouseleave = () => tr.style.background = 'transparent';
+                tr.innerHTML = `
+                    <td style="padding:10px 12px; font-weight:600; color:#111;">${d.label}</td>
+                    <td style="padding:10px 12px; text-align:right;">€${d.spend.toLocaleString('nl-NL', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="padding:10px 12px; text-align:right; font-weight:600; color:#1b5e20;">${d.leads}</td>
+                    <td style="padding:10px 12px; text-align:right;">${cpl !== '-' ? '€' + cpl : '-'}</td>
+                    <td style="padding:10px 12px; text-align:right;">${d.impressions.toLocaleString('nl-NL')}</td>
+                    <td style="padding:10px 12px; text-align:right;">${d.clicks.toLocaleString('nl-NL')}</td>
+                    <td style="padding:10px 12px; text-align:right;">${ctr}</td>
+                    <td style="padding:10px 12px; text-align:right;">${cpc !== '-' ? '€' + cpc : '-'}</td>
+                `;
+                if (d.note) {
+                    const noteRow = document.createElement('tr');
+                    noteRow.innerHTML = `<td colspan="8" style="padding:4px 12px 10px; font-size:12px; color:#9ca3af;">${d.note}</td>`;
+                    tbody.appendChild(tr);
+                    tbody.appendChild(noteRow);
+                } else {
+                    tbody.appendChild(tr);
+                }
+            });
         }
 
         function renderDashboard() {
