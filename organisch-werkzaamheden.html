@@ -655,37 +655,21 @@
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
-                    const merged = { ...defaultData, ...parsed };
-                    // Vul lege websiteProjects URLs in voor mei 2026
+                    // Voor mei 2026: gebruik altijd defaultData als basis, bewaar alleen done-status
                     if (month === '2026-05') {
-                        const urls = [
-                            'https://directverduurzamen.nl/project/epe/',
-                            'https://directverduurzamen.nl/project/deventer/',
-                            'https://directverduurzamen.nl/project/daarleveen/',
-                            'https://directverduurzamen.nl/project/rotterdam/',
-                            ''
-                        ];
-                        const websiteDone = [true, true, true, true, false];
-                        merged.websiteProjects = merged.websiteProjects.map((p, i) => ({
-                            ...p,
-                            url: p.url || urls[i] || '',
-                            done: p.url ? p.done : (websiteDone[i] || false)
-                        }));
+                        const result = JSON.parse(JSON.stringify(defaultData));
+                        if (parsed.adhocItems) result.adhocItems = parsed.adhocItems;
+                        if (parsed.linkbuilding) result.linkbuilding = parsed.linkbuilding;
+                        ['newBlogs','rewrite','websiteProjects','socialProjects','googleProfile'].forEach(function(k) {
+                            if (parsed[k]) {
+                                result[k] = result[k].map(function(item, i) {
+                                    return Object.assign({}, item, { done: parsed[k][i] ? parsed[k][i].done : item.done });
+                                });
+                            }
+                        });
+                        return result;
                     }
-                    if (month === '2026-05') {
-                        const socialUrls = [
-                            'https://www.facebook.com/913604654948329/posts/1014937398148387',
-                            'https://www.facebook.com/913604654948329/posts/1008894632085997',
-                            '', '', ''
-                        ];
-                        const socialDone = [true, true, false, false, false];
-                        merged.socialProjects = merged.socialProjects.map((p, i) => ({
-                            ...p,
-                            url: p.url || socialUrls[i] || '',
-                            done: p.url ? p.done : (socialDone[i] || false)
-                        }));
-                    }
-                    return merged;
+                    return Object.assign({}, defaultData, parsed);
                 } catch (e) {
                     return defaultData;
                 }
