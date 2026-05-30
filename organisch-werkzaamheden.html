@@ -944,6 +944,11 @@
             `;
             container.appendChild(linkCard);
 
+            data.linkbuilding.forEach((link, idx) => {
+                const row = createLinkbuildingRow(link, idx);
+                document.getElementById('linkbuildingRows').appendChild(row);
+            });
+
             updateProgress();
         }
 
