@@ -71,6 +71,16 @@
             color: #333;
         }
 
+        .metric-comparison {
+            font-size: 12px;
+            margin-top: 6px;
+            min-height: 16px;
+            color: #888;
+        }
+        .metric-comparison.up { color: #10b981; }
+        .metric-comparison.down { color: #ef4444; }
+        .metric-comparison.neutral { color: #888; }
+
         .tabs {
             display: flex;
             gap: 10px;
@@ -200,26 +210,32 @@
             <div class="metric-card">
                 <div class="metric-label">Totale Uitgaven</div>
                 <div class="metric-value" id="totalSpend">€ -</div>
+                <div class="metric-comparison" id="cmpSpend"></div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Totale Leads</div>
                 <div class="metric-value" id="totalLeads">-</div>
+                <div class="metric-comparison" id="cmpLeads"></div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Cost Per Lead</div>
                 <div class="metric-value" id="avgCPL">€ -</div>
+                <div class="metric-comparison" id="cmpCPL"></div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Total Impressions</div>
                 <div class="metric-value" id="totalImpressions">-</div>
+                <div class="metric-comparison" id="cmpImpressions"></div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Total Clicks</div>
                 <div class="metric-value" id="totalClicks">-</div>
+                <div class="metric-comparison" id="cmpClicks"></div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Gemiddelde CTR</div>
                 <div class="metric-value" id="avgCTR">-%</div>
+                <div class="metric-comparison" id="cmpCTR"></div>
             </div>
         </div>
 
@@ -678,6 +694,24 @@
             document.getElementById('totalImpressions').textContent = totalImpressions.toLocaleString();
             document.getElementById('totalClicks').textContent = totalClicks;
             document.getElementById('avgCTR').textContent = avgCTR.toFixed(2) + '%';
+
+            // Comparison
+            if (comparisonData && comparisonData.length > 0) {
+                const activeOnly = document.getElementById('activeOnly').checked;
+                const cmpFiltered = comparisonData.filter(d => activeOnly ? d.status === 'ACTIVE' : true);
+                const prev = calcMetrics(cmpFiltered);
+                renderComparison('cmpSpend', totalSpend, prev.spend, 'euro', true);
+                renderComparison('cmpLeads', totalLeads, prev.leads, 'num', false);
+                renderComparison('cmpCPL', avgCPL, prev.cpl, 'euro', true);
+                renderComparison('cmpImpressions', totalImpressions, prev.impressions, 'num', false);
+                renderComparison('cmpClicks', totalClicks, prev.clicks, 'num', false);
+                renderComparison('cmpCTR', avgCTR, prev.ctr, 'pct', false);
+            } else {
+                ['cmpSpend','cmpLeads','cmpCPL','cmpImpressions','cmpClicks','cmpCTR'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '';
+                });
+            }
         }
 
         function renderCampaigns() {
@@ -1078,12 +1112,14 @@
         let activeMaand = '2026-06';
 
         let activeDag = 'all';
+        let comparisonData = null; // data for comparison period
 
         function populateDagSelector(maand) {
             const data = DATA_PER_MAAND[maand] || [];
             const dates = [...new Set(data.map(r => r.date))].sort();
             const sel = document.getElementById('dagSelector');
-            sel.innerHTML = '<option value="all">Hele maand</option>';
+            // Preserve special options, then add individual days
+            sel.innerHTML = '<option value="all">Hele maand</option><option value="last7">Laatste 7 dagen</option><option value="last14">Laatste 14 dagen</option>';
             dates.forEach(d => {
                 const parts = d.split('-');
                 const label = `${parseInt(parts[2])} ${['','jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'][parseInt(parts[1])]}`;
@@ -1093,14 +1129,52 @@
             activeDag = 'all';
         }
 
+        function getDataForPeriod(maandData, period) {
+            if (period === 'all') return { current: maandData, comparison: null, label: 'Hele maand' };
+            const dates = [...new Set(maandData.map(r => r.date))].sort();
+            if (period === 'last7' || period === 'last14') {
+                const n = period === 'last7' ? 7 : 14;
+                const recentDates = dates.slice(-n);
+                const prevDates = dates.slice(-n*2, -n);
+                const current = maandData.filter(r => recentDates.includes(r.date));
+                const comparison = prevDates.length > 0 ? maandData.filter(r => prevDates.includes(r.date)) : null;
+                const label = period === 'last7' ? `Laatste 7 dagen (${recentDates[0]?.slice(8)} - ${recentDates.at(-1)?.slice(8)} mei)` : `Laatste 14 dagen`;
+                return { current, comparison, label };
+            }
+            // Single day
+            const current = maandData.filter(r => r.date === period);
+            return { current, comparison: null, label: period };
+        }
+
+        function calcMetrics(data) {
+            let spend=0, leads=0, impressions=0, clicks=0;
+            data.forEach(r => { spend+=r.spend||0; leads+=r.conversions||0; impressions+=r.impressions||0; clicks+=r.clicks||0; });
+            return { spend, leads, impressions, clicks,
+                cpl: leads>0 ? spend/leads : 0,
+                ctr: impressions>0 ? clicks/impressions*100 : 0 };
+        }
+
+        function renderComparison(id, curr, prev, format, lowerIsBetter) {
+            const el = document.getElementById(id);
+            if (!el || prev === null || prev === undefined) { if(el) el.innerHTML=''; return; }
+            if (prev === 0) { el.innerHTML = '<span class="neutral">geen vergelijkingsdata</span>'; return; }
+            const diff = curr - prev;
+            const pct = Math.abs(diff / prev * 100).toFixed(1);
+            const up = diff > 0;
+            const good = lowerIsBetter ? !up : up;
+            const arrow = up ? '▲' : '▼';
+            const cls = diff === 0 ? 'neutral' : (good ? 'up' : 'down');
+            const formatted = format === 'euro' ? `€${Math.abs(diff).toFixed(2)}` : format === 'pct' ? `${Math.abs(diff).toFixed(2)}%` : Math.abs(diff).toFixed(0);
+            el.className = `metric-comparison ${cls}`;
+            el.innerHTML = `${arrow} ${formatted} (${pct}%) vs vorige periode`;
+        }
+
         function switchDag(dag) {
             activeDag = dag;
             const maandData = DATA_PER_MAAND[activeMaand] || [];
-            if (dag === 'all') {
-                allData = maandData;
-            } else {
-                allData = maandData.filter(r => r.date === dag);
-            }
+            const { current, comparison, label } = getDataForPeriod(maandData, dag);
+            allData = current;
+            comparisonData = comparison;
             renderDashboard();
         }
 
@@ -1108,6 +1182,7 @@
             activeMaand = maand;
             activeDag = 'all';
             allData = DATA_PER_MAAND[maand] || [];
+            comparisonData = null;
             populateDagSelector(maand);
             const labels = {
                 '2026-05': 'Mei 2026 (volledig) | Bijgewerkt: 31 mei 2026',
