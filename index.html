@@ -193,7 +193,7 @@
     <div class="container">
         <header>
             <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
-            <p class="date-range">Periode: mei 2026 (volledig) | Bijgewerkt: 31 mei 2026</p>
+            <p class="date-range" id="periodeLabel">Periode: juni 2026 (lopend) | Bijgewerkt: 1 juni 2026</p>
         </header>
 
         <div class="metrics-grid">
@@ -223,11 +223,19 @@
             </div>
         </div>
 
-        <div class="filter-section">
+
+        <div class="filter-section" style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
             <label class="filter-label">
                 <input type="checkbox" id="activeOnly" checked>
                 Alleen actieve campagnes tonen
             </label>
+            <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
+                <span style="font-size:14px; color:#333; font-weight:500;">Maand:</span>
+                <select id="maandSelector" onchange="switchMaand(this.value)" style="padding:8px 14px; border:1px solid #ddd; border-radius:8px; font-size:14px; background:white; cursor:pointer; font-weight:500;">
+                    <option value="2026-06">Juni 2026 (lopend)</option>
+                    <option value="2026-05">Mei 2026</option>
+                </select>
+            </div>
         </div>
 
         <div class="tabs">
@@ -959,10 +967,8 @@
             event.target.classList.add('active');
         }
 
-        async function loadMetaData() {
-            // Live data van Windsor.ai - Meta Ads account 627183079667838
-            // Bijgewerkt: 31 mei 2026 | Volledige maand mei 2026
-            allData = [
+        const DATA_PER_MAAND = {
+            '2026-05': [
                     // META_CORE_KOZIJNEN_TWENTE_PLUS - ACTIEF
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1A_VIDEO',spend:324.13,impressions:10402,clicks:280,conversions:5,frequency:1.10,cpm:31.16,form:'Financiering Kozijnen',status:'ACTIVE'},
                     {campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',spend:1445.97,impressions:62865,clicks:1163,conversions:40,frequency:1.17,cpm:23.00,form:'Financiering Variant B',status:'ACTIVE'},
@@ -991,9 +997,28 @@
                     {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Onderhoud 3A',spend:214.56,impressions:10450,clicks:200,conversions:2,frequency:1.12,cpm:20.53,form:'Info',status:'PAUSED'},
                     {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Horren 3D',spend:22.28,impressions:1278,clicks:26,conversions:1,frequency:1.04,cpm:17.43,form:'Info',status:'PAUSED'},
                     {campaign:'MH | Info | Avond | Almelo 40km | MA-Do+WE',adset:'MH | Info | Avond | Almelo 40km | MA-Do+WE',ad:'MH | Info | Verduurzamen 3C',spend:20.88,impressions:1302,clicks:24,conversions:0,frequency:1.12,cpm:16.04,form:'Info',status:'PAUSED'},
-                ];
+                ],
+            '2026-06': [
+                    // Juni 2026 - wordt bijgewerkt naarmate de maand vordert
+                    // Data wordt wekelijks toegevoegd via Windsor.ai
+            ]
+        };
 
+        let activeMaand = '2026-06';
+
+        function switchMaand(maand) {
+            activeMaand = maand;
+            allData = DATA_PER_MAAND[maand] || [];
+            const labels = {
+                '2026-05': 'Mei 2026 (volledig) | Bijgewerkt: 31 mei 2026',
+                '2026-06': 'Juni 2026 (lopend) | Bijgewerkt: 1 juni 2026'
+            };
+            document.getElementById('periodeLabel').textContent = 'Periode: ' + (labels[maand] || maand);
             renderDashboard();
+        }
+
+        async function loadMetaData() {
+            switchMaand('2026-06');
         }
 
         document.getElementById('activeOnly').addEventListener('change', renderDashboard);
