@@ -781,16 +781,33 @@
                 if (activeOnlyAds) return d.status === 'ACTIVE' && isEnabled;
                 return isEnabled;
             });
+
+            // Aggregate per ad (sum across days)
+            const grouped = {};
+            data.forEach(row => {
+                const key = row.ad;
+                if (!grouped[key]) {
+                    grouped[key] = { form: row.form, ad: row.ad, spend: 0, impressions: 0, clicks: 0, conversions: 0, freqSum: 0, freqCount: 0 };
+                }
+                grouped[key].spend       += row.spend || 0;
+                grouped[key].impressions += row.impressions || 0;
+                grouped[key].clicks      += row.clicks || 0;
+                grouped[key].conversions += row.conversions || 0;
+                if (row.frequency) { grouped[key].freqSum += row.frequency; grouped[key].freqCount++; }
+            });
+
             const tbody = document.getElementById('adsList');
             let rank = 1;
-            tbody.innerHTML = data
-                .sort((a, b) => (b.conversions || 0) - (a.conversions || 0))
+            tbody.innerHTML = Object.values(grouped)
+                .sort((a, b) => b.conversions - a.conversions)
                 .map(row => {
                     const ctr = row.impressions > 0 ? (row.clicks / row.impressions * 100) : 0;
                     const cpc = row.clicks > 0 ? (row.spend / row.clicks) : 0;
                     const cpl = row.conversions > 0 ? (row.spend / row.conversions) : 0;
+                    const cpm = row.impressions > 0 ? (row.spend / row.impressions * 1000) : 0;
+                    const freq = row.freqCount > 0 ? (row.freqSum / row.freqCount) : 0;
                     const rankClass = rank <= 3 ? `rank-${rank}` : '';
-                    return `<tr><td class="${rankClass}">${rank++}</td><td>${row.form || '-'}</td><td>${row.ad}</td><td>€${row.spend.toFixed(2)}</td><td>${row.impressions}</td><td>€${(row.cpm || 0).toFixed(2)}</td><td>${row.clicks}</td><td>${ctr.toFixed(2)}%</td><td>€${cpc.toFixed(2)}</td><td>${(row.frequency || 0).toFixed(2)}</td><td>${row.conversions || 0}</td><td>€${cpl.toFixed(2)}</td></tr>`;
+                    return `<tr><td class="${rankClass}">${rank++}</td><td>${row.form || '-'}</td><td>${row.ad}</td><td>€${row.spend.toFixed(2)}</td><td>${row.impressions.toLocaleString()}</td><td>€${cpm.toFixed(2)}</td><td>${row.clicks}</td><td>${ctr.toFixed(2)}%</td><td>€${cpc.toFixed(2)}</td><td>${freq.toFixed(2)}</td><td>${row.conversions}</td><td>${row.conversions > 0 ? '€' + cpl.toFixed(2) : '-'}</td></tr>`;
                 }).join('');
         }
 
