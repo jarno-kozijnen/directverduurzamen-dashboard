@@ -277,6 +277,12 @@
         </div>
 
         <div id="adsets" class="tab-content">
+            <div class="filter-section" style="margin-bottom:15px;">
+                <label class="filter-label">
+                    <input type="checkbox" id="activeOnlyAdsets" checked onchange="renderAdsets()">
+                    Alleen actieve ad sets tonen
+                </label>
+            </div>
             <div class="chart-container">
                 <div class="chart-title">Ad Set Performance</div>
                 <table>
@@ -300,6 +306,12 @@
         </div>
 
         <div id="ads" class="tab-content">
+            <div class="filter-section" style="margin-bottom:15px;">
+                <label class="filter-label">
+                    <input type="checkbox" id="activeOnlyAds" checked onchange="renderAds()">
+                    Alleen actieve advertenties tonen
+                </label>
+            </div>
             <div class="chart-container">
                 <div class="chart-title">Advertentie Performance</div>
                 <table>
@@ -696,7 +708,12 @@
         }
 
         function renderAdsets() {
-            const data = getFilteredData();
+            const activeOnlyAdsets = document.getElementById('activeOnlyAdsets') ? document.getElementById('activeOnlyAdsets').checked : true;
+            const data = allData.filter(d => {
+                const isEnabled = getCampaignStatus(d.campaign);
+                if (activeOnlyAdsets) return d.status === 'ACTIVE' && isEnabled;
+                return isEnabled;
+            });
             const grouped = {};
             data.forEach(row => {
                 const key = `${row.campaign}|${row.adset}`;
@@ -723,7 +740,12 @@
         }
 
         function renderAds() {
-            const data = getFilteredData();
+            const activeOnlyAds = document.getElementById('activeOnlyAds') ? document.getElementById('activeOnlyAds').checked : true;
+            const data = allData.filter(d => {
+                const isEnabled = getCampaignStatus(d.campaign);
+                if (activeOnlyAds) return d.status === 'ACTIVE' && isEnabled;
+                return isEnabled;
+            });
             const tbody = document.getElementById('adsList');
             let rank = 1;
             tbody.innerHTML = data
