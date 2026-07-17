@@ -54,8 +54,9 @@ app.get('/api/organisch-data', async (req, res) => {
       '2026-02': { gscClicks: 880, gscImpressions: 124758, users: 4, conversions: 9, ctr: 0.0071, position: 22.6 },
       '2026-03': { gscClicks: 902, gscImpressions: 119664, users: 31, conversions: 16, ctr: 0.0075, position: 17.4 },
       '2026-04': { gscClicks: 881, gscImpressions: 105563, users: 27, conversions: 10, ctr: 0.0083, position: 16.9 },
-      '2026-05': { gscClicks: 304, gscImpressions: 37529, users: 72, conversions: 8, ctr: 0.0081, position: 16.9 },
-      '2026-06': { gscClicks: null, gscImpressions: null, users: null, conversions: null, ctr: null, position: null, placeholder: true }
+      '2026-05': { gscClicks: 1171, gscImpressions: 135003, users: 13, conversions: 13, ctr: 0.0087, position: 17.08 },
+      '2026-06': { gscClicks: 1407, gscImpressions: 162980, users: 14, conversions: 14, ctr: 0.0086, position: 13.91 },
+      '2026-07': { gscClicks: 945, gscImpressions: 99658, users: 5, conversions: 5, ctr: 0.0095, position: 13.56, partial: true, partialNote: 'Data t/m 16 juli 2026' }
     };
 
     const data = monthlyData[month] || { gscClicks: null, gscImpressions: null, users: null, conversions: null, ctr: null, position: null, placeholder: true };
