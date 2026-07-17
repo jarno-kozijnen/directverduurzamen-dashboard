@@ -363,8 +363,8 @@
                     <option value="2026-02">Februari 2026</option>
                     <option value="2026-03">Maart 2026</option>
                     <option value="2026-04">April 2026</option>
-                    <option value="2026-05" selected>Mei 2026</option>
-                    <option value="2026-06">Juni 2026</option>
+                    <option value="2026-05">Mei 2026</option>
+                    <option value="2026-06" selected>Juni 2026</option>
                     <option value="2026-07">Juli 2026</option>
                     <option value="2026-08">Augustus 2026</option>
                     <option value="2026-09">September 2026</option>
@@ -512,7 +512,7 @@
             '2026-03': { gscClicks: 902, gscImpressions: 119664, users: 31, conversions: 16, ctr: 0.0075, position: 17.4 },
             '2026-04': { gscClicks: 881, gscImpressions: 105563, users: 27, conversions: 10, ctr: 0.0083, position: 16.9 },
             '2026-05': { gscClicks: 1091, gscImpressions: 126223, users: 125, conversions: 14, ctr: 0.0086, position: 17.2 },
-            '2026-06': { gscClicks: 0, gscImpressions: 0, users: 0, conversions: 0, ctr: 0, position: 0 }
+            '2026-06': { gscClicks: null, gscImpressions: null, users: null, conversions: null, ctr: null, position: null, placeholder: true }
         };
 
         let leadsChart = null;
@@ -555,13 +555,28 @@
             // Using MONTHLY_DATA for stats
             const data = MONTHLY_DATA[month] || { gscClicks: 0, gscImpressions: 0, users: 0, conversions: 0 };
 
-            document.getElementById('gscClicks').textContent = data.gscClicks.toLocaleString();
-            document.getElementById('gscImpressions').textContent = data.gscImpressions.toLocaleString();
-            document.getElementById('gscPosition').textContent = data.position > 0 ? data.position.toFixed(1) : '-';
-            document.getElementById('gaConversions').textContent = data.conversions.toLocaleString();
+            if (data.placeholder) {
+                document.getElementById('gscClicks').textContent = '—';
+                document.getElementById('gscImpressions').textContent = '—';
+                document.getElementById('gscPosition').textContent = '—';
+                document.getElementById('gaConversions').textContent = '—';
+                document.getElementById('gscClicks').nextElementSibling.textContent = 'SEO data volgt';
+                document.getElementById('gscImpressions').nextElementSibling.textContent = 'SEO data volgt';
+                document.getElementById('gscPosition').nextElementSibling.textContent = 'SEO data volgt';
+                document.getElementById('gaConversions').nextElementSibling.textContent = 'SEO data volgt';
+            } else {
+                document.getElementById('gscClicks').textContent = data.gscClicks.toLocaleString();
+                document.getElementById('gscImpressions').textContent = data.gscImpressions.toLocaleString();
+                document.getElementById('gscPosition').textContent = data.position > 0 ? data.position.toFixed(1) : '-';
+                document.getElementById('gaConversions').textContent = data.conversions.toLocaleString();
+                document.getElementById('gscClicks').nextElementSibling.textContent = 'deze maand';
+                document.getElementById('gscImpressions').nextElementSibling.textContent = 'deze maand';
+                document.getElementById('gscPosition').nextElementSibling.textContent = 'deze maand';
+                document.getElementById('gaConversions').nextElementSibling.textContent = 'deze maand';
+            }
 
             const leadsCountEl = document.getElementById('leadsCount');
-            if (leadsCountEl) leadsCountEl.textContent = Math.round(data.conversions);
+            if (leadsCountEl) leadsCountEl.textContent = data.placeholder ? '—' : Math.round(data.conversions);
         }
 
         function updateCumulativeTable() {
@@ -574,16 +589,23 @@
                     monthLabel += ' (volledig)';
                 }
                 if (month === '2026-06') {
-                    monthLabel += ' (lopend)';
+                    monthLabel += data.placeholder ? ' (SEO volgt)' : ' (volledig)';
                 }
 
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><strong>${monthLabel}</strong></td>
-                    <td>${data.gscClicks.toLocaleString()}</td>
-                    <td>${(data.gscImpressions / 1000).toFixed(0)}k</td>
-                    <td><strong>${data.conversions}</strong></td>
-                `;
+                if (data.placeholder) {
+                    row.innerHTML = `
+                        <td><strong>${monthLabel}</strong></td>
+                        <td colspan="3" style="color:#9ca3af; font-style:italic;">SEO-data nog niet beschikbaar — placeholder</td>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <td><strong>${monthLabel}</strong></td>
+                        <td>${data.gscClicks.toLocaleString()}</td>
+                        <td>${(data.gscImpressions / 1000).toFixed(0)}k</td>
+                        <td><strong>${data.conversions}</strong></td>
+                    `;
+                }
                 tbody.appendChild(row);
             });
         }
@@ -592,10 +614,11 @@
             const months = Object.keys(MONTHLY_DATA).map(m => {
                 let label = MONTHS[m];
                 if (m === '2026-05') label = 'Mei*';
+                if (m === '2026-06') label = 'Juni*';
                 return label;
             });
-            const leads = Object.values(MONTHLY_DATA).map(d => d.conversions);
-            const clicks = Object.values(MONTHLY_DATA).map(d => d.gscClicks);
+            const leads = Object.values(MONTHLY_DATA).map(d => d.placeholder ? null : d.conversions);
+            const clicks = Object.values(MONTHLY_DATA).map(d => d.placeholder ? null : d.gscClicks);
 
             // Leads chart
             const ctxLeads = document.getElementById('leadsChart').getContext('2d');
@@ -626,7 +649,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: Math.max(...leads) * 1.2
+                            max: Math.max(...leads.filter(v => v != null), 1) * 1.2
                         }
                     }
                 }
@@ -661,7 +684,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: Math.max(...clicks) * 1.2
+                            max: Math.max(...clicks.filter(v => v != null), 1) * 1.2
                         }
                     }
                 }
@@ -674,7 +697,7 @@
         }
 
         function getData() {
-            const month = localStorage.getItem('currentMonth') || '2026-05';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             const defaultData = {
                 newBlogs: month === '2026-05' ? [
@@ -682,18 +705,28 @@
                     { title: 'Woning voorbereiden kozijnen vervangen', url: 'https://directverduurzamen.nl/je-woning-voorbereiden-op-nieuwe-kozijnen/', done: false },
                     { title: 'Inbraakwerend glas P4A P5A', url: 'https://directverduurzamen.nl/inbraakwerend-glas-p4a-p5a/', done: false },
                     { title: 'Kunststof kozijnen jaren 70 woning', url: 'http://directverduurzamen.nl/kunststof-kozijnen-jaren-70-woning/', done: false }
+                ] : month === '2026-06' ? [
+                    { title: 'Blog 1 (placeholder)', url: '', done: false },
+                    { title: 'Blog 2 (placeholder)', url: '', done: false },
+                    { title: 'Blog 3 (placeholder)', url: '', done: false },
+                    { title: 'Blog 4 (placeholder)', url: '', done: false }
                 ] : Array(4).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: month === '2026-05' ? [
                     { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
                     { title: 'SVOH Subsidie', url: '/subsidie/svoh-subsidie/', done: false },
                     { title: 'DUMAVA Subsidie', url: '/subsidie/dumava-subsidie/', done: false },
                     { title: 'SVVE Subsidie', url: '/subsidie/svve-subsidie/', done: false }
+                ] : month === '2026-06' ? [
+                    { title: 'Herschrijving 1 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 2 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 3 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 4 (placeholder)', url: '', done: false }
                 ] : Array(4).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: month === '2026-06' ? [
                     { title: 'Project Purmerend', notes: 'https://directverduurzamen.nl/project/purmerend/', done: false },
                     { title: 'Project Vroomshoop', notes: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
-                    { title: 'Post 3', notes: '', done: false },
-                    { title: 'Post 4', notes: '', done: false }
+                    { title: 'Post 3 (placeholder)', notes: '', done: false },
+                    { title: 'Post 4 (placeholder)', notes: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: 'Post 1', notes: 'https://directverduurzamen.nl/project/epe/', done: false },
                     { title: 'Post 2', notes: 'https://directverduurzamen.nl/project/deventer/', done: false },
@@ -703,8 +736,8 @@
                 websiteProjects: month === '2026-06' ? [
                     { title: '3 juni', url: 'https://directverduurzamen.nl/project/purmerend/', done: false },
                     { title: '10 juni', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
-                    { title: 'Week 3', url: '', done: false },
-                    { title: 'Week 4', url: '', done: false }
+                    { title: 'Week 3 (placeholder)', url: '', done: false },
+                    { title: 'Week 4 (placeholder)', url: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
                     { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
@@ -716,7 +749,7 @@
                     { title: '10 juni | Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: false },
                     { title: '17 juni | Purmerend', url: 'https://directverduurzamen.nl/project/purmerend/', done: false },
                     { title: '24 juni | Vroomshoop', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: false },
-                    { title: 'Week 5', url: '', done: false }
+                    { title: 'Week 5 (placeholder)', url: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: true },
                     { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: true },
@@ -733,6 +766,15 @@
                         anchor_2: 'Bij Direct Verduurzamen in Almelo',
                         url_2: 'https://directverduurzamen.nl/',
                         done: true
+                    }
+                ] : month === '2026-06' ? [
+                    {
+                        url_plaatsing: '',
+                        anchor_1: '',
+                        url_1: '',
+                        anchor_2: '',
+                        url_2: '',
+                        done: false
                     }
                 ] : []
             };
@@ -774,7 +816,7 @@
         }
 
         function saveData() {
-            const month = localStorage.getItem('currentMonth') || '2026-05';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             const data = getData();
 
@@ -827,7 +869,7 @@
 
         function renderCards() {
             const data = getData();
-            const month = localStorage.getItem('currentMonth') || '2026-05';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const container = document.getElementById('taskCards');
             container.innerHTML = '';
 
@@ -1019,7 +1061,7 @@
         }
 
         function resetMonthData() {
-            const month = localStorage.getItem('currentMonth') || '2026-05';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             if (confirm(`Weet je zeker dat je de lokale data voor ${month} wilt resetten? Alle vinkjes en handmatige invoer worden gewist.`)) {
                 localStorage.removeItem(key);
@@ -1109,7 +1151,7 @@
         }
 
         // Initialize
-        const initialMonth = localStorage.getItem('currentMonth') || '2026-05';
+        const initialMonth = localStorage.getItem('currentMonth') || '2026-06';
         document.getElementById('monthSelect').value = initialMonth;
         localStorage.setItem('currentMonth', initialMonth);
         loadMonthData(initialMonth);

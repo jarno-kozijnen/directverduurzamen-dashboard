@@ -203,7 +203,7 @@
     <div class="container">
         <header>
             <h1>📊 Direct Verduurzamen - Meta Ads Dashboard</h1>
-            <p class="date-range" id="periodeLabel">Periode: juni 2026 (lopend) | Bijgewerkt: 1 juni 2026</p>
+            <p class="date-range" id="periodeLabel">Periode: Juni 2026 (volledig) | Bijgewerkt: 30 juni 2026</p>
         </header>
 
         <div class="metrics-grid">
@@ -248,7 +248,7 @@
             <div style="display:flex; align-items:center; gap:10px; margin-left:auto;">
                 <span style="font-size:14px; color:#333; font-weight:500;">Maand:</span>
                 <select id="maandSelector" onchange="switchMaand(this.value)" style="padding:8px 14px; border:1px solid #ddd; border-radius:8px; font-size:14px; background:white; cursor:pointer; font-weight:500;">
-                    <option value="2026-06">Juni 2026 (lopend)</option>
+                    <option value="2026-06" selected>Juni 2026</option>
                     <option value="2026-05">Mei 2026</option>
                 </select>
             </div>
@@ -596,6 +596,7 @@
         ];
 
         const changelog = [
+            {date:'2026-06-30',change:'Dashboard update: Volledige juni 2026 Meta Ads data',details:'META_CORE: €3.810,95 spend, 68 leads, CPL €56,04. Retargeting: €307,78 spend, 9 leads, CPL €34,20. Totaal: €4.118,73 | 77 leads | CPL €53,49 | CTR 1,61%. Vs mei: spend +62%, leads +26%, CPL +28%.'},
             {date:'2026-06-01',change:'Dashboard update: Juni 2026 gestart - dag 1 data live (Windsor.ai)',details:'META_CORE + Retargeting actief. 2 leads op dag 1. Spend €31,10. Data wordt dagelijks bijgewerkt.'},
             {date:'2026-05-30',change:'Dashboard update: Volledige mei 2026 data (Windsor.ai)',details:'Alle campagnes bijgewerkt. META_CORE: €2.208 spend, 56 leads. Retargeting campagne toegevoegd: €123 spend, 4 leads. Gepauzeerde campagnes volledig opgenomen (MH Bel Direct, Afspraak, Info, Winactie, Vacature).'},
             {date:'2026-05-18',change:'Dashboard update: 19 april - 18 mei data',details:'Meta Ads cijfers bijgewerkt. META_CORE_KOZIJNEN_TWENTE_PLUS: €1.228 spend, 40.561 impressions, 910 clicks. DV Leads campaign: €1.113 spend.'},
@@ -605,7 +606,8 @@
         ];
 
         const MONTHLY_DATA = {
-            '2026-05': { label: 'Mei 2026 (volledig)', spend: 2542.16, leads: 61, impressions: 96854, clicks: 1897, note: 'Nieuwe structuur (GEO targeting scope). META_CORE + Retargeting actief. CPL €41,67 | CTR 1,96%.' }
+            '2026-05': { label: 'Mei 2026 (volledig)', spend: 2542.16, leads: 61, impressions: 96854, clicks: 1897, note: 'Nieuwe structuur (GEO targeting scope). META_CORE + Retargeting actief. CPL €41,67 | CTR 1,96%.' },
+            '2026-06': { label: 'Juni 2026 (volledig)', spend: 4118.73, leads: 77, impressions: 149805, clicks: 2405, note: 'META_CORE + Retargeting. CPL €53,49 | CTR 1,61% | CPC €1,71. Vs mei: spend €2.542→€4.119 | leads 61→77 | CPL €41,67→€53,49 | CTR 1,96%→1,61%.' }
         };
 
         const dailyData = [
@@ -1002,6 +1004,7 @@
             renderCampaignInfo();
             renderChangelog();
             renderCampaignManager();
+            renderMaandoverzicht();
         }
 
         function switchTab(tabName) {
@@ -1135,16 +1138,9 @@
                     {date:'2026-05-31',campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_FINANCIERING_1B_VIDEO',form:'Rt Financiering 1B',spend:12.23,impressions:262,reach:199,clicks:1,conversions:0,cpm:46.68,frequency:1.32,ctr:0.0038,cpc:12.23,status:'ACTIVE'}
                 ],
                 '2026-06': [
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ONDERHOUD_1A_VIDEO',form:'Onderhoud 1A Video',spend:2.04,impressions:66,reach:61,clicks:3,conversions:1,cpm:30.91,frequency:1.08,ctr:0.0455,cpc:0.68,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_FINANCIERING_1B_VIDEO',form:'Financiering 1B Video',spend:15.79,impressions:668,reach:620,clicks:7,conversions:0,cpm:23.64,frequency:1.08,ctr:0.0105,cpc:2.26,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ISOLATIE_1A_VIDEO',form:'Isolatie 1A Video',spend:2.28,impressions:101,reach:91,clicks:5,conversions:0,cpm:22.57,frequency:1.11,ctr:0.0495,cpc:0.46,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GRATIS_HORREN_1A_STATIC',form:'Gratis Horren 1A Static',spend:2.05,impressions:32,reach:30,clicks:1,conversions:0,cpm:64.06,frequency:1.07,ctr:0.0312,cpc:2.05,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_GEEN_AANBETALING_1A_STATIC',form:'Geen Aanbetaling 1A Static',spend:0.28,impressions:13,reach:12,clicks:0,conversions:0,cpm:21.54,frequency:1.08,ctr:0.0,cpc:0,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_ACHTERAF_BETALEN_1A_STATIC',form:'Achteraf Betalen 1A Static',spend:2.68,impressions:62,reach:47,clicks:1,conversions:0,cpm:43.23,frequency:1.32,ctr:0.0161,cpc:2.68,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'HOOK_0_RENTE_1A_STATIC',form:'0% Rente 1A Static',spend:4.03,impressions:110,reach:101,clicks:2,conversions:0,cpm:36.64,frequency:1.09,ctr:0.0182,cpc:2.02,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_ACHTERAF_BETALEN_1A_STATIC',form:'Achteraf Betalen RT',spend:2.03,impressions:19,reach:18,clicks:2,conversions:0,cpm:106.84,frequency:1.06,ctr:0.1053,cpc:1.02,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_ONDERHOUD_1A_VIDEO',form:'Onderhoud RT',spend:0.49,impressions:5,reach:4,clicks:0,conversions:0,cpm:98.0,frequency:1.25,ctr:0.0,cpc:0,status:'ACTIVE'},
-                    {date:'2026-06-01',campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'RT_HOOK_FINANCIERING_1B_VIDEO',form:'Financiering RT',spend:2.43,impressions:27,reach:24,clicks:2,conversions:1,cpm:90.0,frequency:1.13,ctr:0.0741,cpc:1.22,status:'ACTIVE'}
+                    // Maandtotalen per campagne (ad-level detail volgt later)
+                    {date:'2026-06-30',campaign:'META_CORE_KOZIJNEN_TWENTE_PLUS',adset:'GEO_TWENTE_PLUS_BROAD',ad:'MAANDTOTAAL_CORE',form:'Maandtotaal CORE',spend:3810.95,impressions:142961,reach:0,clicks:2273,conversions:68,cpm:26.66,frequency:0,ctr:0.0159,cpc:1.68,status:'ACTIVE'},
+                    {date:'2026-06-30',campaign:'META_RETARGETING_KOZIJNEN_TWENTE_PLUS',adset:'RT_GEO_TWENTE_PLUS_BROAD',ad:'MAANDTOTAAL_RETARGETING',form:'Maandtotaal Retargeting',spend:307.78,impressions:6844,reach:0,clicks:132,conversions:9,cpm:44.97,frequency:0,ctr:0.0193,cpc:2.33,status:'ACTIVE'}
             ]
         };
 
@@ -1157,6 +1153,7 @@
             const data = DATA_PER_MAAND[maand] || [];
             const dates = [...new Set(data.map(r => r.date))].sort();
             const sel = document.getElementById('dagSelector');
+            if (!sel) { activeDag = 'all'; return; }
             // Preserve special options, then add individual days
             sel.innerHTML = '<option value="all">Hele maand</option><option value="last7">Laatste 7 dagen</option><option value="last14">Laatste 14 dagen</option>';
             dates.forEach(d => {
@@ -1225,7 +1222,7 @@
             populateDagSelector(maand);
             const labels = {
                 '2026-05': 'Mei 2026 (volledig) | Bijgewerkt: 31 mei 2026',
-                '2026-06': 'Juni 2026 (lopend) | Bijgewerkt: 1 juni 2026 (gedeeltelijk)'
+                '2026-06': 'Juni 2026 (volledig) | Bijgewerkt: 30 juni 2026'
             };
             document.getElementById('periodeLabel').textContent = 'Periode: ' + (labels[maand] || maand);
             renderDashboard();
