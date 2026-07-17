@@ -437,8 +437,8 @@
                     <option value="2026-03">Maart 2026</option>
                     <option value="2026-04">April 2026</option>
                     <option value="2026-05">Mei 2026</option>
-                    <option value="2026-06">Juni 2026</option>
-                    <option value="2026-07" selected>Juli 2026 (t/m 16 juli)</option>
+                    <option value="2026-06" selected>Juni 2026</option>
+                    <option value="2026-07">Juli 2026 (t/m 16 juli)</option>
                     <option value="2026-08">Augustus 2026</option>
                     <option value="2026-09">September 2026</option>
                     <option value="2026-10">Oktober 2026</option>
@@ -563,15 +563,15 @@
     </div>
 
     <script>
-        const DATA_VERSION = '2026-06-july-content-v4';
+        const DATA_VERSION = '2026-06-content-v5';
 
-        // Eenmalige opschoning van oude lokale juli-data, zodat de nieuwe
-        // standaard-URL's en afgeronde statussen direct zichtbaar worden.
+        // Eenmalige opschoning van oude lokale data, zodat de voltooide
+        // juni-kaarten (met URL's) direct zichtbaar worden.
         if (localStorage.getItem('organicDataVersion') !== DATA_VERSION) {
             localStorage.removeItem('organisch-2026-06');
             localStorage.removeItem('organisch-2026-07');
             localStorage.setItem('organicDataVersion', DATA_VERSION);
-            localStorage.setItem('currentMonth', '2026-07');
+            localStorage.setItem('currentMonth', '2026-06');
         }
 
         const MONTHS = {
@@ -854,7 +854,7 @@
         }
 
         function getData() {
-            const month = localStorage.getItem('currentMonth') || '2026-07';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             const defaultData = {
                 newBlogs: month === '2026-05' ? [
@@ -868,10 +868,10 @@
                     { title: 'Kozijnen vervangen na de zomer: waarom op tijd plannen?', url: 'https://directverduurzamen.nl/blog/kozijnen-vervangen-na-de-zomer', done: true },
                     { title: 'Kunststof voordeur en kozijnen combineren', url: 'https://directverduurzamen.nl/blog/kunststof-voordeur-en-kozijnen', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Blog 1', url: '', done: false },
-                    { title: 'Blog 2', url: '', done: false },
-                    { title: 'Blog 3', url: '', done: false },
-                    { title: 'Blog 4', url: '', done: false }
+                    { title: 'Blog 1 (placeholder)', url: '', done: false },
+                    { title: 'Blog 2 (placeholder)', url: '', done: false },
+                    { title: 'Blog 3 (placeholder)', url: '', done: false },
+                    { title: 'Blog 4 (placeholder)', url: '', done: false }
                 ] : Array(4).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: month === '2026-05' ? [
                     { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
@@ -884,10 +884,10 @@
                     { title: 'Kunststof kozijnen kosten', url: 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/', done: true },
                     { title: 'Kunststof kozijnen subsidie en financiering', url: 'https://directverduurzamen.nl/subsidie-kunststof-kozijnen/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Herschrijving 1', url: '', done: false },
-                    { title: 'Herschrijving 2', url: '', done: false },
-                    { title: 'Herschrijving 3', url: '', done: false },
-                    { title: 'Herschrijving 4', url: '', done: false }
+                    { title: 'Herschrijving 1 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 2 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 3 (placeholder)', url: '', done: false },
+                    { title: 'Herschrijving 4 (placeholder)', url: '', done: false }
                 ] : Array(4).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: month === '2026-06' ? [
                     { title: 'Post 1', notes: '', done: false },
@@ -895,10 +895,10 @@
                     { title: 'Post 3', notes: '', done: false },
                     { title: 'Post 4', notes: '', done: false }
                 ] : month === '2026-07' ? [
-                    { title: 'Post 1', notes: '', done: false },
-                    { title: 'Post 2', notes: '', done: false },
-                    { title: 'Post 3', notes: '', done: false },
-                    { title: 'Post 4', notes: '', done: false }
+                    { title: 'Post 1 (placeholder)', notes: '', done: false },
+                    { title: 'Post 2 (placeholder)', notes: '', done: false },
+                    { title: 'Post 3 (placeholder)', notes: '', done: false },
+                    { title: 'Post 4 (placeholder)', notes: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: 'Post 1', notes: 'https://directverduurzamen.nl/project/epe/', done: false },
                     { title: 'Post 2', notes: 'https://directverduurzamen.nl/project/deventer/', done: false },
@@ -911,10 +911,10 @@
                     { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: true },
                     { title: 'Project Vroomshoop', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Week 1', url: '', done: false },
-                    { title: 'Week 2', url: '', done: false },
-                    { title: 'Week 3', url: '', done: false },
-                    { title: 'Week 4', url: '', done: false }
+                    { title: 'Week 1 (placeholder)', url: '', done: false },
+                    { title: 'Week 2 (placeholder)', url: '', done: false },
+                    { title: 'Week 3 (placeholder)', url: '', done: false },
+                    { title: 'Week 4 (placeholder)', url: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
                     { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
@@ -927,10 +927,10 @@
                     { title: 'Instagram post 3', url: 'https://www.instagram.com/p/DZZrvZ1lSCo/', done: true },
                     { title: 'Instagram post 4', url: 'https://www.instagram.com/p/DZrtUuxFkLC/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Week 1', url: '', done: false },
-                    { title: 'Week 2', url: '', done: false },
-                    { title: 'Week 3', url: '', done: false },
-                    { title: 'Week 4', url: '', done: false }
+                    { title: 'Week 1 (placeholder)', url: '', done: false },
+                    { title: 'Week 2 (placeholder)', url: '', done: false },
+                    { title: 'Week 3 (placeholder)', url: '', done: false },
+                    { title: 'Week 4 (placeholder)', url: '', done: false }
                 ] : month === '2026-05' ? [
                     { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: true },
                     { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: true },
@@ -1021,7 +1021,7 @@
         }
 
         function saveData() {
-            const month = localStorage.getItem('currentMonth') || '2026-07';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             const data = getData();
 
@@ -1106,7 +1106,7 @@
 
         function renderCards() {
             const data = getData();
-            const month = localStorage.getItem('currentMonth') || '2026-07';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const container = document.getElementById('taskCards');
             container.innerHTML = '';
 
@@ -1290,7 +1290,7 @@
         }
 
         function resetMonthData() {
-            const month = localStorage.getItem('currentMonth') || '2026-07';
+            const month = localStorage.getItem('currentMonth') || '2026-06';
             const key = `organisch-${month}`;
             if (confirm(`Weet je zeker dat je de lokale data voor ${month} wilt resetten? Alle vinkjes en handmatige invoer worden gewist.`)) {
                 localStorage.removeItem(key);
@@ -1381,7 +1381,7 @@
         }
 
         // Initialize
-        const initialMonth = localStorage.getItem('currentMonth') || '2026-07';
+        const initialMonth = localStorage.getItem('currentMonth') || '2026-06';
         document.getElementById('monthSelect').value = initialMonth;
         localStorage.setItem('currentMonth', initialMonth);
         loadMonthData(initialMonth);
