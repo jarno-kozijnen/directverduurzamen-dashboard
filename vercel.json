@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/dashboard-v3.html" },
+    { "source": "/", "destination": "/dashboard.html" },
     { "source": "/(.*)", "destination": "/$1" }
   ]
 }
