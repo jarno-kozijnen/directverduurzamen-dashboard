@@ -23,6 +23,28 @@
       '2026-07': { label: 'Juli', clicks: 1847, leads: 12 }
     };
     const monthOrder = Object.keys(organicHistory);
+    const julyContent = {
+      newBlogs: [
+        ['Wanneer zijn houten kozijnen echt aan vervanging toe?', 'https://directverduurzamen.nl/wanneer-kies-je-voor-kunststof-kozijnen/'],
+        ['Kunststof kozijnen met HR++ glas', 'https://directverduurzamen.nl/kunststof-kozijnen-hr-glas/'],
+        ['Beste kunststof kozijnen: waar moet je op letten?', 'https://directverduurzamen.nl/beste-kunststof-kozijnen/'],
+        ['Wat kost een kunststof voordeur inclusief montage?', 'https://directverduurzamen.nl/kunststof-voordeur-kosten/'],
+        ['Hoe lang duurt het vervangen van kozijnen?', 'https://directverduurzamen.nl/hoe-lang-duurt-kozijnen-vervangen/'],
+        ['Kozijnen in fases vervangen', 'https://directverduurzamen.nl/kozijnen-in-fases-vervangen/'],
+        ['Kunststof kozijnen plaatsen in de winter', 'https://directverduurzamen.nl/kunststof-kozijnen-plaatsen-winter/'],
+        ['Kunststof kozijnen bij een jaren 80-woning', 'https://directverduurzamen.nl/kunststof-kozijnen-jaren-80-woning/']
+      ],
+      rewrittenBlogs: [
+        ['Kosten kunststof kozijnen', 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/'],
+        ['Hoe lang gaan kunststof kozijnen mee?', 'https://directverduurzamen.nl/hoelang-gaan-kunststof-kozijnen-mee/'],
+        ['Kunststof kozijnen per maand betalen', 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/'],
+        ['Prijsverschil kunststof of houten kozijnen', 'https://directverduurzamen.nl/prijsverschil-kunststof-of-houten-kozijnen/'],
+        ['Isolatiewaarde kunststof kozijnen', 'https://directverduurzamen.nl/isolatiewaarde-kunststof-kozijnen/'],
+        ['Schuifpui of openslaande deuren', 'https://directverduurzamen.nl/schuifpui-of-tuindeuren/'],
+        ['Zelf kunststof kozijnen repareren', 'https://directverduurzamen.nl/zelf-kunststof-kozijnen-repareren/'],
+        ['Condens aan de binnenkant van het raam', 'https://directverduurzamen.nl/condens-aan-de-binnenkant-van-het-raam/']
+      ]
+    };
 
     function getDashboardContext() {
       try {
@@ -41,14 +63,11 @@
     function updateCumulativeOrganic(selectedMonth) {
       const { innerDocument, innerWindow } = getDashboardContext();
       if (!innerDocument || !innerWindow?.Chart) return false;
-
       const canvas = innerDocument.getElementById('organicTrendChart');
       const chart = canvas ? innerWindow.Chart.getChart(canvas) : null;
       if (!chart) return false;
-
       const endIndex = monthOrder.indexOf(selectedMonth);
       if (endIndex < 0) return false;
-
       const months = monthOrder.slice(0, endIndex + 1);
       chart.config.type = 'line';
       chart.data.labels = months.map(key => organicHistory[key].label);
@@ -70,7 +89,6 @@
       chart.data.datasets[1].yAxisID = 'y1';
       chart.options.interaction = { mode: 'index', intersect: false };
       chart.update();
-
       const panel = canvas.closest('.panel');
       const heading = panel?.querySelector('h3');
       const subtitle = panel?.querySelector('p');
@@ -79,23 +97,48 @@
       return true;
     }
 
+    function ensureContentUrls(selectedMonth) {
+      const { innerDocument } = getDashboardContext();
+      if (!innerDocument) return false;
+      let block = innerDocument.getElementById('julyContentUrls');
+      if (!block) {
+        const heading = innerDocument.getElementById('uitvoering');
+        if (!heading) return false;
+        const style = innerDocument.createElement('style');
+        style.textContent = '.content-url-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.content-url-card{padding:18px}.content-url-card h3{margin:0 0 12px;color:var(--navy);font-size:15px}.content-url-list{display:grid;gap:8px}.content-url-list a{display:block;color:var(--navy);font-size:10px;font-weight:600;line-height:1.4;text-decoration:none;padding:9px 10px;border:1px solid rgba(27,41,74,.1);border-radius:8px;background:#fff}.content-url-list a:hover{text-decoration:underline;border-color:#84BA8A}@media(max-width:800px){.content-url-grid{grid-template-columns:1fr}}';
+        innerDocument.head.appendChild(style);
+        const makeLinks = items => items.map(([title,url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>`).join('');
+        block = innerDocument.createElement('section');
+        block.id = 'julyContentUrls';
+        block.className = 'content-url-grid';
+        block.innerHTML = `<article class="card content-url-card"><h3>8 nieuwe blogs</h3><div class="content-url-list">${makeLinks(julyContent.newBlogs)}</div></article><article class="card content-url-card"><h3>8 herschreven blogs</h3><div class="content-url-list">${makeLinks(julyContent.rewrittenBlogs)}</div></article>`;
+        let node = heading.nextElementSibling;
+        while (node && !node.classList.contains('section-heading')) node = node.nextElementSibling;
+        if (node) heading.parentNode.insertBefore(block, node); else heading.parentNode.appendChild(block);
+      }
+      block.style.display = selectedMonth === '2026-07' ? 'grid' : 'none';
+      return true;
+    }
+
     function ensureDashboard() {
       const { wrapperWindow, selector } = getDashboardContext();
       if (!wrapperWindow || !selector) return false;
-
       if (selector.options.length < 7 && typeof wrapperWindow.init === 'function') {
         wrapperWindow.init();
         return false;
       }
-
       if (!selector.dataset.cumulativeOrganicBound) {
         selector.dataset.cumulativeOrganicBound = 'true';
         selector.addEventListener('change', event => {
-          setTimeout(() => updateCumulativeOrganic(event.target.value), 80);
+          setTimeout(() => {
+            updateCumulativeOrganic(event.target.value);
+            ensureContentUrls(event.target.value);
+          }, 80);
         });
       }
-
-      return updateCumulativeOrganic(selector.value);
+      const organicReady = updateCumulativeOrganic(selector.value);
+      const urlsReady = ensureContentUrls(selector.value);
+      return organicReady && urlsReady;
     }
 
     function startDashboardCheck() {
