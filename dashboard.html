@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct Verduurzamen | Marketingdashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:#1B294A;
+      --navy-2:#26385f;
+      --green:#84BA8A;
+      --green-dark:#4e8558;
+      --bg:#f4f6f8;
+      --surface:#ffffff;
+      --surface-soft:#f8fafb;
+      --text:#182033;
+      --muted:#6b7280;
+      --border:#e6eaf0;
+      --warning:#b7791f;
+      --danger:#b42318;
+      --shadow:0 8px 24px rgba(27,41,74,.08);
+      --radius:16px;
+    }
+
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      font-family:'Montserrat',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .app { min-height:100vh; }
+
+    .topbar {
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(255,255,255,.94);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width:1480px;
+      margin:0 auto;
+      padding:16px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark {
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--navy),var(--navy-2));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      letter-spacing:.04em;
+      box-shadow:var(--shadow);
+    }
+    .brand strong { display:block; color:var(--navy); font-size:15px; }
+    .brand span { display:block; color:var(--muted); font-size:11px; margin-top:2px; }
+
+    .top-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .btn {
+      border:1px solid var(--border);
+      background:white;
+      color:var(--navy);
+      border-radius:10px;
+      padding:10px 14px;
+      font:600 12px 'Montserrat',sans-serif;
+      text-decoration:none;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .btn:hover { transform:translateY(-1px); border-color:#cbd4e1; }
+    .btn.primary { background:var(--navy); color:white; border-color:var(--navy); }
+    .btn.green { background:var(--green); color:var(--navy); border-color:var(--green); }
+
+    .layout {
+      max-width:1480px;
+      margin:0 auto;
+      padding:28px 24px 48px;
+      display:grid;
+      grid-template-columns:240px minmax(0,1fr);
+      gap:24px;
+    }
+
+    .sidebar {
+      position:sticky;
+      top:92px;
+      align-self:start;
+      background:var(--navy);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .sidebar-label {
+      color:rgba(255,255,255,.55);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin:6px 8px 10px;
+      font-weight:700;
+    }
+    .nav-link {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      text-decoration:none;
+      color:rgba(255,255,255,.76);
+      padding:11px 12px;
+      border-radius:10px;
+      font-size:12px;
+      font-weight:600;
+      margin-bottom:4px;
+      transition:.2s ease;
+    }
+    .nav-link:hover,.nav-link.active { background:rgba(255,255,255,.10); color:white; }
+    .nav-dot { width:7px; height:7px; border-radius:50%; background:var(--green); }
+
+    main { min-width:0; }
+
+    .hero {
+      background:linear-gradient(135deg,var(--navy),#243b68);
+      color:white;
+      border-radius:22px;
+      padding:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+    }
+    .eyebrow { text-transform:uppercase; letter-spacing:.12em; font-size:10px; font-weight:700; color:var(--green); }
+    .hero h1 { margin:8px 0 8px; font-size:30px; line-height:1.2; }
+    .hero p { margin:0; color:rgba(255,255,255,.70); font-size:13px; max-width:720px; line-height:1.6; }
+    .period {
+      min-width:190px;
+      padding:14px 16px;
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.08);
+      border-radius:12px;
+    }
+    .period span { display:block; font-size:10px; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.08em; }
+    .period strong { display:block; margin-top:5px; font-size:13px; }
+
+    .section-title {
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin:26px 2px 12px;
+    }
+    .section-title h2 { margin:0; color:var(--navy); font-size:17px; }
+    .section-title p { margin:4px 0 0; color:var(--muted); font-size:11px; }
+    .source-note { color:var(--muted); font-size:10px; }
+
+    .kpi-grid {
+      display:grid;
+      grid-template-columns:repeat(6,minmax(0,1fr));
+      gap:12px;
+    }
+    .card {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 4px 14px rgba(27,41,74,.04);
+    }
+    .kpi { padding:18px; position:relative; overflow:hidden; }
+    .kpi::after {
+      content:'';
+      position:absolute;
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      right:-24px;
+      top:-24px;
+      background:rgba(132,186,138,.18);
+    }
+    .kpi-label { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.08em; font-weight:700; }
+    .kpi-value { margin-top:8px; color:var(--navy); font-size:23px; font-weight:700; }
+    .kpi-meta { margin-top:6px; color:var(--muted); font-size:10px; line-height:1.45; }
+    .kpi-meta.good { color:var(--green-dark); }
+    .kpi-meta.warn { color:var(--warning); }
+
+    .grid-2 { display:grid; grid-template-columns:1.2fr .8fr; gap:16px; }
+    .panel { padding:20px; }
+    .panel-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:16px; }
+    .panel-head h3 { margin:0; color:var(--navy); font-size:14px; }
+    .panel-head p { margin:4px 0 0; color:var(--muted); font-size:10px; }
+    .badge { border-radius:999px; padding:6px 9px; background:#edf6ef; color:var(--green-dark); font-size:9px; font-weight:700; white-space:nowrap; }
+    .chart-wrap { height:280px; }
+
+    .funnel { display:grid; gap:10px; }
+    .funnel-row { display:grid; grid-template-columns:140px 1fr 70px; gap:12px; align-items:center; }
+    .funnel-label { font-size:11px; font-weight:600; color:var(--navy); }
+    .funnel-track { height:10px; background:#edf0f4; border-radius:999px; overflow:hidden; }
+    .funnel-fill { height:100%; background:linear-gradient(90deg,var(--green),var(--green-dark)); border-radius:999px; }
+    .funnel-value { font-size:10px; text-align:right; color:var(--muted); }
+
+    .status-list { display:grid; gap:10px; }
+    .status-item {
+      display:grid;
+      grid-template-columns:10px 1fr auto;
+      gap:10px;
+      align-items:center;
+      padding:12px;
+      background:var(--surface-soft);
+      border:1px solid var(--border);
+      border-radius:12px;
+    }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:var(--green); }
+    .status-dot.warn { background:#e7a84f; }
+    .status-item strong { display:block; font-size:11px; color:var(--navy); }
+    .status-item span { display:block; margin-top:3px; font-size:9px; color:var(--muted); }
+    .status-value { font-size:11px; font-weight:700; color:var(--navy); }
+
+    .work-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+    .work-card { padding:16px; }
+    .work-card span { display:block; font-size:9px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; }
+    .work-card strong { display:block; margin-top:7px; font-size:20px; color:var(--navy); }
+    .progress { height:7px; background:#edf0f4; border-radius:999px; margin-top:12px; overflow:hidden; }
+    .progress > i { display:block; height:100%; border-radius:999px; background:var(--green); }
+    .work-card p { margin:8px 0 0; color:var(--muted); font-size:9px; line-height:1.5; }
+
+    .table-wrap { overflow:auto; border:1px solid var(--border); border-radius:12px; }
+    table { width:100%; border-collapse:collapse; min-width:720px; }
+    th { background:var(--surface-soft); color:var(--muted); font-size:9px; text-transform:uppercase; letter-spacing:.08em; text-align:left; padding:12px; border-bottom:1px solid var(--border); }
+    td { padding:12px; font-size:10px; border-bottom:1px solid var(--border); color:#394155; }
+    tbody tr:last-child td { border-bottom:0; }
+    .good-text { color:var(--green-dark); font-weight:700; }
+    .warn-text { color:var(--warning); font-weight:700; }
+
+    .footer-note { margin-top:20px; color:var(--muted); font-size:9px; line-height:1.6; }
+
+    @media (max-width:1180px) {
+      .kpi-grid { grid-template-columns:repeat(3,1fr); }
+      .work-grid { grid-template-columns:repeat(2,1fr); }
+      .grid-2 { grid-template-columns:1fr; }
+    }
+    @media (max-width:860px) {
+      .layout { grid-template-columns:1fr; }
+      .sidebar { position:static; display:flex; overflow:auto; gap:6px; padding:10px; }
+      .sidebar-label { display:none; }
+      .nav-link { margin:0; white-space:nowrap; }
+      .nav-dot { display:none; }
+      .hero { align-items:flex-start; flex-direction:column; }
+      .period { min-width:0; width:100%; }
+    }
+    @media (max-width:620px) {
+      .topbar-inner,.layout { padding-left:14px; padding-right:14px; }
+      .top-actions .btn:not(.primary) { display:none; }
+      .hero { padding:22px; }
+      .hero h1 { font-size:24px; }
+      .kpi-grid,.work-grid { grid-template-columns:1fr 1fr; }
+      .funnel-row { grid-template-columns:110px 1fr 55px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">DV</div>
+        <div><strong>Direct Verduurzamen</strong><span>Full-funnel marketingdashboard</span></div>
+      </div>
+      <div class="top-actions">
+        <a class="btn" href="/index.html">Meta-detail</a>
+        <a class="btn" href="/organisch-werkzaamheden.html">Organisch detail</a>
+        <a class="btn primary" href="#overzicht">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-label">Navigatie</div>
+      <a class="nav-link active" href="#overzicht">Overzicht <i class="nav-dot"></i></a>
+      <a class="nav-link" href="#funnel">Funnel</a>
+      <a class="nav-link" href="#meta">Meta Ads</a>
+      <a class="nav-link" href="#organisch">Organisch</a>
+      <a class="nav-link" href="#werkzaamheden">Werkzaamheden</a>
+      <a class="nav-link" href="#aandacht">Aandachtspunten</a>
+      <div class="sidebar-label" style="margin-top:18px">Detail</div>
+      <a class="nav-link" href="/index.html">Oud dashboard</a>
+      <a class="nav-link" href="/organisch-werkzaamheden.html">SEO & content</a>
+    </aside>
+
+    <main>
+      <section class="hero" id="overzicht">
+        <div>
+          <div class="eyebrow">Managementoverzicht</div>
+          <h1>Van bereik naar verkoop</h1>
+          <p>Eén rustig overzicht voor advertentieprestaties, organische groei en uitgevoerde marketingwerkzaamheden. Doelen, actuele resultaten en ontbrekende funneldata blijven duidelijk van elkaar gescheiden.</p>
+        </div>
+        <div class="period"><span>Actuele rapportage</span><strong>Meta: juni 2026<br>Organisch: juli 2026</strong></div>
+      </section>
+
+      <div class="section-title"><div><h2>Belangrijkste KPI’s</h2><p>Laatste bevestigde maandcijfers per databron</p></div><span class="source-note">Meta Ads + Google Search Console</span></div>
+      <section class="kpi-grid">
+        <article class="card kpi"><div class="kpi-label">Meta spend</div><div class="kpi-value">€4.118,73</div><div class="kpi-meta">Juni 2026 · volledig</div></article>
+        <article class="card kpi"><div class="kpi-label">Meta leads</div><div class="kpi-value">77</div><div class="kpi-meta good">+26% t.o.v. mei</div></article>
+        <article class="card kpi"><div class="kpi-label">Meta CPL</div><div class="kpi-value">€53,49</div><div class="kpi-meta warn">Boven formeel doel €35–€40</div></article>
+        <article class="card kpi"><div class="kpi-label">GSC klikken</div><div class="kpi-value">1.847</div><div class="kpi-meta good">Juli · +31% t.o.v. juni</div></article>
+        <article class="card kpi"><div class="kpi-label">GSC impressies</div><div class="kpi-value">191.347</div><div class="kpi-meta good">Juli · +17% t.o.v. juni</div></article>
+        <article class="card kpi"><div class="kpi-label">Organische leads</div><div class="kpi-value">12</div><div class="kpi-meta">Juli · 14 in juni</div></article>
+      </section>
+
+      <div class="section-title" id="funnel"><div><h2>Full-funnel voortgang</h2><p>Bevestigde marketingdata en nog ontbrekende salesstappen</p></div></div>
+      <section class="grid-2">
+        <article class="card panel">
+          <div class="panel-head"><div><h3>Beschikbare funneldata</h3><p>Juni Meta-resultaten als huidige basis</p></div><span class="badge">Marketingdata compleet</span></div>
+          <div class="funnel">
+            <div class="funnel-row"><div class="funnel-label">Impressies</div><div class="funnel-track"><div class="funnel-fill" style="width:100%"></div></div><div class="funnel-value">149.805</div></div>
+            <div class="funnel-row"><div class="funnel-label">Klikken</div><div class="funnel-track"><div class="funnel-fill" style="width:61%"></div></div><div class="funnel-value">2.405</div></div>
+            <div class="funnel-row"><div class="funnel-label">Ruwe leads</div><div class="funnel-track"><div class="funnel-fill" style="width:32%"></div></div><div class="funnel-value">77</div></div>
+            <div class="funnel-row"><div class="funnel-label">Geldige leads</div><div class="funnel-track"><div class="funnel-fill" style="width:0%"></div></div><div class="funnel-value">Nog koppelen</div></div>
+            <div class="funnel-row"><div class="funnel-label">Afspraken</div><div class="funnel-track"><div class="funnel-fill" style="width:0%"></div></div><div class="funnel-value">Nog koppelen</div></div>
+            <div class="funnel-row"><div class="funnel-label">Verkopen</div><div class="funnel-track"><div class="funnel-fill" style="width:0%"></div></div><div class="funnel-value">Nog koppelen</div></div>
+          </div>
+        </article>
+        <article class="card panel" id="aandacht">
+          <div class="panel-head"><div><h3>Datastatus</h3><p>Wat is beschikbaar en wat ontbreekt</p></div></div>
+          <div class="status-list">
+            <div class="status-item"><i class="status-dot"></i><div><strong>Meta Ads</strong><span>Spend, bereik, verkeer en leads beschikbaar</span></div><div class="status-value">Compleet</div></div>
+            <div class="status-item"><i class="status-dot"></i><div><strong>Organisch</strong><span>GSC-verkeer en organische leads beschikbaar</span></div><div class="status-value">Compleet</div></div>
+            <div class="status-item"><i class="status-dot warn"></i><div><strong>Leadkwaliteit</strong><span>Geldig, ongeldig en bereikbaar nog niet centraal gekoppeld</span></div><div class="status-value">Open</div></div>
+            <div class="status-item"><i class="status-dot warn"></i><div><strong>Salesfunnel</strong><span>Afspraken, offertes en verkopen nog niet in dit dashboard</span></div><div class="status-value">Open</div></div>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-title" id="meta"><div><h2>Meta Ads</h2><p>Maandontwikkeling op basis van de bestaande dashboarddata</p></div><a class="btn" href="/index.html">Bekijk detaildashboard</a></div>
+      <section class="grid-2">
+        <article class="card panel">
+          <div class="panel-head"><div><h3>Spend en leads</h3><p>Mei versus juni 2026</p></div><span class="badge">Maandtrend</span></div>
+          <div class="chart-wrap"><canvas id="metaTrend"></canvas></div>
+        </article>
+        <article class="card panel">
+          <div class="panel-head"><div><h3>Belangrijkste observaties</h3><p>Geen automatische optimalisaties uitgevoerd</p></div></div>
+          <div class="status-list">
+            <div class="status-item"><i class="status-dot"></i><div><strong>Leadvolume groeide</strong><span>Van 61 naar 77 Meta-leads</span></div><div class="status-value">+26%</div></div>
+            <div class="status-item"><i class="status-dot warn"></i><div><strong>CPL verslechterde</strong><span>Van €41,67 naar €53,49</span></div><div class="status-value">+28%</div></div>
+            <div class="status-item"><i class="status-dot warn"></i><div><strong>CTR daalde</strong><span>Van 1,96% naar 1,61%</span></div><div class="status-value">-0,35 pp</div></div>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-title" id="organisch"><div><h2>Organische groei</h2><p>Google Search Console en organische leads</p></div><a class="btn" href="/organisch-werkzaamheden.html">Open organisch detail</a></div>
+      <section class="grid-2">
+        <article class="card panel"><div class="panel-head"><div><h3>GSC-klikken</h3><p>Mei t/m juli 2026</p></div><span class="badge">Groeiende zichtbaarheid</span></div><div class="chart-wrap"><canvas id="organicTrend"></canvas></div></article>
+        <article class="card panel">
+          <div class="panel-head"><div><h3>Conversiebeeld</h3><p>Verkeer groeit sneller dan leadvolume</p></div></div>
+          <div class="status-list">
+            <div class="status-item"><i class="status-dot"></i><div><strong>Juli GSC-klikken</strong><span>1.847 tegenover 1.407 in juni</span></div><div class="status-value">+31%</div></div>
+            <div class="status-item"><i class="status-dot"></i><div><strong>Gemiddelde positie</strong><span>Verbeterd van 13,91 naar 13,00</span></div><div class="status-value">Beter</div></div>
+            <div class="status-item"><i class="status-dot warn"></i><div><strong>Organische leads</strong><span>12 in juli tegenover 14 in juni</span></div><div class="status-value">-2</div></div>
+          </div>
+        </article>
+      </section>
+
+      <div class="section-title" id="werkzaamheden"><div><h2>Organische werkzaamheden</h2><p>Bevestigde output juli en maandnormen vanaf augustus</p></div></div>
+      <section class="work-grid">
+        <article class="card work-card"><span>Nieuwe blogs</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Vanaf augustus: 12 per maand</p></article>
+        <article class="card work-card"><span>Herschrijvingen</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Vanaf augustus: 8 per maand</p></article>
+        <article class="card work-card"><span>Projectpagina’s</span><strong>4 / 4</strong><div class="progress"><i style="width:100%"></i></div><p>Apeldoorn, Hengelo, Barendrecht en Maarssen</p></article>
+        <article class="card work-card"><span>Socialmediaposts</span><strong>9 live</strong><div class="progress"><i style="width:75%"></i></div><p>Vanaf augustus: 12 per maand</p></article>
+      </section>
+
+      <div class="section-title"><div><h2>Maandoverzicht</h2><p>Bevestigde cijfers, zonder ontbrekende data in te vullen</p></div></div>
+      <section class="card panel">
+        <div class="table-wrap"><table><thead><tr><th>Periode</th><th>Kanaal</th><th>Spend</th><th>Leads</th><th>CPL</th><th>Verkeer</th><th>Status</th></tr></thead><tbody>
+          <tr><td>Mei 2026</td><td>Meta Ads</td><td>€2.542,16</td><td>61</td><td>€41,67</td><td>1.897 klikken</td><td class="good-text">Volledig</td></tr>
+          <tr><td>Juni 2026</td><td>Meta Ads</td><td>€4.118,73</td><td>77</td><td>€53,49</td><td>2.405 klikken</td><td class="good-text">Volledig</td></tr>
+          <tr><td>Juni 2026</td><td>Organisch</td><td>—</td><td>14</td><td>—</td><td>1.407 GSC-klikken</td><td class="good-text">Volledig</td></tr>
+          <tr><td>Juli 2026</td><td>Organisch</td><td>—</td><td>12</td><td>—</td><td>1.847 GSC-klikken</td><td class="good-text">Volledig</td></tr>
+          <tr><td>Juli 2026</td><td>Meta Ads</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="warn-text">Nog toevoegen</td></tr>
+        </tbody></table></div>
+      </section>
+
+      <p class="footer-note">Dit managementoverzicht gebruikt uitsluitend bevestigde gegevens uit het bestaande dashboard en de bijgewerkte organische rapportage. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld en worden daarom niet geschat.</p>
+    </main>
+  </div>
+</div>
+<script>
+  Chart.defaults.font.family = 'Montserrat';
+  Chart.defaults.color = '#6b7280';
+  const gridColor = 'rgba(27,41,74,.08)';
+
+  new Chart(document.getElementById('metaTrend'), {
+    type:'bar',
+    data:{
+      labels:['Mei 2026','Juni 2026'],
+      datasets:[
+        {label:'Spend (€)',data:[2542.16,4118.73],backgroundColor:'#1B294A',borderRadius:8,yAxisID:'y'},
+        {label:'Leads',data:[61,77],backgroundColor:'#84BA8A',borderRadius:8,yAxisID:'y1'}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},beginAtZero:true},y1:{position:'right',grid:{display:false},beginAtZero:true}}}
+  });
+
+  new Chart(document.getElementById('organicTrend'), {
+    type:'line',
+    data:{labels:['Mei 2026','Juni 2026','Juli 2026'],datasets:[{label:'GSC-klikken',data:[1171,1407,1847],borderColor:'#1B294A',backgroundColor:'rgba(132,186,138,.22)',fill:true,tension:.35,pointBackgroundColor:'#84BA8A',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gridColor},beginAtZero:false}}}
+  });
+
+  const links=[...document.querySelectorAll('.nav-link[href^="#"]')];
+  const sections=links.map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+entry.target.id));}})},{rootMargin:'-35% 0px -55% 0px'});
+  sections.forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>
