@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Direct Verduurzamen | Maandrapportage</title>
+  <style>html,body{margin:0;height:100%;overflow:hidden;background:#f3f5f7}iframe{width:100%;height:100%;border:0;display:block}</style>
+</head>
+<body>
+<iframe id="report" src="/dashboard-2026.html" title="Maandrapportage Direct Verduurzamen"></iframe>
+<script>
+const exactNames={
+  'Nieuwe doelgroep en regiocampagne':'DV | TOFU | Regio Test | NL | T006',
+  'Websitebezoekers opnieuw bereiken':'Retargeting - Website Bezoekers & E-mail',
+  'Financieringspagina promotie':'DV | Finance Lander | Tofu 2026',
+  'Extra leadgeneratietest':'DV | Leadgen | test [06-02-2026]',
+  'Kozijnenvergelijker':'123kozijnenvergelijker',
+  'Statische kozijncampagne':'DV | Leads | NL | Kozijnen | Statisch',
+  'Nieuwe doelgroep Twente':'META_CORE_KOZIJNEN_TWENTE_PLUS',
+  'Video over maandbedrag':'DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand',
+  'Direct contact aanvragen':'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',
+  'Afspraak aanvragen':'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',
+  'Informatie aanvragen':'MH | Info | Avond | Almelo 40km | MA-Do+WE'
+};
+function applyExactNames(){
+  const outer=document.getElementById('report');
+  const outerDoc=outer.contentDocument;
+  if(!outerDoc)return;
+  const inner=outerDoc.getElementById('dashboard');
+  const doc=inner&&inner.contentDocument;
+  if(!doc)return;
+  const heading=[...doc.querySelectorAll('th')].find(th=>th.textContent.trim()==='Campagnegroep');
+  if(heading)heading.textContent='Campagne';
+  doc.querySelectorAll('#campaignTableBody .campaign-name').forEach(cell=>{
+    const current=cell.textContent.trim();
+    if(exactNames[current])cell.textContent=exactNames[current];
+  });
+}
+function watch(){
+  const outer=document.getElementById('report');
+  const outerDoc=outer.contentDocument;
+  if(!outerDoc)return;
+  const inner=outerDoc.getElementById('dashboard');
+  if(!inner)return;
+  const run=()=>{
+    applyExactNames();
+    const doc=inner.contentDocument;
+    const select=doc&&doc.getElementById('monthSelect');
+    if(select&&!select.dataset.exactNamesBound){
+      select.dataset.exactNamesBound='1';
+      select.addEventListener('change',()=>setTimeout(applyExactNames,50));
+    }
+    setTimeout(applyExactNames,150);
+  };
+  inner.addEventListener('load',run);
+  run();
+}
+document.getElementById('report').addEventListener('load',watch);
+</script>
+</body>
+</html>
