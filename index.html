@@ -13,37 +13,101 @@
   <iframe id="reportFrame" src="/dashboard-2026.html" title="Marketingrapportage Direct Verduurzamen"></iframe>
   <script>
     const frame = document.getElementById('reportFrame');
+    const organicHistory = {
+      '2026-01': { label: 'Januari', clicks: 1030, leads: 10 },
+      '2026-02': { label: 'Februari', clicks: 880, leads: 9 },
+      '2026-03': { label: 'Maart', clicks: 902, leads: 16 },
+      '2026-04': { label: 'April', clicks: 881, leads: 10 },
+      '2026-05': { label: 'Mei', clicks: 1171, leads: 13 },
+      '2026-06': { label: 'Juni', clicks: 1407, leads: 14 },
+      '2026-07': { label: 'Juli', clicks: 1847, leads: 12 }
+    };
+    const monthOrder = Object.keys(organicHistory);
 
-    function ensureMonthSelector() {
+    function getDashboardContext() {
       try {
         const wrapperWindow = frame.contentWindow;
         const wrapperDocument = frame.contentDocument;
         const innerFrame = wrapperDocument?.getElementById('dashboard');
         const innerDocument = innerFrame?.contentDocument;
+        const innerWindow = innerFrame?.contentWindow;
         const selector = innerDocument?.getElementById('monthSelect');
-
-        if (!wrapperWindow || !innerDocument || !selector) return false;
-
-        if (selector.options.length < 7 && typeof wrapperWindow.init === 'function') {
-          wrapperWindow.init();
-        }
-
-        return selector.options.length >= 7;
+        return { wrapperWindow, innerDocument, innerWindow, selector };
       } catch (error) {
-        return false;
+        return {};
       }
     }
 
-    function startSelectorCheck() {
+    function updateCumulativeOrganic(selectedMonth) {
+      const { innerDocument, innerWindow } = getDashboardContext();
+      if (!innerDocument || !innerWindow?.Chart) return false;
+
+      const canvas = innerDocument.getElementById('organicTrendChart');
+      const chart = canvas ? innerWindow.Chart.getChart(canvas) : null;
+      if (!chart) return false;
+
+      const endIndex = monthOrder.indexOf(selectedMonth);
+      if (endIndex < 0) return false;
+
+      const months = monthOrder.slice(0, endIndex + 1);
+      chart.config.type = 'line';
+      chart.data.labels = months.map(key => organicHistory[key].label);
+      chart.data.datasets[0].label = 'Organische klikken';
+      chart.data.datasets[0].data = months.map(key => organicHistory[key].clicks);
+      chart.data.datasets[0].borderColor = '#1B294A';
+      chart.data.datasets[0].backgroundColor = 'rgba(132,186,138,.18)';
+      chart.data.datasets[0].fill = true;
+      chart.data.datasets[0].tension = .35;
+      chart.data.datasets[0].pointRadius = 4;
+      chart.data.datasets[0].yAxisID = 'y';
+      chart.data.datasets[1].label = 'Organische leads';
+      chart.data.datasets[1].data = months.map(key => organicHistory[key].leads);
+      chart.data.datasets[1].borderColor = '#84BA8A';
+      chart.data.datasets[1].backgroundColor = '#84BA8A';
+      chart.data.datasets[1].fill = false;
+      chart.data.datasets[1].tension = .35;
+      chart.data.datasets[1].pointRadius = 4;
+      chart.data.datasets[1].yAxisID = 'y1';
+      chart.options.interaction = { mode: 'index', intersect: false };
+      chart.update();
+
+      const panel = canvas.closest('.panel');
+      const heading = panel?.querySelector('h3');
+      const subtitle = panel?.querySelector('p');
+      if (heading) heading.textContent = 'Ontwikkeling organische groei';
+      if (subtitle) subtitle.textContent = `Cumulatief januari t/m ${organicHistory[selectedMonth].label.toLowerCase()} 2026`;
+      return true;
+    }
+
+    function ensureDashboard() {
+      const { wrapperWindow, selector } = getDashboardContext();
+      if (!wrapperWindow || !selector) return false;
+
+      if (selector.options.length < 7 && typeof wrapperWindow.init === 'function') {
+        wrapperWindow.init();
+        return false;
+      }
+
+      if (!selector.dataset.cumulativeOrganicBound) {
+        selector.dataset.cumulativeOrganicBound = 'true';
+        selector.addEventListener('change', event => {
+          setTimeout(() => updateCumulativeOrganic(event.target.value), 80);
+        });
+      }
+
+      return updateCumulativeOrganic(selector.value);
+    }
+
+    function startDashboardCheck() {
       let attempts = 0;
       const timer = setInterval(() => {
         attempts += 1;
-        if (ensureMonthSelector() || attempts >= 40) clearInterval(timer);
+        if (ensureDashboard() || attempts >= 50) clearInterval(timer);
       }, 150);
     }
 
-    frame.addEventListener('load', startSelectorCheck);
-    startSelectorCheck();
+    frame.addEventListener('load', startDashboardCheck);
+    startDashboardCheck();
   </script>
 </body>
 </html>
