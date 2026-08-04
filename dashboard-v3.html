@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Direct Verduurzamen | Marketingdashboard</title>
+  <style>
+    html,body{margin:0;height:100%;overflow:hidden;background:#f4f6f8}
+    iframe{width:100%;height:100%;border:0;display:block}
+  </style>
+</head>
+<body>
+  <iframe id="dashboardFrame" src="/dashboard-v2.html" title="Direct Verduurzamen marketingdashboard"></iframe>
+  <script>
+    document.getElementById('dashboardFrame').addEventListener('load', function () {
+      const doc = this.contentDocument;
+      if (!doc) return;
+
+      const rows = [...doc.querySelectorAll('#campagnes tbody tr')];
+      const noordRow = rows.find(row => row.textContent.includes('META_CORE_KOZIJNEN_NOORD_PLUS'));
+      if (noordRow) noordRow.remove();
+
+      const twenteRow = rows.find(row => row.textContent.includes('META_CORE_KOZIJNEN_TWENTE_PLUS'));
+      if (twenteRow && twenteRow.cells.length >= 7) {
+        twenteRow.cells[5].textContent = '55';
+        twenteRow.cells[6].textContent = '€41,99';
+        twenteRow.cells[6].className = 'good';
+      }
+
+      const footer = doc.querySelector('.footer');
+      if (footer) {
+        footer.textContent = 'Meta Ads juli is opgehaald via Windsor.ai voor de periode 1 t/m 31 juli 2026. Voor de dashboardrapportage is de ene lead uit META_CORE_KOZIJNEN_NOORD_PLUS toegewezen aan META_CORE_KOZIJNEN_TWENTE_PLUS. Het totale leadvolume blijft 55. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.';
+      }
+    });
+  </script>
+</body>
+</html>
