@@ -79,13 +79,13 @@
 
         .performance-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
 
         .performance-chart {
-            height: 320px;
+            height: 360px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -437,8 +437,8 @@
                     <option value="2026-03">Maart 2026</option>
                     <option value="2026-04">April 2026</option>
                     <option value="2026-05">Mei 2026</option>
-                    <option value="2026-06" selected>Juni 2026</option>
-                    <option value="2026-07">Juli 2026 (t/m 16 juli)</option>
+                    <option value="2026-06">Juni 2026</option>
+                    <option value="2026-07" selected>Juli 2026</option>
                     <option value="2026-08">Augustus 2026</option>
                     <option value="2026-09">September 2026</option>
                     <option value="2026-10">Oktober 2026</option>
@@ -483,18 +483,18 @@
 
             <div class="performance-grid">
                 <div class="performance-chart">
-                    <h3 style="font-size: 14px;">Organische leads — trend</h3>
+                    <h3 style="font-size: 14px;">Organische leads — afgelopen 12 maanden</h3>
                     <canvas id="leadsChart"></canvas>
                 </div>
                 <div class="performance-chart">
-                    <h3 style="font-size: 14px;">Organisch verkeer — GSC klikken</h3>
+                    <h3 style="font-size: 14px;">GSC-klikken — afgelopen 12 maanden</h3>
                     <canvas id="usersChart"></canvas>
                 </div>
             </div>
 
             <div class="analysis-box">
                 <strong>SEO-ontwikkeling</strong>
-                De organische zichtbaarheid is in juni verder gegroeid. Het aantal klikken steeg ten opzichte van mei met ruim 20% en ook het aantal vertoningen nam met circa 21% toe. Tegelijkertijd verbeterde de gemiddelde positie van 17,08 naar 13,91. In juli zet deze ontwikkeling door: in de eerste zestien dagen zijn al 945 klikken en bijna 100.000 vertoningen gerealiseerd. Omdat juli nog niet volledig is, moet deze maand niet rechtstreeks met een volledige maand worden vergeleken.
+                De organische zichtbaarheid is in juli verder gegroeid. Google Search Console registreerde 1.847 klikken en 191.347 vertoningen. Ten opzichte van juni betekent dit circa 31% meer klikken en 17% meer vertoningen. De CTR steeg van 0,86% naar 0,97% en de gemiddelde positie verbeterde van 13,91 naar 13,00. Vanuit Organic Search zijn 12 organische leads geregistreerd, tegenover 14 in juni. Het verkeer groeide dus sterk, maar dit vertaalde zich nog niet in meer leads.
             </div>
 
             <p class="lead-note">Organische leads zijn gebaseerd op unieke gebruikers vanuit Organic Search die de succespagina (/succes/) hebben bereikt. Paginaweergaven tellen niet mee als leadvolume.</p>
@@ -532,12 +532,12 @@
                     <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
                         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Pagina optimalisatie (GSC)</div>
                         <div style="font-weight:600; color:#111; font-size:13px;">Bestaande pagina's verbeteren</div>
-                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">4 - 6 pagina's per maand</div>
+                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">8 pagina's per maand vanaf augustus</div>
                     </div>
                     <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
                         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Nieuwe content</div>
                         <div style="font-weight:600; color:#111; font-size:13px;">Blogs & landingspagina's</div>
-                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">4 - 6 pagina's per maand</div>
+                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">12 pagina's per maand vanaf augustus</div>
                     </div>
                     <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
                         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Google Bedrijfsprofiel</div>
@@ -547,7 +547,12 @@
                     <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
                         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Projecten</div>
                         <div style="font-weight:600; color:#111; font-size:13px;">Website & social media</div>
-                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">Wekelijks, 1 project per week</div>
+                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">4 projecten per maand</div>
+                    </div>
+                    <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
+                        <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Social media</div>
+                        <div style="font-weight:600; color:#111; font-size:13px;">Facebook & Instagram-posts</div>
+                        <div style="font-size:12px; color:#6b7280; margin-top:3px;">12 posts per maand vanaf augustus</div>
                     </div>
                     <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; border-left:3px solid #1b5e20;">
                         <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#9ca3af; margin-bottom:4px;">Rapportage & Overleg</div>
@@ -563,7 +568,7 @@
     </div>
 
     <script>
-        const DATA_VERSION = '2026-06-content-v5';
+        const DATA_VERSION = '2026-07-windsor-facebook-links-v2';
 
         // Eenmalige opschoning van oude lokale data, zodat de voltooide
         // juni-kaarten (met URL's) direct zichtbaar worden.
@@ -571,7 +576,7 @@
             localStorage.removeItem('organisch-2026-06');
             localStorage.removeItem('organisch-2026-07');
             localStorage.setItem('organicDataVersion', DATA_VERSION);
-            localStorage.setItem('currentMonth', '2026-06');
+            localStorage.setItem('currentMonth', '2026-07');
         }
 
         const MONTHS = {
@@ -612,39 +617,22 @@
             '2026-04': { gscClicks: 881, gscImpressions: 105563, users: 27, conversions: 10, ctr: 0.0083, position: 16.9 },
             '2026-05': { gscClicks: 1171, gscImpressions: 135003, users: 13, conversions: 13, ctr: 0.0087, position: 17.08 },
             '2026-06': { gscClicks: 1407, gscImpressions: 162980, users: 14, conversions: 14, ctr: 0.0086, position: 13.91 },
-            '2026-07': { gscClicks: 945, gscImpressions: 99658, users: 5, conversions: 5, ctr: 0.0095, position: 13.56, partial: true, partialNote: 'Data t/m 16 juli 2026' }
+            '2026-07': { gscClicks: 1847, gscImpressions: 191347, users: 12, conversions: 12, ctr: 0.0097, position: 13.001 }
         };
-
-        // Recente SEO-periode voor trendgrafieken (mei–juli)
+        // Afgelopen twaalf volledige maanden voor de trendgrafieken.
         const organicData = [
-            {
-                month: 'Mei',
-                clicks: 1171,
-                impressions: 135003,
-                ctr: 0.87,
-                position: 17.08,
-                leads: 13,
-                partial: false
-            },
-            {
-                month: 'Juni',
-                clicks: 1407,
-                impressions: 162980,
-                ctr: 0.86,
-                position: 13.91,
-                leads: 14,
-                partial: false
-            },
-            {
-                month: 'Juli',
-                label: 'Juli t/m 16 juli',
-                clicks: 945,
-                impressions: 99658,
-                ctr: 0.95,
-                position: 13.56,
-                leads: 5,
-                partial: true
-            }
+            { month: "aug '25", clicks: 362, impressions: 110145, ctr: 0.33, position: 21.50, leads: 3 },
+            { month: "sep '25", clicks: 552, impressions: 85297, ctr: 0.65, position: 19.30, leads: 5 },
+            { month: "okt '25", clicks: 603, impressions: 90547, ctr: 0.67, position: 18.90, leads: 6 },
+            { month: "nov '25", clicks: 897, impressions: 126681, ctr: 0.71, position: 18.10, leads: 9 },
+            { month: "dec '25", clicks: 792, impressions: 124626, ctr: 0.64, position: 19.70, leads: 8 },
+            { month: "jan '26", clicks: 1030, impressions: 130483, ctr: 0.77, position: 23.20, leads: 10 },
+            { month: "feb '26", clicks: 880, impressions: 124758, ctr: 0.71, position: 22.60, leads: 9 },
+            { month: "mrt '26", clicks: 902, impressions: 119664, ctr: 0.75, position: 17.40, leads: 16 },
+            { month: "apr '26", clicks: 881, impressions: 105563, ctr: 0.83, position: 16.90, leads: 10 },
+            { month: "mei '26", clicks: 1171, impressions: 135003, ctr: 0.87, position: 17.08, leads: 13 },
+            { month: "jun '26", clicks: 1407, impressions: 162980, ctr: 0.86, position: 13.91, leads: 14 },
+            { month: "jul '26", clicks: 1847, impressions: 191347, ctr: 0.97, position: 13.00, leads: 12 }
         ];
 
         function fmtNl(n, decimals) {
@@ -701,8 +689,8 @@
             document.getElementById('metaImpressions').textContent = periodLabel;
             document.getElementById('metaCtr').textContent = periodLabel;
             document.getElementById('metaPosition').textContent = periodLabel;
-            document.getElementById('metaLeads').textContent = data.partial
-                ? 'via /succes/ · ' + (data.partialNote || 'onvolledig')
+            document.getElementById('metaLeads').textContent = data.conversions == null
+                ? (data.leadNote || 'nog te valideren')
                 : 'via /succes/ · unieke gebruikers';
         }
 
@@ -712,9 +700,6 @@
 
             Object.entries(MONTHLY_DATA).forEach(([month, data]) => {
                 let monthLabel = MONTHS[month] || month;
-                if (data.partial) {
-                    monthLabel = 'Juli t/m 16 juli';
-                }
 
                 const row = document.createElement('tr');
                 if (data.partial) row.className = 'row-partial';
@@ -738,11 +723,11 @@
         }
 
         function updateTrendCharts() {
-            const labels = organicData.map(d => d.partial ? (d.label || d.month) : d.month);
+            const labels = organicData.map(d => d.month);
             const leads = organicData.map(d => d.leads);
             const clicks = organicData.map(d => d.clicks);
-            const pointColors = organicData.map(d => d.partial ? '#e65100' : '#1b5e20');
-            const clickPointColors = organicData.map(d => d.partial ? '#e65100' : '#42a5f5');
+            const pointColors = organicData.map(() => '#1b5e20');
+            const clickPointColors = organicData.map(() => '#42a5f5');
 
             const ctxLeads = document.getElementById('leadsChart').getContext('2d');
             if (leadsChart) leadsChart.destroy();
@@ -759,7 +744,7 @@
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,
-                        pointRadius: organicData.map(d => d.partial ? 7 : 5),
+                        pointRadius: 4,
                         pointBackgroundColor: pointColors,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2
@@ -772,18 +757,18 @@
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                title: (items) => {
-                                    const d = organicData[items[0].dataIndex];
-                                    return d.partial ? (d.label || d.month) : d.month;
-                                },
-                                afterLabel: (item) => {
-                                    const d = organicData[item.dataIndex];
-                                    return d.partial ? 'Onvolledige maand — niet 1-op-1 vergelijken' : '';
-                                }
+                                title: (items) => organicData[items[0].dataIndex].month
                             }
                         }
                     },
                     scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        },
                         y: {
                             beginAtZero: true,
                             max: Math.max(...leads, 1) * 1.2,
@@ -810,7 +795,7 @@
                         borderWidth: 2,
                         fill: true,
                         tension: 0.4,
-                        pointRadius: organicData.map(d => d.partial ? 7 : 5),
+                        pointRadius: 4,
                         pointBackgroundColor: clickPointColors,
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2
@@ -823,19 +808,19 @@
                         legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                title: (items) => {
-                                    const d = organicData[items[0].dataIndex];
-                                    return d.partial ? (d.label || d.month) : d.month;
-                                },
-                                label: (item) => 'Klikken: ' + fmtNl(item.raw),
-                                afterLabel: (item) => {
-                                    const d = organicData[item.dataIndex];
-                                    return d.partial ? 'Onvolledige maand — niet 1-op-1 vergelijken' : '';
-                                }
+                                title: (items) => organicData[items[0].dataIndex].month,
+                                label: (item) => 'Klikken: ' + fmtNl(item.raw)
                             }
                         }
                     },
                     scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        },
                         y: {
                             beginAtZero: true,
                             max: Math.max(...clicks, 1) * 1.2,
@@ -853,8 +838,21 @@
             renderCards();
         }
 
+
+        function isAugust2026OrLater(month) {
+            return /^2026-(0[8-9]|1[0-2])$/.test(month);
+        }
+
+        function createPlaceholderItems(total, label, fieldName) {
+            return Array(total).fill(null).map((_, i) => {
+                const item = { title: `${label} ${i + 1}`, done: false };
+                item[fieldName] = '';
+                return item;
+            });
+        }
+
         function getData() {
-            const month = localStorage.getItem('currentMonth') || '2026-06';
+            const month = localStorage.getItem('currentMonth') || '2026-07';
             const key = `organisch-${month}`;
             const defaultData = {
                 newBlogs: month === '2026-05' ? [
@@ -868,11 +866,17 @@
                     { title: 'Kozijnen vervangen na de zomer: waarom op tijd plannen?', url: 'https://directverduurzamen.nl/blog/kozijnen-vervangen-na-de-zomer', done: true },
                     { title: 'Kunststof voordeur en kozijnen combineren', url: 'https://directverduurzamen.nl/blog/kunststof-voordeur-en-kozijnen', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Blog 1 (placeholder)', url: '', done: false },
-                    { title: 'Blog 2 (placeholder)', url: '', done: false },
-                    { title: 'Blog 3 (placeholder)', url: '', done: false },
-                    { title: 'Blog 4 (placeholder)', url: '', done: false }
-                ] : Array(4).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
+                    { title: 'Wanneer zijn houten kozijnen echt aan vervanging toe?', url: 'https://directverduurzamen.nl/wanneer-kies-je-voor-kunststof-kozijnen/', done: true },
+                    { title: 'Kunststof kozijnen met HR++ glas', url: 'https://directverduurzamen.nl/kunststof-kozijnen-hr-glas/', done: true },
+                    { title: 'Beste kunststof kozijnen: waar moet je op letten?', url: 'https://directverduurzamen.nl/beste-kunststof-kozijnen/', done: true },
+                    { title: 'Wat kost een kunststof voordeur inclusief montage?', url: 'https://directverduurzamen.nl/kunststof-voordeur-kosten/', done: true },
+                    { title: 'Hoe lang duurt het vervangen van kozijnen?', url: 'https://directverduurzamen.nl/hoe-lang-duurt-kozijnen-vervangen/', done: true },
+                    { title: 'Kozijnen in fases vervangen', url: 'https://directverduurzamen.nl/kozijnen-in-fases-vervangen/', done: true },
+                    { title: 'Kunststof kozijnen plaatsen in de winter', url: 'https://directverduurzamen.nl/kunststof-kozijnen-plaatsen-winter/', done: true },
+                    { title: 'Kunststof kozijnen bij een jaren 80-woning', url: 'https://directverduurzamen.nl/kunststof-kozijnen-jaren-80-woning/', done: true }
+                ] : isAugust2026OrLater(month)
+                    ? createPlaceholderItems(12, 'Blog', 'url')
+                    : Array(4).fill(null).map((_, i) => ({ title: `Blog ${i+1}`, url: '', done: false })),
                 rewrite: month === '2026-05' ? [
                     { title: 'ISDE Subsidie', url: '/subsidie/isde-subsidie/', done: false },
                     { title: 'SVOH Subsidie', url: '/subsidie/svoh-subsidie/', done: false },
@@ -884,21 +888,27 @@
                     { title: 'Kunststof kozijnen kosten', url: 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/', done: true },
                     { title: 'Kunststof kozijnen subsidie en financiering', url: 'https://directverduurzamen.nl/subsidie-kunststof-kozijnen/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Herschrijving 1 (placeholder)', url: '', done: false },
-                    { title: 'Herschrijving 2 (placeholder)', url: '', done: false },
-                    { title: 'Herschrijving 3 (placeholder)', url: '', done: false },
-                    { title: 'Herschrijving 4 (placeholder)', url: '', done: false }
-                ] : Array(4).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
+                    { title: 'Kosten kunststof kozijnen', url: 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/', done: true },
+                    { title: 'Kunststof kozijnen per maand betalen', url: 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/', done: true },
+                    { title: 'Prijsverschil kunststof of houten kozijnen', url: 'https://directverduurzamen.nl/prijsverschil-kunststof-of-houten-kozijnen/', done: true },
+                    { title: 'Hoe lang gaan kunststof kozijnen mee?', url: 'https://directverduurzamen.nl/hoelang-gaan-kunststof-kozijnen-mee/', done: true },
+                    { title: 'Isolatiewaarde kunststof kozijnen', url: 'https://directverduurzamen.nl/isolatiewaarde-kunststof-kozijnen/', done: true },
+                    { title: 'Schuifpui of openslaande deuren', url: 'https://directverduurzamen.nl/schuifpui-of-tuindeuren/', done: true },
+                    { title: 'Zelf kunststof kozijnen repareren', url: 'https://directverduurzamen.nl/zelf-kunststof-kozijnen-repareren/', done: true },
+                    { title: 'Condens aan de binnenkant van het raam', url: 'https://directverduurzamen.nl/condens-aan-de-binnenkant-van-het-raam/', done: true }
+                ] : isAugust2026OrLater(month)
+                    ? createPlaceholderItems(8, 'Herschrijving', 'url')
+                    : Array(4).fill(null).map((_, i) => ({ title: `Herschrijving ${i+1}`, url: '', done: false })),
                 googleProfile: month === '2026-06' ? [
                     { title: 'Post 1', notes: '', done: false },
                     { title: 'Post 2', notes: '', done: false },
                     { title: 'Post 3', notes: '', done: false },
                     { title: 'Post 4', notes: '', done: false }
                 ] : month === '2026-07' ? [
-                    { title: 'Post 1 (placeholder)', notes: '', done: false },
-                    { title: 'Post 2 (placeholder)', notes: '', done: false },
-                    { title: 'Post 3 (placeholder)', notes: '', done: false },
-                    { title: 'Post 4 (placeholder)', notes: '', done: false }
+                    { title: 'Project Apeldoorn', notes: 'https://directverduurzamen.nl/project/project-apeldoorn/', done: true },
+                    { title: 'Project Hengelo', notes: 'https://directverduurzamen.nl/project/project-hengelo/', done: true },
+                    { title: 'Project Barendrecht', notes: 'https://directverduurzamen.nl/project/project-barendrecht/', done: true },
+                    { title: 'Project Maarssen', notes: 'https://directverduurzamen.nl/project/project-maarssen/', done: true }
                 ] : month === '2026-05' ? [
                     { title: 'Post 1', notes: 'https://directverduurzamen.nl/project/epe/', done: false },
                     { title: 'Post 2', notes: 'https://directverduurzamen.nl/project/deventer/', done: false },
@@ -911,10 +921,10 @@
                     { title: 'Project Daarleveen', url: 'https://directverduurzamen.nl/project/daarleveen/', done: true },
                     { title: 'Project Vroomshoop', url: 'https://directverduurzamen.nl/project/vroomshoop-2/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Week 1 (placeholder)', url: '', done: false },
-                    { title: 'Week 2 (placeholder)', url: '', done: false },
-                    { title: 'Week 3 (placeholder)', url: '', done: false },
-                    { title: 'Week 4 (placeholder)', url: '', done: false }
+                    { title: 'Project Apeldoorn', url: 'https://directverduurzamen.nl/project/project-apeldoorn/', done: true },
+                    { title: 'Project Hengelo', url: 'https://directverduurzamen.nl/project/project-hengelo/', done: true },
+                    { title: 'Project Barendrecht', url: 'https://directverduurzamen.nl/project/project-barendrecht/', done: true },
+                    { title: 'Project Maarssen', url: 'https://directverduurzamen.nl/project/project-maarssen/', done: true }
                 ] : month === '2026-05' ? [
                     { title: 'Project Epe', url: 'https://directverduurzamen.nl/project/epe/', done: true },
                     { title: 'Project Deventer', url: 'https://directverduurzamen.nl/project/deventer/', done: true },
@@ -927,17 +937,24 @@
                     { title: 'Instagram post 3', url: 'https://www.instagram.com/p/DZZrvZ1lSCo/', done: true },
                     { title: 'Instagram post 4', url: 'https://www.instagram.com/p/DZrtUuxFkLC/', done: true }
                 ] : month === '2026-07' ? [
-                    { title: 'Week 1 (placeholder)', url: '', done: false },
-                    { title: 'Week 2 (placeholder)', url: '', done: false },
-                    { title: 'Week 3 (placeholder)', url: '', done: false },
-                    { title: 'Week 4 (placeholder)', url: '', done: false }
+                    { title: '9 juli — Warmte buiten houden', url: 'https://www.facebook.com/1063030576672402/posts/1051372537838206', done: true },
+                    { title: '10 juli — Warmte in slaapkamer of zolder', url: 'https://www.facebook.com/1063030576672402/posts/1052538854388241', done: true },
+                    { title: '17 juli — Vakantiemelding', url: 'https://www.facebook.com/1063030576672402/posts/1058315803810546', done: true },
+                    { title: '21 juli — Project Apeldoorn', url: 'https://www.facebook.com/1063030576672402/posts/1061801483461978', done: true },
+                    { title: '23 juli — Houten kozijnen vervangen?', url: 'https://www.facebook.com/1063030576672402/posts/1063132139995579', done: true },
+                    { title: '25 juli — Geen aanbetaling', url: 'https://www.facebook.com/1063030576672402/posts/1064830233159103', done: true },
+                    { title: '27 juli — Project Hengelo', url: 'https://www.facebook.com/1063030576672402/posts/1066559449652848', done: true },
+                    { title: '29 juli — Wat kosten kunststof kozijnen?', url: 'https://www.facebook.com/1063030576672402/posts/1068348029473990', done: true },
+                    { title: '31 juli — Comfortabel de herfst in', url: 'https://www.facebook.com/1063030576672402/posts/1070167895958670', done: true }
                 ] : month === '2026-05' ? [
                     { title: '29 mei', url: 'https://www.facebook.com/913604654948329/posts/1014937398148387', done: true },
                     { title: '22 mei', url: 'https://www.facebook.com/913604654948329/posts/1008894632085997', done: true },
                     { title: 'Week 3', url: '', done: false },
                     { title: 'Week 4', url: '', done: false },
                     { title: 'Week 5', url: '', done: false }
-                ] : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
+                ] : isAugust2026OrLater(month)
+                    ? createPlaceholderItems(12, 'Socialmediapost', 'url')
+                    : Array(5).fill(null).map((_, i) => ({ title: `Week ${i+1}`, url: '', done: false })),
                 adhocItems: [],
                 linkbuilding: month === '2026-05' ? [
                     {
@@ -965,7 +982,16 @@
                         url_2: 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/',
                         done: true
                     }
-                ] : month === '2026-07' ? [] : []
+                ] : month === '2026-07' ? [
+                    {
+                        url_plaatsing: 'https://coevordernieuws.nl/ondernemend/de-voor-en-nadelen-van-kunststof-kozijnen/',
+                        anchor_1: '',
+                        url_1: '',
+                        anchor_2: '',
+                        url_2: '',
+                        done: true
+                    }
+                ] : []
             };
 
             const stored = localStorage.getItem(key);
@@ -1002,6 +1028,25 @@
                         });
                         return result;
                     }
+                    if (isAugust2026OrLater(month)) {
+                        const result = Object.assign({}, defaultData, parsed);
+                        result.newBlogs = defaultData.newBlogs.map((item, i) =>
+                            parsed.newBlogs && parsed.newBlogs[i]
+                                ? Object.assign({}, item, parsed.newBlogs[i])
+                                : item
+                        );
+                        result.rewrite = defaultData.rewrite.map((item, i) =>
+                            parsed.rewrite && parsed.rewrite[i]
+                                ? Object.assign({}, item, parsed.rewrite[i])
+                                : item
+                        );
+                        result.socialProjects = defaultData.socialProjects.map((item, i) =>
+                            parsed.socialProjects && parsed.socialProjects[i]
+                                ? Object.assign({}, item, parsed.socialProjects[i])
+                                : item
+                        );
+                        return result;
+                    }
                     return Object.assign({}, defaultData, parsed);
                 } catch (e) {
                     return defaultData;
@@ -1021,7 +1066,7 @@
         }
 
         function saveData() {
-            const month = localStorage.getItem('currentMonth') || '2026-06';
+            const month = localStorage.getItem('currentMonth') || '2026-07';
             const key = `organisch-${month}`;
             const data = getData();
 
@@ -1086,6 +1131,23 @@
             const done = !!(url || item.done);
             const el = document.createElement('div');
             el.className = 'checklist-item';
+
+            // Socialmediaposts worden alleen als vaste link getoond.
+            // De URL komt uit de vaste maanddata, bijvoorbeeld via Windsor.
+            if (dataType === 'socialProject') {
+                el.innerHTML = `
+                    <span class="status-icon ${done ? 'done' : 'pending'}">${done ? '✓' : ''}</span>
+                    <div style="flex:1; min-width:0;">
+                        ${title ? `<div style="font-size:13px; color:#333; margin-bottom:4px;">${escapeHtml(title)}</div>` : ''}
+                        ${url
+                            ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#1b5e20; word-break:break-all;">Bekijk Facebook-post ↗</a>`
+                            : `<div style="font-size:11px; color:#6b7280;">${item.done ? 'Gepubliceerd · link niet beschikbaar' : 'Nog niet gepubliceerd'}</div>`
+                        }
+                    </div>
+                `;
+                return el;
+            }
+
             if (url) {
                 el.innerHTML = `
                     <span class="status-icon done">✓</span>
@@ -1095,10 +1157,22 @@
                         <input type="hidden" data-type="${dataType}" data-idx="${idx}" value="${escapeHtml(url)}">
                     </div>
                 `;
+            } else if (item.done && title) {
+                el.innerHTML = `
+                    <span class="status-icon done">✓</span>
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-size:13px; color:#333;">${escapeHtml(title)}</div>
+                        <div style="font-size:11px; color:#6b7280; margin-top:3px;">Afgerond · openbare URL niet vastgelegd</div>
+                        <input type="hidden" data-type="${dataType}" data-idx="${idx}" value="">
+                    </div>
+                `;
             } else {
                 el.innerHTML = `
                     <span class="status-icon ${done ? 'done' : 'pending'}">✓</span>
-                    <input type="text" placeholder="URL" value="" oninput="autoSave(this)" data-type="${dataType}" data-idx="${idx}">
+                    <div style="flex:1; min-width:0;">
+                        ${title ? `<div style="font-size:13px; color:#333; margin-bottom:3px;">${escapeHtml(title)}</div>` : ''}
+                        <input type="text" placeholder="URL" value="" oninput="autoSave(this)" data-type="${dataType}" data-idx="${idx}">
+                    </div>
                 `;
             }
             return el;
@@ -1106,7 +1180,7 @@
 
         function renderCards() {
             const data = getData();
-            const month = localStorage.getItem('currentMonth') || '2026-06';
+            const month = localStorage.getItem('currentMonth') || '2026-07';
             const container = document.getElementById('taskCards');
             container.innerHTML = '';
 
@@ -1114,9 +1188,9 @@
             const newBlogsCard = document.createElement('div');
             newBlogsCard.className = 'card';
             newBlogsCard.innerHTML = `
-                <h3>📝 Nieuwe Blogs <span id="newBlogsProgress">0/4</span></h3>
+                <h3>📝 Nieuwe blogs <span id="newBlogsProgress">0/0</span></h3>
                 <div class="progress-bar"><div class="progress-fill" id="newBlogsBar" style="width: 0%"></div></div>
-                <div class="progress-text" id="newBlogsText">0 van 4 voltooid</div>
+                <div class="progress-text" id="newBlogsText">0 voltooid</div>
                 <div class="checklist" id="newBlogsList"></div>
             `;
             container.appendChild(newBlogsCard);
@@ -1131,9 +1205,9 @@
             const rewriteCard = document.createElement('div');
             rewriteCard.className = 'card';
             rewriteCard.innerHTML = `
-                <h3>♻️ Herschreven blogs <span id="rewriteProgress">0/4</span></h3>
+                <h3>♻️ Herschreven blogs <span id="rewriteProgress">0/0</span></h3>
                 <div class="progress-bar"><div class="progress-fill" id="rewriteBar" style="width: 0%"></div></div>
-                <div class="progress-text" id="rewriteText">0 van 4 voltooid</div>
+                <div class="progress-text" id="rewriteText">0 voltooid</div>
                 <div class="checklist" id="rewriteList"></div>
             `;
             container.appendChild(rewriteCard);
@@ -1290,7 +1364,7 @@
         }
 
         function resetMonthData() {
-            const month = localStorage.getItem('currentMonth') || '2026-06';
+            const month = localStorage.getItem('currentMonth') || '2026-07';
             const key = `organisch-${month}`;
             if (confirm(`Weet je zeker dat je de lokale data voor ${month} wilt resetten? Alle vinkjes en handmatige invoer worden gewist.`)) {
                 localStorage.removeItem(key);
@@ -1336,32 +1410,36 @@
             const data = getData();
 
             // Nieuwe Blogs
-            const newBlogsDone = data.newBlogs.filter(b => !!b.url).length;
-            document.getElementById('newBlogsProgress').textContent = `${newBlogsDone}/4`;
-            document.getElementById('newBlogsText').textContent = `${newBlogsDone} van 4 voltooid`;
-            document.getElementById('newBlogsBar').style.width = `${(newBlogsDone / 4) * 100}%`;
+            const newBlogsTotal = data.newBlogs.length || 1;
+            const newBlogsDone = data.newBlogs.filter(b => !!b.url || b.done).length;
+            document.getElementById('newBlogsProgress').textContent = `${newBlogsDone}/${newBlogsTotal}`;
+            document.getElementById('newBlogsText').textContent = `${newBlogsDone} van ${newBlogsTotal} voltooid`;
+            document.getElementById('newBlogsBar').style.width = `${(newBlogsDone / newBlogsTotal) * 100}%`;
 
             // Herschreven
-            const rewriteDone = data.rewrite.filter(b => !!b.url).length;
-            document.getElementById('rewriteProgress').textContent = `${rewriteDone}/4`;
-            document.getElementById('rewriteText').textContent = `${rewriteDone} van 4 voltooid`;
-            document.getElementById('rewriteBar').style.width = `${(rewriteDone / 4) * 100}%`;
+            const rewriteTotal = data.rewrite.length || 1;
+            const rewriteDone = data.rewrite.filter(b => !!b.url || b.done).length;
+            document.getElementById('rewriteProgress').textContent = `${rewriteDone}/${rewriteTotal}`;
+            document.getElementById('rewriteText').textContent = `${rewriteDone} van ${rewriteTotal} voltooid`;
+            document.getElementById('rewriteBar').style.width = `${(rewriteDone / rewriteTotal) * 100}%`;
 
             // Google Profile
-            const googleDone = data.googleProfile.filter(p => !!p.notes).length;
-            document.getElementById('googleProgress').textContent = `${googleDone}/4`;
-            document.getElementById('googleText').textContent = `${googleDone} van 4 voltooid`;
-            document.getElementById('googleBar').style.width = `${(googleDone / 4) * 100}%`;
+            const googleTotal = data.googleProfile.length || 1;
+            const googleDone = data.googleProfile.filter(p => !!p.notes || p.done).length;
+            document.getElementById('googleProgress').textContent = `${googleDone}/${googleTotal}`;
+            document.getElementById('googleText').textContent = `${googleDone} van ${googleTotal} voltooid`;
+            document.getElementById('googleBar').style.width = `${(googleDone / googleTotal) * 100}%`;
 
             // Website Projects
-            const websiteDone = data.websiteProjects.filter(p => !!p.url).length;
-            document.getElementById('websiteProgress').textContent = `${websiteDone}/4`;
-            document.getElementById('websiteText').textContent = `${websiteDone} van 4 voltooid`;
-            document.getElementById('websiteBar').style.width = `${(websiteDone / 4) * 100}%`;
+            const websiteTotal = data.websiteProjects.length || 1;
+            const websiteDone = data.websiteProjects.filter(p => !!p.url || p.done).length;
+            document.getElementById('websiteProgress').textContent = `${websiteDone}/${websiteTotal}`;
+            document.getElementById('websiteText').textContent = `${websiteDone} van ${websiteTotal} voltooid`;
+            document.getElementById('websiteBar').style.width = `${(websiteDone / websiteTotal) * 100}%`;
 
             // Social Projects
             const socialTotal = data.socialProjects.length || 4;
-            const socialDone = data.socialProjects.filter(p => !!p.url).length;
+            const socialDone = data.socialProjects.filter(p => !!p.url || p.done).length;
             document.getElementById('socialProgress').textContent = `${socialDone}/${socialTotal}`;
             document.getElementById('socialText').textContent = `${socialDone} van ${socialTotal} voltooid`;
             document.getElementById('socialBar').style.width = `${(socialDone / socialTotal) * 100}%`;
@@ -1381,7 +1459,7 @@
         }
 
         // Initialize
-        const initialMonth = localStorage.getItem('currentMonth') || '2026-06';
+        const initialMonth = localStorage.getItem('currentMonth') || '2026-07';
         document.getElementById('monthSelect').value = initialMonth;
         localStorage.setItem('currentMonth', initialMonth);
         loadMonthData(initialMonth);
