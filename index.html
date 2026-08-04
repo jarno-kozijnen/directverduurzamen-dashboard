@@ -3,13 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direct Verduurzamen | Meta Ads</title>
-  <meta http-equiv="refresh" content="0; url=/#meta">
-  <link rel="canonical" href="/#meta">
-  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f6f8;font-family:Arial,sans-serif;color:#1B294A}a{color:#1B294A;font-weight:700}</style>
+  <title>Direct Verduurzamen | Marketingrapportage 2026</title>
+  <style>
+    html,body{margin:0;height:100%;overflow:hidden;background:#f3f5f7}
+    iframe{width:100%;height:100%;border:0;display:block}
+  </style>
 </head>
 <body>
-  <p>Je wordt doorgestuurd naar het actuele Meta Ads-overzicht. <a href="/#meta">Open het dashboard</a>.</p>
-  <script>window.location.replace('/#meta');</script>
+  <iframe id="reportFrame" src="/dashboard-2026.html" title="Marketingrapportage Direct Verduurzamen"></iframe>
+  <script>
+    const frame = document.getElementById('reportFrame');
+
+    function ensureMonthSelector() {
+      try {
+        const wrapperWindow = frame.contentWindow;
+        const wrapperDocument = frame.contentDocument;
+        const innerFrame = wrapperDocument?.getElementById('dashboard');
+        const innerDocument = innerFrame?.contentDocument;
+        const selector = innerDocument?.getElementById('monthSelect');
+
+        if (!wrapperWindow || !innerDocument || !selector) return false;
+
+        if (selector.options.length < 7 && typeof wrapperWindow.init === 'function') {
+          wrapperWindow.init();
+        }
+
+        return selector.options.length >= 7;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function startSelectorCheck() {
+      let attempts = 0;
+      const timer = setInterval(() => {
+        attempts += 1;
+        if (ensureMonthSelector() || attempts >= 40) clearInterval(timer);
+      }, 150);
+    }
+
+    frame.addEventListener('load', startSelectorCheck);
+    startSelectorCheck();
+  </script>
 </body>
 </html>
