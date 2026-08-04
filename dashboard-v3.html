@@ -17,8 +17,11 @@
       if (!doc) return;
 
       const rows = [...doc.querySelectorAll('#campagnes tbody tr')];
-      const noordRow = rows.find(row => row.textContent.includes('META_CORE_KOZIJNEN_NOORD_PLUS'));
-      if (noordRow) noordRow.remove();
+      const rowsToRemove = rows.filter(row =>
+        row.textContent.includes('META_CORE_KOZIJNEN_NOORD_PLUS') ||
+        row.textContent.includes('GEO_NOORD_BROAD_TEST')
+      );
+      rowsToRemove.forEach(row => row.remove());
 
       const twenteRow = rows.find(row => row.textContent.includes('META_CORE_KOZIJNEN_TWENTE_PLUS'));
       if (twenteRow && twenteRow.cells.length >= 7) {
@@ -29,7 +32,7 @@
 
       const footer = doc.querySelector('.footer');
       if (footer) {
-        footer.textContent = 'Meta Ads juli is opgehaald via Windsor.ai voor de periode 1 t/m 31 juli 2026. Voor de dashboardrapportage is de ene lead uit META_CORE_KOZIJNEN_NOORD_PLUS toegewezen aan META_CORE_KOZIJNEN_TWENTE_PLUS. Het totale leadvolume blijft 55. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.';
+        footer.textContent = 'Meta Ads juli is opgehaald via Windsor.ai voor de periode 1 t/m 31 juli 2026. Voor de dashboardrapportage is de ene lead uit META_CORE_KOZIJNEN_NOORD_PLUS toegewezen aan META_CORE_KOZIJNEN_TWENTE_PLUS. GEO_NOORD_BROAD_TEST en META_CORE_KOZIJNEN_NOORD_PLUS worden niet als aparte campagnerijen getoond. Het totale leadvolume blijft 55. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.';
       }
     });
   </script>
