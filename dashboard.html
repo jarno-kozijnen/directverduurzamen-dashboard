@@ -3,68 +3,421 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Full-funnel marketingdashboard voor Direct Verduurzamen met Meta Ads, organische groei en contentproductie.">
-  <title>Direct Verduurzamen | Marketingdashboard</title>
+  <meta name="description" content="Marketingrapportage voor Direct Verduurzamen met Meta Ads, organische vindbaarheid, content en leadontwikkeling.">
+  <title>Direct Verduurzamen | Marketingrapportage</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
-    :root{--navy:#1B294A;--navy2:#26385f;--green:#84BA8A;--green-dark:#4f8258;--green-soft:#edf6ef;--blue-soft:#eef2f8;--bg:#f3f5f7;--surface:#fff;--soft:#f8fafb;--text:#182033;--muted:#6b7280;--border:#e4e8ee;--warning:#a66a14;--warning-soft:#fff7e8;--shadow:0 8px 30px rgba(27,41,74,.07);--shadow-soft:0 3px 12px rgba(27,41,74,.045);--radius:14px;--radius-lg:18px;--radius-xl:22px}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:Montserrat,sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}a{color:inherit}button,select{font:inherit}
-    .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(228,232,238,.9);background:rgba(255,255,255,.95);backdrop-filter:blur(14px)}.topbar-inner{max-width:1480px;margin:auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--navy),var(--navy2));font-weight:700;font-size:13px}.brand-copy strong{display:block;color:var(--navy);font-size:14px}.brand-copy span{display:block;margin-top:3px;color:var(--muted);font-size:10px}.top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}.month-control{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 7px 0 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}.month-control span{color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.month-control select{min-height:34px;border:0;outline:0;color:var(--navy);background:transparent;font-size:11px;font-weight:700;cursor:pointer}.button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 13px;border:1px solid var(--border);border-radius:10px;color:var(--navy);background:var(--surface);text-decoration:none;font-size:11px;font-weight:600}.button.primary{color:#fff;background:var(--navy);border-color:var(--navy)}.button.subtle{background:var(--soft)}
-    .page-shell{max-width:1480px;margin:auto;padding:26px 24px 52px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}.sidebar{position:sticky;top:88px;align-self:start;padding:14px;border-radius:var(--radius-lg);background:var(--navy);box-shadow:var(--shadow)}.sidebar-label{margin:5px 9px 9px;color:rgba(255,255,255,.46);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.nav-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 11px;margin-bottom:3px;border-radius:9px;color:rgba(255,255,255,.72);text-decoration:none;font-size:11px;font-weight:600}.nav-link:hover,.nav-link.active{color:#fff;background:rgba(255,255,255,.1)}.nav-indicator{width:6px;height:6px;border-radius:50%;background:var(--green)}.sidebar-note{margin-top:16px;padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:11px;color:rgba(255,255,255,.64);background:rgba(255,255,255,.055);font-size:8px;line-height:1.6}main{min-width:0}
-    .hero{position:relative;overflow:hidden;padding:29px;border-radius:var(--radius-xl);color:#fff;background:linear-gradient(135deg,var(--navy),#263d69);box-shadow:var(--shadow)}.hero:after{content:'';position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:rgba(132,186,138,.11)}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px}.eyebrow{color:var(--green);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.hero h1{margin:8px 0 9px;font-size:clamp(27px,3vw,37px);line-height:1.12}.hero p{max-width:780px;margin:0;color:rgba(255,255,255,.74);font-size:12px;line-height:1.72}.hero-status{min-width:220px;padding:15px 16px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(255,255,255,.075)}.hero-status span{display:block;color:rgba(255,255,255,.52);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.hero-status strong{display:block;margin-top:6px;font-size:12px;line-height:1.55}
-    .context-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}.context-item{padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.78)}.context-item span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.context-item strong{display:block;margin-top:4px;color:var(--navy);font-size:10px;line-height:1.45}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:27px 2px 11px}.section-heading h2{margin:0;color:var(--navy);font-size:17px}.section-heading p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.5}.source-label{color:var(--muted);font-size:9px;white-space:nowrap}
-    .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-soft)}.overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.channel-card{position:relative;overflow:hidden;padding:21px}.channel-card:after{content:'';position:absolute;top:-54px;right:-54px;width:150px;height:150px;border-radius:50%;background:rgba(132,186,138,.12)}.channel-card.paid:after{background:rgba(27,41,74,.08)}.channel-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.channel-title{display:flex;align-items:center;gap:10px}.channel-icon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:var(--navy);background:var(--green-soft);font-size:11px;font-weight:700}.paid .channel-icon{color:#fff;background:var(--navy)}.channel-title h3{margin:0;color:var(--navy);font-size:14px}.channel-title p{margin:4px 0 0;color:var(--muted);font-size:9px}.badge{position:relative;z-index:1;flex:0 0 auto;padding:6px 9px;border-radius:999px;color:var(--green-dark);background:var(--green-soft);font-size:8px;font-weight:700;white-space:nowrap}.badge.blue{color:var(--navy);background:var(--blue-soft)}.badge.warning{color:var(--warning);background:var(--warning-soft)}.channel-kpis{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}.channel-kpi{padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}.channel-kpi span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.channel-kpi strong{display:block;margin-top:6px;color:var(--navy);font-size:20px}.channel-kpi small{display:block;margin-top:4px;color:var(--muted);font-size:8px;line-height:1.4}
-    .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}.kpi-card{position:relative;overflow:hidden;min-height:122px;padding:17px}.kpi-card:after{content:'';position:absolute;top:-28px;right:-28px;width:72px;height:72px;border-radius:50%;background:rgba(132,186,138,.17)}.kpi-label{color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}.kpi-value{margin-top:8px;color:var(--navy);font-size:22px;font-weight:700}.kpi-note{margin-top:7px;color:var(--muted);font-size:9px;line-height:1.45}.positive{color:var(--green-dark)!important}.negative{color:var(--warning)!important}.grid-2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:14px}.panel{padding:19px}.panel-head{display:flex;align-items:start;justify-content:space-between;gap:14px;margin-bottom:15px}.panel-head h3{margin:0;color:var(--navy);font-size:13px}.panel-head p{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.45}.chart-wrap{height:280px}.chart-wrap.tall{height:320px}.metric-list{display:grid;gap:9px}.metric-row{display:grid;grid-template-columns:9px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}.metric-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}.metric-dot.warning{background:#e4a54b}.metric-row strong{display:block;color:var(--navy);font-size:10px}.metric-row small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.4}.metric-value{color:var(--navy);font-size:10px;font-weight:700;white-space:nowrap}
-    .table-card{padding:0;overflow:hidden}.table-scroll{overflow-x:auto}table{width:100%;min-width:940px;border-collapse:collapse}th{padding:11px 12px;border-bottom:1px solid var(--border);background:var(--soft);color:var(--muted);text-align:left;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}td{padding:12px;border-bottom:1px solid var(--border);color:#394155;font-size:9px;line-height:1.45;white-space:nowrap}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfcfd}.campaign-name{color:var(--navy);font-weight:700}.total-row td{background:#f6f9f7;font-weight:700;color:var(--navy)}
-    .delivery-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}.delivery-card{padding:16px;min-height:146px}.delivery-card span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.delivery-card strong{display:block;margin-top:7px;color:var(--navy);font-size:21px}.progress{height:7px;margin-top:13px;overflow:hidden;border-radius:999px;background:#edf0f4}.progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--green-dark))}.delivery-card p{margin:8px 0 0;color:var(--muted);font-size:8px;line-height:1.55}.project-list,.post-list{display:grid;gap:9px}.project-item,.post-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:11px;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}.project-index,.post-date{min-width:38px;padding:6px 7px;border-radius:8px;color:var(--navy);background:var(--green-soft);font-size:8px;font-weight:700;text-align:center}.project-item strong,.post-item strong{display:block;color:var(--navy);font-size:10px}.project-item small,.post-item small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.45}.inline-link{color:var(--navy);font-size:8px;font-weight:700;text-decoration:none;white-space:nowrap}.inline-link:hover{text-decoration:underline}.insight-callout{padding:15px;border:1px solid #dce9de;border-radius:12px;background:linear-gradient(135deg,#f5faf6,#fff)}.insight-callout strong{display:block;color:var(--navy);font-size:11px}.insight-callout p{margin:6px 0 0;color:var(--muted);font-size:9px;line-height:1.65}
-    .funnel{display:grid;gap:10px}.funnel-row{display:grid;grid-template-columns:130px minmax(0,1fr) 82px;align-items:center;gap:11px}.funnel-label{color:var(--navy);font-size:10px;font-weight:600}.funnel-track{height:9px;overflow:hidden;border-radius:999px;background:#edf0f4}.funnel-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--green-dark))}.funnel-value{color:var(--muted);font-size:9px;text-align:right}.quality-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.quality-card{padding:16px}.quality-card span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.quality-card strong{display:block;margin-top:7px;color:var(--navy);font-size:12px}.quality-card p{margin:6px 0 0;color:var(--muted);font-size:8px;line-height:1.55}.footer-note{margin:21px 2px 0;color:var(--muted);font-size:8px;line-height:1.7}
-    @media(max-width:1180px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.delivery-grid{grid-template-columns:repeat(3,1fr)}.grid-2{grid-template-columns:1fr}}@media(max-width:920px){.page-shell{grid-template-columns:1fr}.sidebar{position:static;display:flex;gap:5px;overflow-x:auto;padding:9px}.sidebar-label,.sidebar-note{display:none}.nav-link{flex:0 0 auto;margin:0;white-space:nowrap}.nav-indicator{display:none}.hero-grid{grid-template-columns:1fr;align-items:start}.hero-status{min-width:0;width:100%}.overview-grid{grid-template-columns:1fr}.quality-grid{grid-template-columns:1fr 1fr}}@media(max-width:680px){.topbar-inner,.page-shell{padding-left:14px;padding-right:14px}.topbar-inner{align-items:flex-start}.top-actions{width:100%;justify-content:flex-start}.button.subtle{display:none}.hero{padding:22px}.context-strip{grid-template-columns:1fr}.channel-kpis{grid-template-columns:1fr 1fr}.kpi-grid,.delivery-grid,.quality-grid{grid-template-columns:1fr 1fr}.funnel-row{grid-template-columns:105px 1fr 67px}.section-heading{align-items:flex-start;flex-direction:column}.source-label{white-space:normal}}@media(max-width:480px){.brand-copy span,.month-control span{display:none}.channel-kpis,.kpi-grid,.delivery-grid,.quality-grid{grid-template-columns:1fr}.project-item,.post-item{grid-template-columns:auto minmax(0,1fr)}.project-item .inline-link,.post-item .inline-link{grid-column:2}}
+    :root {
+      --navy:#1B294A;
+      --navy-2:#26385f;
+      --green:#84BA8A;
+      --green-dark:#4f8258;
+      --green-soft:#edf6ef;
+      --blue-soft:#eef2f8;
+      --bg:#f3f5f7;
+      --surface:#fff;
+      --soft:#f8fafb;
+      --text:#182033;
+      --muted:#6b7280;
+      --border:#e4e8ee;
+      --warning:#9a6518;
+      --warning-soft:#fff7e8;
+      --shadow:0 8px 30px rgba(27,41,74,.07);
+      --shadow-soft:0 3px 12px rgba(27,41,74,.045);
+      --radius:14px;
+      --radius-lg:18px;
+      --radius-xl:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:Montserrat,sans-serif;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    button,select{font:inherit}
+    .topbar{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(228,232,238,.9);background:rgba(255,255,255,.95);backdrop-filter:blur(14px)}
+    .topbar-inner{max-width:1480px;margin:auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .brand-mark{width:42px;height:42px;flex:0 0 42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--navy),var(--navy-2));font-weight:700;font-size:13px}
+    .brand-copy strong{display:block;color:var(--navy);font-size:14px}
+    .brand-copy span{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+    .top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .month-control{display:flex;align-items:center;gap:8px;min-height:38px;padding:0 7px 0 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface)}
+    .month-control span{color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .month-control select{min-height:34px;border:0;outline:0;color:var(--navy);background:transparent;font-size:11px;font-weight:700;cursor:pointer}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:9px 13px;border:1px solid var(--border);border-radius:10px;color:var(--navy);background:var(--surface);text-decoration:none;font-size:11px;font-weight:600}
+    .button.primary{color:#fff;background:var(--navy);border-color:var(--navy)}
+    .button.subtle{background:var(--soft)}
+    .page-shell{max-width:1480px;margin:auto;padding:26px 24px 52px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px}
+    .sidebar{position:sticky;top:88px;align-self:start;padding:14px;border-radius:var(--radius-lg);background:var(--navy);box-shadow:var(--shadow)}
+    .sidebar-label{margin:5px 9px 9px;color:rgba(255,255,255,.46);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .nav-link{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 11px;margin-bottom:3px;border-radius:9px;color:rgba(255,255,255,.72);text-decoration:none;font-size:11px;font-weight:600}
+    .nav-link:hover,.nav-link.active{color:#fff;background:rgba(255,255,255,.1)}
+    .nav-indicator{width:6px;height:6px;border-radius:50%;background:var(--green)}
+    .sidebar-note{margin-top:16px;padding:12px;border:1px solid rgba(255,255,255,.1);border-radius:11px;color:rgba(255,255,255,.64);background:rgba(255,255,255,.055);font-size:8px;line-height:1.65}
+    main{min-width:0}
+    .hero{position:relative;overflow:hidden;padding:29px;border-radius:var(--radius-xl);color:#fff;background:linear-gradient(135deg,var(--navy),#263d69);box-shadow:var(--shadow)}
+    .hero:after{content:'';position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:rgba(132,186,138,.11)}
+    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:24px}
+    .eyebrow{color:var(--green);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+    .hero h1{margin:8px 0 9px;font-size:clamp(27px,3vw,37px);line-height:1.12}
+    .hero p{max-width:790px;margin:0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.72}
+    .hero-status{min-width:225px;padding:15px 16px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(255,255,255,.075)}
+    .hero-status span{display:block;color:rgba(255,255,255,.52);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .hero-status strong{display:block;margin-top:6px;font-size:12px;line-height:1.55}
+    .context-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+    .context-item{padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.8)}
+    .context-item span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    .context-item strong{display:block;margin-top:4px;color:var(--navy);font-size:10px;line-height:1.45}
+    .section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:27px 2px 11px}
+    .section-heading h2{margin:0;color:var(--navy);font-size:17px}
+    .section-heading p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.5}
+    .source-label{color:var(--muted);font-size:9px;white-space:nowrap}
+    .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-soft)}
+    .overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .channel-card{position:relative;overflow:hidden;padding:21px}
+    .channel-card:after{content:'';position:absolute;top:-54px;right:-54px;width:150px;height:150px;border-radius:50%;background:rgba(132,186,138,.12)}
+    .channel-card.paid:after{background:rgba(27,41,74,.08)}
+    .channel-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+    .channel-title{display:flex;align-items:center;gap:10px}
+    .channel-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:var(--navy);background:var(--green-soft);font-size:10px;font-weight:700}
+    .paid .channel-icon{color:#fff;background:var(--navy)}
+    .channel-title h3{margin:0;color:var(--navy);font-size:14px}
+    .channel-title p{max-width:420px;margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.45}
+    .badge{position:relative;z-index:1;flex:0 0 auto;padding:6px 9px;border-radius:999px;color:var(--green-dark);background:var(--green-soft);font-size:8px;font-weight:700;white-space:nowrap}
+    .badge.blue{color:var(--navy);background:var(--blue-soft)}
+    .badge.warning{color:var(--warning);background:var(--warning-soft)}
+    .channel-kpis{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+    .channel-kpi{padding:12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}
+    .channel-kpi span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .channel-kpi strong{display:block;margin-top:6px;color:var(--navy);font-size:20px}
+    .channel-kpi small{display:block;margin-top:4px;color:var(--muted);font-size:8px;line-height:1.4}
+    .info-callout{display:grid;grid-template-columns:auto minmax(0,1fr);gap:13px;align-items:start;padding:15px 17px;border:1px solid #dce9de;border-radius:13px;background:linear-gradient(135deg,#f5faf6,#fff)}
+    .info-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--green-dark);background:var(--green-soft);font-size:13px;font-weight:700}
+    .info-callout strong{display:block;color:var(--navy);font-size:11px}
+    .info-callout p{margin:6px 0 0;color:var(--muted);font-size:9px;line-height:1.65}
+    .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+    .kpi-card{position:relative;overflow:hidden;min-height:122px;padding:17px}
+    .kpi-card:after{content:'';position:absolute;top:-28px;right:-28px;width:72px;height:72px;border-radius:50%;background:rgba(132,186,138,.17)}
+    .kpi-label{color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    .kpi-value{margin-top:8px;color:var(--navy);font-size:22px;font-weight:700}
+    .kpi-note{margin-top:7px;color:var(--muted);font-size:9px;line-height:1.45}
+    .positive{color:var(--green-dark)!important}
+    .negative{color:var(--warning)!important}
+    .grid-2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:14px}
+    .panel{padding:19px}
+    .panel-head{display:flex;align-items:start;justify-content:space-between;gap:14px;margin-bottom:15px}
+    .panel-head h3{margin:0;color:var(--navy);font-size:13px}
+    .panel-head p{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.45}
+    .chart-wrap{height:280px}
+    .chart-wrap.tall{height:320px}
+    .metric-list{display:grid;gap:9px}
+    .metric-row{display:grid;grid-template-columns:9px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}
+    .metric-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+    .metric-dot.warning{background:#e4a54b}
+    .metric-row strong{display:block;color:var(--navy);font-size:10px}
+    .metric-row small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.4}
+    .metric-value{color:var(--navy);font-size:10px;font-weight:700;white-space:nowrap}
+    .table-card{padding:0;overflow:hidden}
+    .table-scroll{overflow-x:auto}
+    table{width:100%;min-width:940px;border-collapse:collapse}
+    th{padding:11px 12px;border-bottom:1px solid var(--border);background:var(--soft);color:var(--muted);text-align:left;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+    td{padding:12px;border-bottom:1px solid var(--border);color:#394155;font-size:9px;line-height:1.45;white-space:nowrap}
+    tbody tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:#fbfcfd}
+    .campaign-name{color:var(--navy);font-weight:700}
+    .campaign-name small{display:block;margin-top:3px;color:var(--muted);font-size:7px;font-weight:500}
+    .total-row td{background:#f6f9f7;font-weight:700;color:var(--navy)}
+    .delivery-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+    .delivery-card{padding:16px;min-height:146px}
+    .delivery-card span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .delivery-card strong{display:block;margin-top:7px;color:var(--navy);font-size:21px}
+    .progress{height:7px;margin-top:13px;overflow:hidden;border-radius:999px;background:#edf0f4}
+    .progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--green-dark))}
+    .delivery-card p{margin:8px 0 0;color:var(--muted);font-size:8px;line-height:1.55}
+    .project-list,.post-list{display:grid;gap:9px}
+    .project-item,.post-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:11px;padding:11px 12px;border:1px solid var(--border);border-radius:11px;background:var(--soft)}
+    .project-index,.post-date{min-width:38px;padding:6px 7px;border-radius:8px;color:var(--navy);background:var(--green-soft);font-size:8px;font-weight:700;text-align:center}
+    .project-item strong,.post-item strong{display:block;color:var(--navy);font-size:10px}
+    .project-item small,.post-item small{display:block;margin-top:3px;color:var(--muted);font-size:8px;line-height:1.45}
+    .inline-link{color:var(--navy);font-size:8px;font-weight:700;text-decoration:none;white-space:nowrap}
+    .inline-link:hover{text-decoration:underline}
+    .funnel{display:grid;gap:10px}
+    .funnel-row{display:grid;grid-template-columns:132px minmax(0,1fr) 90px;align-items:center;gap:11px}
+    .funnel-label{color:var(--navy);font-size:10px;font-weight:600}
+    .funnel-track{height:9px;overflow:hidden;border-radius:999px;background:#edf0f4}
+    .funnel-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--green-dark))}
+    .funnel-value{color:var(--muted);font-size:9px;text-align:right}
+    .quality-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+    .quality-card{padding:16px}
+    .quality-card span{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .quality-card strong{display:block;margin-top:7px;color:var(--navy);font-size:12px}
+    .quality-card p{margin:6px 0 0;color:var(--muted);font-size:8px;line-height:1.55}
+    .footer-note{margin:21px 2px 0;color:var(--muted);font-size:8px;line-height:1.75}
+    @media(max-width:1180px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.delivery-grid{grid-template-columns:repeat(3,1fr)}.quality-grid{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+    @media(max-width:920px){.page-shell{grid-template-columns:1fr}.sidebar{position:static;display:flex;gap:5px;overflow-x:auto;padding:9px}.sidebar-label,.sidebar-note{display:none}.nav-link{flex:0 0 auto;margin:0;white-space:nowrap}.nav-indicator{display:none}.hero-grid{grid-template-columns:1fr;align-items:start}.hero-status{min-width:0;width:100%}.overview-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){.topbar-inner,.page-shell{padding-left:14px;padding-right:14px}.topbar-inner{align-items:flex-start}.top-actions{width:100%;justify-content:flex-start}.button.subtle{display:none}.hero{padding:22px}.context-strip{grid-template-columns:1fr}.channel-kpis{grid-template-columns:1fr 1fr}.kpi-grid,.delivery-grid,.quality-grid{grid-template-columns:1fr 1fr}.funnel-row{grid-template-columns:105px 1fr 76px}.section-heading{align-items:flex-start;flex-direction:column}.source-label{white-space:normal}}
+    @media(max-width:480px){.brand-copy span,.month-control span{display:none}.channel-kpis,.kpi-grid,.delivery-grid,.quality-grid{grid-template-columns:1fr}.project-item,.post-item{grid-template-columns:auto minmax(0,1fr)}.project-item .inline-link,.post-item .inline-link{grid-column:2}}
   </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-mark">DV</div><div class="brand-copy"><strong>Direct Verduurzamen</strong><span>Full-funnel marketingdashboard</span></div></div><div class="top-actions"><div class="month-control"><span>Rapportage</span><select id="monthSelect"><option value="2026-07" selected>Juli 2026</option><option value="2026-06">Juni 2026</option></select></div><a class="button subtle" href="#organisch">Organisch</a><a class="button primary" href="#overzicht">Overzicht</a></div></div></header>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><div class="brand-mark">DV</div><div class="brand-copy"><strong>Direct Verduurzamen</strong><span>Marketingrapportage</span></div></div>
+    <div class="top-actions">
+      <div class="month-control"><span>Rapportagemaand</span><select id="monthSelect"><option value="2026-07" selected>Juli 2026</option><option value="2026-06">Juni 2026</option></select></div>
+      <a class="button subtle" href="#organisch">Organische groei</a>
+      <a class="button primary" href="#overzicht">Overzicht</a>
+    </div>
+  </div>
+</header>
 <div class="page-shell">
-<aside class="sidebar"><div class="sidebar-label">Dashboard</div><a class="nav-link active" href="#overzicht">Overzicht <i class="nav-indicator"></i></a><a class="nav-link" href="#meta">Meta Ads</a><a class="nav-link" href="#organisch">Organisch</a><a class="nav-link" href="#uitvoering">Uitvoering</a><a class="nav-link" href="#social">Social posts</a><a class="nav-link" href="#funnel">Funnel</a><a class="nav-link" href="#datakwaliteit">Datakwaliteit</a><div class="sidebar-note">Meta, organisch, content en funnel staan nu in één rapportage. De losse organische pagina is niet meer nodig.</div></aside>
-<main>
-<section class="hero" id="overzicht"><div class="hero-grid"><div><div class="eyebrow">Managementoverzicht</div><h1 id="heroTitle">Juli 2026</h1><p>Eén geïntegreerd overzicht van Meta Ads, organische groei, contentproductie en de beschikbare funneldata. Kanaalresultaten en uitgevoerde werkzaamheden staan nu bij elkaar.</p></div><div class="hero-status"><span>Datastatus</span><strong>Meta Ads: volledig<br>Organisch: volledig<br>Salesfunnel: nog koppelen</strong></div></div></section>
-<div class="context-strip"><div class="context-item"><span>Meta-scope</span><strong>Twente core + retargeting</strong></div><div class="context-item"><span>Organische bron</span><strong>Google Search Console + /succes/</strong></div><div class="context-item"><span>Interpretatie</span><strong>Doelen, resultaten en ontbrekende salesdata gescheiden</strong></div></div>
-<div class="section-heading"><div><h2>Kanaaloverzicht</h2><p>Betaalde en organische prestaties naast elkaar</p></div><span class="source-label">Windsor Facebook Ads + Google Search Console</span></div>
-<section class="overview-grid">
-<article class="card channel-card paid"><div class="channel-head"><div class="channel-title"><div class="channel-icon">META</div><div><h3>Meta Ads</h3><p id="paidPeriod">Volledige maand juli</p></div></div><span class="badge blue">Betaald bereik</span></div><div class="channel-kpis"><div class="channel-kpi"><span>Spend</span><strong id="overviewMetaSpend">€2.442,42</strong><small id="overviewMetaSpendNote">−40,7% t.o.v. juni</small></div><div class="channel-kpi"><span>Leads</span><strong id="overviewMetaLeads">55</strong><small id="overviewMetaLeadsNote">−28,6% t.o.v. juni</small></div><div class="channel-kpi"><span>CPL</span><strong id="overviewMetaCpl">€44,41</strong><small id="overviewMetaCplNote">16,9% beter dan juni</small></div></div></article>
-<article class="card channel-card"><div class="channel-head"><div class="channel-title"><div class="channel-icon">SEO</div><div><h3>Organisch</h3><p id="organicPeriod">Volledige maand juli</p></div></div><span class="badge">Eigen zichtbaarheid</span></div><div class="channel-kpis"><div class="channel-kpi"><span>GSC-klikken</span><strong id="overviewOrganicClicks">1.847</strong><small id="overviewOrganicClicksNote">+31,3% t.o.v. juni</small></div><div class="channel-kpi"><span>Leads</span><strong id="overviewOrganicLeads">12</strong><small id="overviewOrganicLeadsNote">2 minder dan juni</small></div><div class="channel-kpi"><span>Positie</span><strong id="overviewOrganicPosition">13,00</strong><small id="overviewOrganicPositionNote">Verbeterd vanaf 13,91</small></div></div></article>
-</section>
-<div class="section-heading" id="meta"><div><h2>Meta Ads</h2><p>Resultaten binnen de afgesproken Twente-rapportagescope</p></div><span class="source-label">Core Twente + retargeting</span></div>
-<section class="kpi-grid"><article class="card kpi-card"><div class="kpi-label">Spend</div><div class="kpi-value" id="metaSpend">€2.442,42</div><div class="kpi-note">Volledige maand</div></article><article class="card kpi-card"><div class="kpi-label">Meta-leads</div><div class="kpi-value" id="metaLeads">55</div><div class="kpi-note" id="metaLeadsNote">54 geregistreerd + 1 toegewezen</div></article><article class="card kpi-card"><div class="kpi-label">Blended CPL</div><div class="kpi-value" id="metaCpl">€44,41</div><div class="kpi-note positive" id="metaCplNote">Beter dan juni</div></article><article class="card kpi-card"><div class="kpi-label">Impressies</div><div class="kpi-value" id="metaImpressions">69.401</div><div class="kpi-note">Volledige scope</div></article><article class="card kpi-card"><div class="kpi-label">Klikken</div><div class="kpi-value" id="metaClicks">1.223</div><div class="kpi-note" id="metaClicksNote">814 linkklikken</div></article></section>
-<section class="grid-2" style="margin-top:14px"><article class="card panel"><div class="panel-head"><div><h3>Spend en leadvolume</h3><p>Juni versus juli, met dezelfde campagnescope</p></div><span class="badge blue">Vergelijkbaar</span></div><div class="chart-wrap"><canvas id="metaTrendChart"></canvas></div></article><article class="card panel"><div class="panel-head"><div><h3>Efficiëntie</h3><p id="metaEfficiencyPeriod">Juli 2026</p></div></div><div class="metric-list"><div class="metric-row"><i class="metric-dot"></i><div><strong>CTR</strong><small>Alle klikken gedeeld door impressies</small></div><div class="metric-value" id="metaCtr">1,76%</div></div><div class="metric-row"><i class="metric-dot"></i><div><strong>CPC</strong><small>Kosten per klik</small></div><div class="metric-value" id="metaCpc">€2,00</div></div><div class="metric-row"><i class="metric-dot warning"></i><div><strong>CPM</strong><small>Kosten per 1.000 impressies</small></div><div class="metric-value" id="metaCpm">€35,19</div></div><div class="metric-row"><i class="metric-dot warning"></i><div><strong>Leadkwaliteit</strong><small>Geldigheid en afspraakstatus nog niet centraal gekoppeld</small></div><div class="metric-value">Open</div></div></div></article></section>
-<section class="card table-card" style="margin-top:14px"><div class="table-scroll"><table><thead><tr><th>Campagne</th><th>Spend</th><th>Impressies</th><th>Klikken</th><th>Linkklikken</th><th>Leads</th><th>CPL</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead><tbody id="campaignTableBody"></tbody></table></div></section>
-<div class="section-heading" id="organisch"><div><h2>Organische groei</h2><p>Zoekzichtbaarheid, verkeer en organische leadontwikkeling in dezelfde dashboardstructuur</p></div><span class="source-label">Google Search Console + unieke gebruikers op /succes/</span></div>
-<section class="kpi-grid"><article class="card kpi-card"><div class="kpi-label">GSC-klikken</div><div class="kpi-value" id="organicClicks">1.847</div><div class="kpi-note positive" id="organicClicksNote">+31,3% t.o.v. juni</div></article><article class="card kpi-card"><div class="kpi-label">GSC-impressies</div><div class="kpi-value" id="organicImpressions">191.347</div><div class="kpi-note positive" id="organicImpressionsNote">+17,4% t.o.v. juni</div></article><article class="card kpi-card"><div class="kpi-label">CTR</div><div class="kpi-value" id="organicCtr">0,97%</div><div class="kpi-note positive" id="organicCtrNote">0,11 procentpunt hoger</div></article><article class="card kpi-card"><div class="kpi-label">Gem. positie</div><div class="kpi-value" id="organicPosition">13,00</div><div class="kpi-note positive" id="organicPositionNote">0,91 positie verbeterd</div></article><article class="card kpi-card"><div class="kpi-label">Organische leads</div><div class="kpi-value" id="organicLeads">12</div><div class="kpi-note negative" id="organicLeadsNote">2 minder dan juni</div></article></section>
-<section class="grid-2" style="margin-top:14px"><article class="card panel"><div class="panel-head"><div><h3>Organische ontwikkeling</h3><p>Afgelopen twaalf volledige maanden</p></div><span class="badge">12 maanden</span></div><div class="chart-wrap tall"><canvas id="organicTrendChart"></canvas></div></article><article class="card panel"><div class="panel-head"><div><h3>Interpretatie</h3><p id="organicInterpretationSubtitle">Wat juli inhoudelijk laat zien</p></div></div><div class="metric-list"><div class="metric-row"><i class="metric-dot"></i><div><strong>Zichtbaarheid groeit</strong><small>Meer klikken en impressies, terwijl de gemiddelde positie verbetert</small></div><div class="metric-value">Positief</div></div><div class="metric-row"><i class="metric-dot"></i><div><strong id="organicCtrInsightTitle">CTR stijgt</strong><small id="organicCtrInsightText">Van 0,86% in juni naar 0,97% in juli</small></div><div class="metric-value" id="organicCtrInsightValue">+0,11 pp</div></div><div class="metric-row"><i class="metric-dot warning"></i><div><strong id="organicLeadInsightTitle">Leadvolume daalt licht</strong><small id="organicLeadInsightText">Verkeer groeit sneller dan de gemeten organische conversies</small></div><div class="metric-value" id="organicLeadInsightValue">12 leads</div></div><div class="insight-callout"><strong>Belangrijkste kans</strong><p>De zichtbaarheid groeit duidelijk. De volgende optimalisaties moeten daarom vooral gericht zijn op conversie: commerciële CTA’s, interne links, lokale bewijspagina’s en een duidelijke route naar offerte of adviesgesprek.</p></div></div></article></section>
-<div class="section-heading" id="uitvoering"><div><h2>Organische uitvoering juli</h2><p>Content, lokale bewijspagina’s, Google Bedrijfsprofiel en social in één voortgangsoverzicht</p></div><span class="source-label">Bevestigde juli-output</span></div>
-<section class="delivery-grid"><article class="card delivery-card"><span>Nieuwe blogs</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Julidoel behaald. Vanaf augustus: 12 nieuwe pagina’s per maand.</p></article><article class="card delivery-card"><span>Herschrijvingen</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Julidoel behaald. Vanaf augustus blijft de norm 8 per maand.</p></article><article class="card delivery-card"><span>Projectpagina’s</span><strong>4 / 4</strong><div class="progress"><i style="width:100%"></i></div><p>Apeldoorn, Hengelo, Barendrecht en Maarssen.</p></article><article class="card delivery-card"><span>GBP-posts</span><strong>4 / 4</strong><div class="progress"><i style="width:100%"></i></div><p>Vier lokale posts gekoppeld aan de projectoutput.</p></article><article class="card delivery-card"><span>Facebook-posts</span><strong>9 live</strong><div class="progress"><i style="width:75%"></i></div><p>Vanaf augustus: 12 organische socialposts per maand.</p></article></section>
-<section class="grid-2" style="margin-top:14px"><article class="card panel"><div class="panel-head"><div><h3>Lokale projectoutput</h3><p>Lokale bewijspagina’s en bijbehorende GBP-content</p></div><span class="badge">4 projecten</span></div><div class="project-list"><div class="project-item"><div class="project-index">01</div><div><strong>Apeldoorn</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div><div class="project-item"><div class="project-index">02</div><div><strong>Hengelo</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div><div class="project-item"><div class="project-index">03</div><div><strong>Barendrecht</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div><div class="project-item"><div class="project-index">04</div><div><strong>Maarssen</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div></div></article><article class="card panel"><div class="panel-head"><div><h3>Werkritme vanaf augustus</h3><p>Structurele maandnormen</p></div><span class="badge blue">Doorlopend</span></div><div class="metric-list"><div class="metric-row"><i class="metric-dot"></i><div><strong>Nieuwe content</strong><small>Blogs en landingspagina’s</small></div><div class="metric-value">12 p/m</div></div><div class="metric-row"><i class="metric-dot"></i><div><strong>Bestaande pagina’s</strong><small>Herschrijven op basis van GSC en zoekintentie</small></div><div class="metric-value">8 p/m</div></div><div class="metric-row"><i class="metric-dot"></i><div><strong>Lokale projecten en GBP</strong><small>Projectpagina’s en lokale distributie</small></div><div class="metric-value">4 + 4</div></div><div class="metric-row"><i class="metric-dot"></i><div><strong>Social media</strong><small>Facebook en Instagram</small></div><div class="metric-value">12 p/m</div></div></div></article></section>
-<div class="section-heading" id="social"><div><h2>Facebook-posts juli</h2><p>De negen bevestigde organische publicaties, direct vanuit dit dashboard te openen</p></div><span class="source-label">Facebook Organic</span></div>
-<section class="card panel"><div class="post-list"><div class="post-item"><div class="post-date">9 jul</div><div><strong>Warmte buiten houden</strong><small>Comfort en zomerhitte</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1051372537838206">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">10 jul</div><div><strong>Warmte in slaapkamer of zolder</strong><small>Isolatie en wooncomfort</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1052538854388241">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">17 jul</div><div><strong>Vakantiemelding</strong><small>Service-informatie</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1058315803810546">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">21 jul</div><div><strong>Project Apeldoorn</strong><small>Lokale projectcontent</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1061801483461978">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">23 jul</div><div><strong>Houten kozijnen vervangen?</strong><small>Onderhoud en vervanging</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1063132139995579">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">25 jul</div><div><strong>Geen aanbetaling</strong><small>Vertrouwen en financieel voordeel</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1064830233159103">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">27 jul</div><div><strong>Project Hengelo</strong><small>Lokale projectcontent</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1066559449652848">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">29 jul</div><div><strong>Wat kosten kunststof kozijnen?</strong><small>Prijsoriëntatie</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1068348029473990">Bekijk post ↗</a></div><div class="post-item"><div class="post-date">31 jul</div><div><strong>Comfortabel de herfst in</strong><small>Seizoensgebonden wooncomfort</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1070167895958670">Bekijk post ↗</a></div></div></section>
-<div class="section-heading" id="funnel"><div><h2>Funnel en leadbronnen</h2><p>Beschikbare marketingdata zonder ontbrekende salesstappen in te vullen</p></div><span class="source-label">Geen schatting van geldige leads of afspraken</span></div>
-<section class="grid-2"><article class="card panel"><div class="panel-head"><div><h3>Beschikbare funneldata</h3><p id="funnelPeriod">Juli 2026</p></div><span class="badge warning">Sales nog koppelen</span></div><div class="funnel"><div class="funnel-row"><div class="funnel-label">Meta-impressies</div><div class="funnel-track"><div class="funnel-fill" style="width:100%"></div></div><div class="funnel-value" id="funnelMetaImpressions">69.401</div></div><div class="funnel-row"><div class="funnel-label">Meta-klikken</div><div class="funnel-track"><div class="funnel-fill" style="width:63%"></div></div><div class="funnel-value" id="funnelMetaClicks">1.223</div></div><div class="funnel-row"><div class="funnel-label">Meta-leads</div><div class="funnel-track"><div class="funnel-fill" style="width:36%"></div></div><div class="funnel-value" id="funnelMetaLeads">55</div></div><div class="funnel-row"><div class="funnel-label">Organische klikken</div><div class="funnel-track"><div class="funnel-fill" style="width:72%"></div></div><div class="funnel-value" id="funnelOrganicClicks">1.847</div></div><div class="funnel-row"><div class="funnel-label">Organische leads</div><div class="funnel-track"><div class="funnel-fill" style="width:24%"></div></div><div class="funnel-value" id="funnelOrganicLeads">12</div></div><div class="funnel-row"><div class="funnel-label">Geldige leads</div><div class="funnel-track"></div><div class="funnel-value">Nog koppelen</div></div><div class="funnel-row"><div class="funnel-label">Afspraken</div><div class="funnel-track"></div><div class="funnel-value">Nog koppelen</div></div></div></article><article class="card panel"><div class="panel-head"><div><h3>Volgende datastap</h3><p>Van kanaalrapportage naar commerciële funnelsturing</p></div></div><div class="metric-list"><div class="metric-row"><i class="metric-dot warning"></i><div><strong>Geldige versus ongeldige leads</strong><small>Nodig voor kosten per geldige lead</small></div><div class="metric-value">Open</div></div><div class="metric-row"><i class="metric-dot warning"></i><div><strong>Bereikbaarheid</strong><small>Nodig om opvolgsnelheid en contactratio te beoordelen</small></div><div class="metric-value">Open</div></div><div class="metric-row"><i class="metric-dot warning"></i><div><strong>Afspraken, offertes en verkopen</strong><small>Nodig voor echte kanaal- en campagne-ROI</small></div><div class="metric-value">Open</div></div></div></article></section>
-<div class="section-heading" id="datakwaliteit"><div><h2>Datakwaliteit</h2><p>Wat betrouwbaar beschikbaar is en waar nog een koppeling nodig is</p></div></div>
-<section class="quality-grid"><article class="card quality-card"><span>Meta Ads</span><strong>Volledige maanddata</strong><p>Spend, impressies, klikken, linkklikken en Meta-leads zijn beschikbaar binnen de Twente-scope.</p></article><article class="card quality-card"><span>Organisch</span><strong>Volledige maanddata</strong><p>GSC-klikken, impressies, CTR, positie en unieke organische leads zijn beschikbaar.</p></article><article class="card quality-card"><span>Uitvoering</span><strong>Juli-output bevestigd</strong><p>Blogs, herschrijvingen, projectpagina’s, GBP-posts en Facebook-posts zijn vastgelegd.</p></article><article class="card quality-card"><span>Leadkwaliteit</span><strong>Nog niet gekoppeld</strong><p>Geldig, ongeldig, bereikbaar en reden van afwijzing ontbreken nog.</p></article><article class="card quality-card"><span>Sales</span><strong>Nog niet gekoppeld</strong><p>Afspraken, gevoerde afspraken, offertes, verkopen en omzet ontbreken nog.</p></article><article class="card quality-card"><span>Rapportagekeuze</span><strong>Geen verborgen schattingen</strong><p>Ontbrekende waarden worden expliciet als open weergegeven.</p></article></section>
-<p class="footer-note" id="footerNote">Meta Ads juli is gebaseerd op de rapportagescope META_CORE_KOZIJNEN_TWENTE_PLUS en META_RETARGETING_KOZIJNEN_TWENTE_PLUS. De ene eerder aan Noord toegeschreven lead is voor deze rapportage toegewezen aan de Twente-corecampagne. Organische leads zijn unieke gebruikers vanuit Organic Search die de succespagina hebben bereikt. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.</p>
-</main></div>
+  <aside class="sidebar">
+    <div class="sidebar-label">Rapportage</div>
+    <a class="nav-link active" href="#overzicht">Overzicht <i class="nav-indicator"></i></a>
+    <a class="nav-link" href="#meta">Meta Ads</a>
+    <a class="nav-link" href="#organisch">Organische groei</a>
+    <a class="nav-link" href="#uitvoering">Uitvoering</a>
+    <a class="nav-link" href="#social">Social media</a>
+    <a class="nav-link" href="#funnel">Klantreis</a>
+    <a class="nav-link" href="#toelichting">Over de cijfers</a>
+    <div class="sidebar-note">In dit dashboard staan de resultaten van Meta Ads, SEO, Google AI-zichtbaarheid, content en social media overzichtelijk bij elkaar.</div>
+  </aside>
+  <main>
+    <section class="hero" id="overzicht">
+      <div class="hero-grid">
+        <div><div class="eyebrow">Klantrapportage</div><h1 id="heroTitle">Juli 2026</h1><p>Een helder overzicht van betaalde campagnes, organische vindbaarheid, uitgevoerde marketingwerkzaamheden en de beschikbare leadresultaten.</p></div>
+        <div class="hero-status"><span>Status rapportage</span><strong>Marketingresultaten: compleet<br>Uitvoering: bijgewerkt<br>Salesresultaten: volgen</strong></div>
+      </div>
+    </section>
+
+    <div class="context-strip">
+      <div class="context-item"><span>Rapportageperiode</span><strong id="periodContext">1 t/m 31 juli 2026</strong></div>
+      <div class="context-item"><span>Kanalen</span><strong>Meta Ads, SEO en Google AI-zichtbaarheid</strong></div>
+      <div class="context-item"><span>Laatste controle</span><strong>4 augustus 2026</strong></div>
+    </div>
+
+    <div class="section-heading"><div><h2>Resultaten in één oogopslag</h2><p>Betaalde en organische prestaties naast elkaar</p></div><span class="source-label">Meta Ads + Google Search Console</span></div>
+    <section class="overview-grid">
+      <article class="card channel-card paid">
+        <div class="channel-head"><div class="channel-title"><div class="channel-icon">META</div><div><h3>Meta Ads</h3><p id="paidPeriod">Volledige maand juli</p></div></div><span class="badge blue">Betaald bereik</span></div>
+        <div class="channel-kpis">
+          <div class="channel-kpi"><span>Advertentiebudget</span><strong id="overviewMetaSpend">€2.442,42</strong><small id="overviewMetaSpendNote">−40,7% t.o.v. juni</small></div>
+          <div class="channel-kpi"><span>Aanvragen</span><strong id="overviewMetaLeads">55</strong><small id="overviewMetaLeadsNote">−28,6% t.o.v. juni</small></div>
+          <div class="channel-kpi"><span>Kosten per aanvraag</span><strong id="overviewMetaCpl">€44,41</strong><small id="overviewMetaCplNote">16,9% beter dan juni</small></div>
+        </div>
+      </article>
+      <article class="card channel-card">
+        <div class="channel-head"><div class="channel-title"><div class="channel-icon">SEO</div><div><h3>Organische vindbaarheid</h3><p id="organicPeriod">Organisch verkeer via Google Search, SEO en Google AI-functies</p></div></div><span class="badge">Organisch verkeer</span></div>
+        <div class="channel-kpis">
+          <div class="channel-kpi"><span>Organische klikken</span><strong id="overviewOrganicClicks">1.847</strong><small id="overviewOrganicClicksNote">+31,3% t.o.v. juni</small></div>
+          <div class="channel-kpi"><span>Organische leads</span><strong id="overviewOrganicLeads">12</strong><small id="overviewOrganicLeadsNote">2 minder dan juni</small></div>
+          <div class="channel-kpi"><span>Gem. positie</span><strong id="overviewOrganicPosition">13,00</strong><small id="overviewOrganicPositionNote">Verbeterd vanaf 13,91</small></div>
+        </div>
+      </article>
+    </section>
+
+    <div class="section-heading" id="meta"><div><h2>Meta Ads</h2><p>Resultaten van de campagnes in regio Twente</p></div><span class="source-label">Volledige maandresultaten</span></div>
+    <section class="kpi-grid">
+      <article class="card kpi-card"><div class="kpi-label">Advertentiebudget</div><div class="kpi-value" id="metaSpend">€2.442,42</div><div class="kpi-note">Volledige maand</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Aanvragen</div><div class="kpi-value" id="metaLeads">55</div><div class="kpi-note" id="metaLeadsNote">Via Meta Ads</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Kosten per aanvraag</div><div class="kpi-value" id="metaCpl">€44,41</div><div class="kpi-note positive" id="metaCplNote">Beter dan juni</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Vertoningen</div><div class="kpi-value" id="metaImpressions">69.401</div><div class="kpi-note">Facebook en Instagram</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Klikken</div><div class="kpi-value" id="metaClicks">1.223</div><div class="kpi-note" id="metaClicksNote">814 linkklikken</div></article>
+    </section>
+    <section class="grid-2" style="margin-top:14px">
+      <article class="card panel"><div class="panel-head"><div><h3>Advertentiebudget en aanvragen</h3><p>Vergelijking juni en juli 2026</p></div><span class="badge blue">Maandvergelijking</span></div><div class="chart-wrap"><canvas id="metaTrendChart"></canvas></div></article>
+      <article class="card panel"><div class="panel-head"><div><h3>Campagne-efficiëntie</h3><p id="metaEfficiencyPeriod">Juli 2026</p></div></div><div class="metric-list">
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Doorklikpercentage</strong><small>Aandeel vertoningen dat tot een klik leidde</small></div><div class="metric-value" id="metaCtr">1,76%</div></div>
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Kosten per klik</strong><small>Gemiddelde kosten per klik</small></div><div class="metric-value" id="metaCpc">€2,00</div></div>
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong>Kosten per 1.000 vertoningen</strong><small>Prijs van het ingekochte bereik</small></div><div class="metric-value" id="metaCpm">€35,19</div></div>
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong>Vervolgresultaten</strong><small>Geldige leads, afspraken en verkopen worden toegevoegd zodra beschikbaar</small></div><div class="metric-value">Volgt</div></div>
+      </div></article>
+    </section>
+    <section class="card table-card" style="margin-top:14px"><div class="table-scroll"><table><thead><tr><th>Campagne</th><th>Budget</th><th>Vertoningen</th><th>Klikken</th><th>Linkklikken</th><th>Aanvragen</th><th>Kosten per aanvraag</th><th>CTR</th><th>CPC</th><th>CPM</th></tr></thead><tbody id="campaignTableBody"></tbody></table></div></section>
+
+    <div class="section-heading" id="organisch"><div><h2>Organische vindbaarheid</h2><p>SEO-resultaten en organisch verkeer via Google Search</p></div><span class="source-label">Google Search Console</span></div>
+    <div class="info-callout"><div class="info-icon">i</div><div><strong>Wat valt onder organisch verkeer?</strong><p>Google Search Console meet klikken en vertoningen vanuit de organische zoekresultaten van Google. Daaronder vallen reguliere SEO-resultaten én Google AI-functies zoals AI Overviews en AI Mode. De cijfers hieronder laten dus zien hoeveel zichtbaarheid en verkeer de website vanuit Google Search ontvangt.</p></div></div>
+    <section class="kpi-grid" style="margin-top:14px">
+      <article class="card kpi-card"><div class="kpi-label">Organische klikken</div><div class="kpi-value" id="organicClicks">1.847</div><div class="kpi-note positive" id="organicClicksNote">+31,3% t.o.v. juni</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Organische vertoningen</div><div class="kpi-value" id="organicImpressions">191.347</div><div class="kpi-note positive" id="organicImpressionsNote">+17,4% t.o.v. juni</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Doorklikpercentage</div><div class="kpi-value" id="organicCtr">0,97%</div><div class="kpi-note positive" id="organicCtrNote">0,11 procentpunt hoger</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Gemiddelde positie</div><div class="kpi-value" id="organicPosition">13,00</div><div class="kpi-note positive" id="organicPositionNote">0,91 positie verbeterd</div></article>
+      <article class="card kpi-card"><div class="kpi-label">Organische leads</div><div class="kpi-value" id="organicLeads">12</div><div class="kpi-note negative" id="organicLeadsNote">2 minder dan juni</div></article>
+    </section>
+    <section class="grid-2" style="margin-top:14px">
+      <article class="card panel"><div class="panel-head"><div><h3>Ontwikkeling van organisch verkeer</h3><p>Afgelopen twaalf volledige maanden</p></div><span class="badge">SEO + Google AI</span></div><div class="chart-wrap tall"><canvas id="organicTrendChart"></canvas></div></article>
+      <article class="card panel"><div class="panel-head"><div><h3>Wat valt op?</h3><p id="organicInterpretationSubtitle">Ontwikkeling in juli</p></div></div><div class="metric-list">
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Zichtbaarheid groeit</strong><small>Meer klikken en vertoningen vanuit Google Search</small></div><div class="metric-value">Positief</div></div>
+        <div class="metric-row"><i class="metric-dot"></i><div><strong id="organicCtrInsightTitle">Doorklikpercentage stijgt</strong><small id="organicCtrInsightText">Van 0,86% in juni naar 0,97% in juli</small></div><div class="metric-value" id="organicCtrInsightValue">+0,11 pp</div></div>
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong id="organicLeadInsightTitle">Leadvolume iets lager</strong><small id="organicLeadInsightText">12 organische leads tegenover 14 in juni</small></div><div class="metric-value" id="organicLeadInsightValue">12 leads</div></div>
+        <div class="info-callout"><div class="info-icon">→</div><div><strong>Volgende kans</strong><p>De organische zichtbaarheid groeit sterk. De volgende optimalisaties richten zich daarom op meer conversie vanuit dit verkeer, onder andere via duidelijke contactmomenten, interne links en lokale projectpagina’s.</p></div></div>
+      </div></article>
+    </section>
+
+    <div class="section-heading" id="uitvoering"><div><h2>Uitgevoerde werkzaamheden</h2><p>Marketingproductie in juli 2026</p></div><span class="badge">Juli afgerond</span></div>
+    <section class="delivery-grid">
+      <article class="card delivery-card"><span>Nieuwe blogs</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Het doel voor juli is volledig behaald.</p></article>
+      <article class="card delivery-card"><span>Herschrijvingen</span><strong>8 / 8</strong><div class="progress"><i style="width:100%"></i></div><p>Bestaande pagina’s zijn verbeterd op inhoud en vindbaarheid.</p></article>
+      <article class="card delivery-card"><span>Projectpagina’s</span><strong>4 / 4</strong><div class="progress"><i style="width:100%"></i></div><p>Apeldoorn, Hengelo, Barendrecht en Maarssen.</p></article>
+      <article class="card delivery-card"><span>Google Bedrijfsprofiel</span><strong>4 / 4</strong><div class="progress"><i style="width:100%"></i></div><p>Vier lokale projectposts gepubliceerd.</p></article>
+      <article class="card delivery-card"><span>Facebook-posts</span><strong>9 live</strong><div class="progress"><i style="width:100%"></i></div><p>Negen organische berichten gepubliceerd.</p></article>
+    </section>
+    <section class="grid-2" style="margin-top:14px">
+      <article class="card panel"><div class="panel-head"><div><h3>Lokale projecten</h3><p>Projectpagina’s en lokale zichtbaarheid</p></div><span class="badge">4 projecten</span></div><div class="project-list">
+        <div class="project-item"><div class="project-index">01</div><div><strong>Apeldoorn</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div>
+        <div class="project-item"><div class="project-index">02</div><div><strong>Hengelo</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div>
+        <div class="project-item"><div class="project-index">03</div><div><strong>Barendrecht</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div>
+        <div class="project-item"><div class="project-index">04</div><div><strong>Maarssen</strong><small>Projectpagina + Google Bedrijfsprofiel-post</small></div><span class="badge">Gereed</span></div>
+      </div></article>
+      <article class="card panel"><div class="panel-head"><div><h3>Vast werkritme vanaf augustus</h3><p>Structurele maandelijkse uitvoering</p></div><span class="badge blue">Doorlopend</span></div><div class="metric-list">
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Nieuwe content</strong><small>Blogs en landingspagina’s</small></div><div class="metric-value">12 p/m</div></div>
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Bestaande pagina’s</strong><small>Verbeteren op basis van zoekdata</small></div><div class="metric-value">8 p/m</div></div>
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Projecten en lokale posts</strong><small>Projectpagina’s + Google Bedrijfsprofiel</small></div><div class="metric-value">4 + 4</div></div>
+        <div class="metric-row"><i class="metric-dot"></i><div><strong>Social media</strong><small>Facebook en Instagram</small></div><div class="metric-value">12 p/m</div></div>
+      </div></article>
+    </section>
+
+    <div class="section-heading" id="social"><div><h2>Facebook-posts juli</h2><p>De negen gepubliceerde organische berichten</p></div><span class="source-label">Facebook</span></div>
+    <section class="card panel"><div class="post-list">
+      <div class="post-item"><div class="post-date">9 jul</div><div><strong>Warmte buiten houden</strong><small>Comfort en zomerhitte</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1051372537838206">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">10 jul</div><div><strong>Warmte in slaapkamer of zolder</strong><small>Isolatie en wooncomfort</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1052538854388241">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">17 jul</div><div><strong>Vakantiemelding</strong><small>Service-informatie</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1058315803810546">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">21 jul</div><div><strong>Project Apeldoorn</strong><small>Lokale projectcontent</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1061801483461978">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">23 jul</div><div><strong>Houten kozijnen vervangen?</strong><small>Onderhoud en vervanging</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1063132139995579">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">25 jul</div><div><strong>Geen aanbetaling</strong><small>Vertrouwen en financieel voordeel</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1064830233159103">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">27 jul</div><div><strong>Project Hengelo</strong><small>Lokale projectcontent</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1066559449652848">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">29 jul</div><div><strong>Wat kosten kunststof kozijnen?</strong><small>Prijsoriëntatie</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1068348029473990">Bekijk post ↗</a></div>
+      <div class="post-item"><div class="post-date">31 jul</div><div><strong>Comfortabel de herfst in</strong><small>Seizoensgebonden wooncomfort</small></div><a class="inline-link" target="_blank" rel="noopener" href="https://www.facebook.com/1063030576672402/posts/1070167895958670">Bekijk post ↗</a></div>
+    </div></section>
+
+    <div class="section-heading" id="funnel"><div><h2>Van zichtbaarheid naar aanvragen</h2><p>De beschikbare resultaten binnen de klantreis</p></div><span class="source-label">Salesresultaten worden toegevoegd zodra beschikbaar</span></div>
+    <section class="grid-2">
+      <article class="card panel"><div class="panel-head"><div><h3>Marketingresultaten</h3><p id="funnelPeriod">Juli 2026</p></div><span class="badge">Beschikbare data</span></div><div class="funnel">
+        <div class="funnel-row"><div class="funnel-label">Meta-vertoningen</div><div class="funnel-track"><div class="funnel-fill" style="width:100%"></div></div><div class="funnel-value" id="funnelMetaImpressions">69.401</div></div>
+        <div class="funnel-row"><div class="funnel-label">Meta-klikken</div><div class="funnel-track"><div class="funnel-fill" style="width:63%"></div></div><div class="funnel-value" id="funnelMetaClicks">1.223</div></div>
+        <div class="funnel-row"><div class="funnel-label">Meta-aanvragen</div><div class="funnel-track"><div class="funnel-fill" style="width:36%"></div></div><div class="funnel-value" id="funnelMetaLeads">55</div></div>
+        <div class="funnel-row"><div class="funnel-label">Organische klikken</div><div class="funnel-track"><div class="funnel-fill" style="width:72%"></div></div><div class="funnel-value" id="funnelOrganicClicks">1.847</div></div>
+        <div class="funnel-row"><div class="funnel-label">Organische leads</div><div class="funnel-track"><div class="funnel-fill" style="width:24%"></div></div><div class="funnel-value" id="funnelOrganicLeads">12</div></div>
+      </div></article>
+      <article class="card panel"><div class="panel-head"><div><h3>Vervolg in de klantreis</h3><p>Wordt toegevoegd zodra deze informatie beschikbaar is</p></div></div><div class="metric-list">
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong>Geldige leads</strong><small>Geeft inzicht in de kwaliteit van de aanvragen</small></div><div class="metric-value">Volgt</div></div>
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong>Afspraken</strong><small>Laat zien hoeveel aanvragen tot een adviesgesprek leiden</small></div><div class="metric-value">Volgt</div></div>
+        <div class="metric-row"><i class="metric-dot warning"></i><div><strong>Offertes en verkopen</strong><small>Maakt het commerciële resultaat van de marketing zichtbaar</small></div><div class="metric-value">Volgt</div></div>
+      </div></article>
+    </section>
+
+    <div class="section-heading" id="toelichting"><div><h2>Over de cijfers</h2><p>Een korte uitleg van de gebruikte bronnen en metingen</p></div></div>
+    <section class="quality-grid">
+      <article class="card quality-card"><span>Meta Ads</span><strong>Volledige maandresultaten</strong><p>Budget, vertoningen, klikken en aanvragen zijn afkomstig uit de campagnes voor regio Twente.</p></article>
+      <article class="card quality-card"><span>Organische zichtbaarheid</span><strong>Google Search Console</strong><p>Meet organische klikken en vertoningen vanuit reguliere zoekresultaten en Google AI-functies.</p></article>
+      <article class="card quality-card"><span>Organische leads</span><strong>Unieke gebruikers</strong><p>Gebruikers vanuit Organic Search die na een aanvraag de succespagina hebben bereikt.</p></article>
+      <article class="card quality-card"><span>Salesresultaten</span><strong>Worden later toegevoegd</strong><p>Geldige leads, afspraken, offertes en verkopen volgen zodra deze centraal beschikbaar zijn.</p></article>
+    </section>
+    <p class="footer-note" id="footerNote">Google Search Console rapporteert klikken en vertoningen, geen unieke bezoekers. De organische leadmeting is gebaseerd op unieke gebruikers vanuit Organic Search die de succespagina bereikten. Google verwerkt ook resultaten vanuit AI Overviews en AI Mode in Search Console. Salesresultaten worden toegevoegd zodra deze beschikbaar zijn.</p>
+  </main>
+</div>
 <script>
-Chart.defaults.font.family='Montserrat';Chart.defaults.color='#6b7280';const gridColor='rgba(27,41,74,.08)';
-const reportData={
-'2026-07':{label:'Juli 2026',paidPeriod:'Volledige maand juli',organicPeriod:'Volledige maand juli',meta:{spend:2442.42,leads:55,cpl:44.41,impressions:69401,clicks:1223,linkClicks:814,ctr:1.76,cpc:2,cpm:35.19,spendChange:'−40,7% t.o.v. juni',leadChange:'−28,6% t.o.v. juni',cplChange:'16,9% beter dan juni',campaigns:[['META_CORE_KOZIJNEN_TWENTE_PLUS','€2.309,47','65.238','1.157','762','55','€41,99','1,77%','€2,00','€35,40'],['META_RETARGETING_KOZIJNEN_TWENTE_PLUS','€132,95','4.163','66','52','0','—','1,58%','€2,01','€31,94']]},organic:{clicks:1847,impressions:191347,ctr:.97,position:13,leads:12,clicksChange:'+31,3% t.o.v. juni',impressionsChange:'+17,4% t.o.v. juni',ctrChange:'0,11 procentpunt hoger',positionChange:'0,91 positie verbeterd',leadChange:'2 minder dan juni',interpretationSubtitle:'Wat juli inhoudelijk laat zien',ctrInsightTitle:'CTR stijgt',ctrInsightText:'Van 0,86% in juni naar 0,97% in juli',ctrInsightValue:'+0,11 pp',leadInsightTitle:'Leadvolume daalt licht',leadInsightText:'Verkeer groeit sneller dan de gemeten organische conversies',leadInsightValue:'12 leads'}},
-'2026-06':{label:'Juni 2026',paidPeriod:'Volledige maand juni',organicPeriod:'Volledige maand juni',meta:{spend:4118.73,leads:77,cpl:53.49,impressions:149805,clicks:2405,linkClicks:1671,ctr:1.61,cpc:1.71,cpm:27.49,spendChange:'Volledige maand',leadChange:'Volledige maand',cplChange:'Boven formeel doel €35–€40',campaigns:[['META_CORE_KOZIJNEN_TWENTE_PLUS','€3.810,95','142.961','2.273','1.586','68','€56,04','1,59%','€1,68','€26,66'],['META_RETARGETING_KOZIJNEN_TWENTE_PLUS','€307,78','6.844','132','85','9','€34,20','1,93%','€2,33','€44,97']]},organic:{clicks:1407,impressions:162980,ctr:.86,position:13.91,leads:14,clicksChange:'+20,2% t.o.v. mei',impressionsChange:'+20,7% t.o.v. mei',ctrChange:'0,01 procentpunt lager',positionChange:'3,17 posities verbeterd',leadChange:'1 meer dan mei',interpretationSubtitle:'Wat juni inhoudelijk laat zien',ctrInsightTitle:'CTR blijft vrijwel gelijk',ctrInsightText:'Van 0,87% in mei naar 0,86% in juni',ctrInsightValue:'−0,01 pp',leadInsightTitle:'Leadvolume groeit licht',leadInsightText:'Van 13 organische leads in mei naar 14 in juni',leadInsightValue:'14 leads'}}};
-const fmtNumber=v=>Number(v).toLocaleString('nl-NL'),fmtCurrency=v=>Number(v).toLocaleString('nl-NL',{style:'currency',currency:'EUR'}),fmtDecimal=(v,d=2)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});
-new Chart(document.getElementById('metaTrendChart'),{type:'bar',data:{labels:['Juni 2026','Juli 2026'],datasets:[{label:'Spend (€)',data:[4118.73,2442.42],backgroundColor:'#1B294A',borderRadius:8,yAxisID:'y'},{label:'Leads',data:[77,55],backgroundColor:'#84BA8A',borderRadius:8,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:gridColor}},y1:{beginAtZero:true,position:'right',grid:{display:false}}}}});
-new Chart(document.getElementById('organicTrendChart'),{type:'line',data:{labels:["aug '25","sep '25","okt '25","nov '25","dec '25","jan '26","feb '26","mrt '26","apr '26","mei '26","jun '26","jul '26"],datasets:[{label:'GSC-klikken',data:[362,552,603,897,792,1030,880,902,881,1171,1407,1847],borderColor:'#1B294A',backgroundColor:'rgba(132,186,138,.20)',fill:true,tension:.35,pointRadius:3,pointBackgroundColor:'#84BA8A',pointBorderColor:'#fff',pointBorderWidth:2,yAxisID:'y'},{label:'Organische leads',data:[3,5,6,9,8,10,9,16,10,13,14,12],borderColor:'#84BA8A',backgroundColor:'#84BA8A',tension:.35,pointRadius:3,pointBackgroundColor:'#1B294A',pointBorderColor:'#fff',pointBorderWidth:2,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false}},y:{beginAtZero:false,grid:{color:gridColor}},y1:{beginAtZero:true,position:'right',grid:{display:false},suggestedMax:20}}}});
-function renderCampaignTable(d){const b=document.getElementById('campaignTableBody');const rows=d.campaigns.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' class="campaign-name"':''}>${c}</td>`).join('')}</tr>`).join('');b.innerHTML=`${rows}<tr class="total-row"><td>Totaal rapportagescope</td><td>${fmtCurrency(d.spend)}</td><td>${fmtNumber(d.impressions)}</td><td>${fmtNumber(d.clicks)}</td><td>${fmtNumber(d.linkClicks)}</td><td>${fmtNumber(d.leads)}</td><td>${fmtCurrency(d.cpl)}</td><td>${fmtDecimal(d.ctr)}%</td><td>${fmtCurrency(d.cpc)}</td><td>${fmtCurrency(d.cpm)}</td></tr>`}
-function applyMonth(k){const r=reportData[k],m=r.meta,o=r.organic;document.getElementById('heroTitle').textContent=r.label;document.getElementById('paidPeriod').textContent=r.paidPeriod;document.getElementById('organicPeriod').textContent=r.organicPeriod;document.getElementById('overviewMetaSpend').textContent=fmtCurrency(m.spend);document.getElementById('overviewMetaSpendNote').textContent=m.spendChange;document.getElementById('overviewMetaLeads').textContent=fmtNumber(m.leads);document.getElementById('overviewMetaLeadsNote').textContent=m.leadChange;document.getElementById('overviewMetaCpl').textContent=fmtCurrency(m.cpl);document.getElementById('overviewMetaCplNote').textContent=m.cplChange;document.getElementById('overviewOrganicClicks').textContent=fmtNumber(o.clicks);document.getElementById('overviewOrganicClicksNote').textContent=o.clicksChange;document.getElementById('overviewOrganicLeads').textContent=fmtNumber(o.leads);document.getElementById('overviewOrganicLeadsNote').textContent=o.leadChange;document.getElementById('overviewOrganicPosition').textContent=fmtDecimal(o.position);document.getElementById('overviewOrganicPositionNote').textContent=o.positionChange;document.getElementById('metaSpend').textContent=fmtCurrency(m.spend);document.getElementById('metaLeads').textContent=fmtNumber(m.leads);document.getElementById('metaLeadsNote').textContent=k==='2026-07'?'54 geregistreerd + 1 toegewezen':'Volledige maand';document.getElementById('metaCpl').textContent=fmtCurrency(m.cpl);document.getElementById('metaCplNote').textContent=m.cplChange;document.getElementById('metaImpressions').textContent=fmtNumber(m.impressions);document.getElementById('metaClicks').textContent=fmtNumber(m.clicks);document.getElementById('metaClicksNote').textContent=`${fmtNumber(m.linkClicks)} linkklikken`;document.getElementById('metaCtr').textContent=`${fmtDecimal(m.ctr)}%`;document.getElementById('metaCpc').textContent=fmtCurrency(m.cpc);document.getElementById('metaCpm').textContent=fmtCurrency(m.cpm);document.getElementById('metaEfficiencyPeriod').textContent=r.label;document.getElementById('organicClicks').textContent=fmtNumber(o.clicks);document.getElementById('organicClicksNote').textContent=o.clicksChange;document.getElementById('organicImpressions').textContent=fmtNumber(o.impressions);document.getElementById('organicImpressionsNote').textContent=o.impressionsChange;document.getElementById('organicCtr').textContent=`${fmtDecimal(o.ctr)}%`;document.getElementById('organicCtrNote').textContent=o.ctrChange;document.getElementById('organicPosition').textContent=fmtDecimal(o.position);document.getElementById('organicPositionNote').textContent=o.positionChange;document.getElementById('organicLeads').textContent=fmtNumber(o.leads);document.getElementById('organicLeadsNote').textContent=o.leadChange;document.getElementById('organicInterpretationSubtitle').textContent=o.interpretationSubtitle;document.getElementById('organicCtrInsightTitle').textContent=o.ctrInsightTitle;document.getElementById('organicCtrInsightText').textContent=o.ctrInsightText;document.getElementById('organicCtrInsightValue').textContent=o.ctrInsightValue;document.getElementById('organicLeadInsightTitle').textContent=o.leadInsightTitle;document.getElementById('organicLeadInsightText').textContent=o.leadInsightText;document.getElementById('organicLeadInsightValue').textContent=o.leadInsightValue;document.getElementById('funnelPeriod').textContent=r.label;document.getElementById('funnelMetaImpressions').textContent=fmtNumber(m.impressions);document.getElementById('funnelMetaClicks').textContent=fmtNumber(m.clicks);document.getElementById('funnelMetaLeads').textContent=fmtNumber(m.leads);document.getElementById('funnelOrganicClicks').textContent=fmtNumber(o.clicks);document.getElementById('funnelOrganicLeads').textContent=fmtNumber(o.leads);renderCampaignTable(m);document.getElementById('footerNote').textContent=k==='2026-07'?'Meta Ads juli is gebaseerd op de rapportagescope META_CORE_KOZIJNEN_TWENTE_PLUS en META_RETARGETING_KOZIJNEN_TWENTE_PLUS. De ene eerder aan Noord toegeschreven lead is voor deze rapportage toegewezen aan de Twente-corecampagne. Organische leads zijn unieke gebruikers vanuit Organic Search die de succespagina hebben bereikt. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.':'Meta Ads juni is gebaseerd op dezelfde Twente-rapportagescope als juli. Organische leads zijn unieke gebruikers vanuit Organic Search die de succespagina hebben bereikt. Geldige leads, afspraken, offertes en verkopen zijn nog niet centraal gekoppeld.'}
-document.getElementById('monthSelect').addEventListener('change',e=>applyMonth(e.target.value));applyMonth('2026-07');const links=[...document.querySelectorAll('.nav-link[href^="#"]')],sections=links.map(l=>document.querySelector(l.getAttribute('href'))).filter(Boolean);const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')===`#${e.target.id}`))}),{rootMargin:'-32% 0px -58% 0px'});sections.forEach(s=>observer.observe(s));
+  Chart.defaults.font.family='Montserrat';
+  Chart.defaults.color='#6b7280';
+  const gridColor='rgba(27,41,74,.08)';
+  const reportData={
+    '2026-07':{
+      label:'Juli 2026',period:'1 t/m 31 juli 2026',paidPeriod:'Volledige maand juli',
+      meta:{spend:2442.42,leads:55,cpl:44.41,impressions:69401,clicks:1223,linkClicks:814,ctr:1.76,cpc:2.00,cpm:35.19,spendChange:'−40,7% t.o.v. juni',leadChange:'−28,6% t.o.v. juni',cplChange:'16,9% beter dan juni',campaigns:[['Nieuwe doelgroep (Twente)','Core-campagne','€2.309,47','65.238','1.157','762','55','€41,99','1,77%','€2,00','€35,40'],['Websitebezoekers opnieuw bereiken','Retargeting','€132,95','4.163','66','52','0','—','1,58%','€2,01','€31,94']]},
+      organic:{clicks:1847,impressions:191347,ctr:.97,position:13.00,leads:12,clicksChange:'+31,3% t.o.v. juni',impressionsChange:'+17,4% t.o.v. juni',ctrChange:'0,11 procentpunt hoger',positionChange:'0,91 positie verbeterd',leadChange:'2 minder dan juni',interpretationSubtitle:'Ontwikkeling in juli',ctrInsightTitle:'Doorklikpercentage stijgt',ctrInsightText:'Van 0,86% in juni naar 0,97% in juli',ctrInsightValue:'+0,11 pp',leadInsightTitle:'Leadvolume iets lager',leadInsightText:'12 organische leads tegenover 14 in juni',leadInsightValue:'12 leads'}
+    },
+    '2026-06':{
+      label:'Juni 2026',period:'1 t/m 30 juni 2026',paidPeriod:'Volledige maand juni',
+      meta:{spend:4118.73,leads:77,cpl:53.49,impressions:149805,clicks:2405,linkClicks:1671,ctr:1.61,cpc:1.71,cpm:27.49,spendChange:'Volledige maand',leadChange:'Volledige maand',cplChange:'€53,49 per aanvraag',campaigns:[['Nieuwe doelgroep (Twente)','Core-campagne','€3.810,95','142.961','2.273','1.586','68','€56,04','1,59%','€1,68','€26,66'],['Websitebezoekers opnieuw bereiken','Retargeting','€307,78','6.844','132','85','9','€34,20','1,93%','€2,33','€44,97']]},
+      organic:{clicks:1407,impressions:162980,ctr:.86,position:13.91,leads:14,clicksChange:'+20,2% t.o.v. mei',impressionsChange:'+20,7% t.o.v. mei',ctrChange:'0,01 procentpunt lager',positionChange:'3,17 posities verbeterd',leadChange:'1 meer dan mei',interpretationSubtitle:'Ontwikkeling in juni',ctrInsightTitle:'Doorklikpercentage vrijwel gelijk',ctrInsightText:'Van 0,87% in mei naar 0,86% in juni',ctrInsightValue:'−0,01 pp',leadInsightTitle:'Leadvolume groeit licht',leadInsightText:'14 organische leads tegenover 13 in mei',leadInsightValue:'14 leads'}
+    }
+  };
+  const fmtNumber=v=>Number(v).toLocaleString('nl-NL');
+  const fmtCurrency=v=>Number(v).toLocaleString('nl-NL',{style:'currency',currency:'EUR'});
+  const fmtDecimal=(v,d=2)=>Number(v).toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+  new Chart(document.getElementById('metaTrendChart'),{
+    type:'bar',
+    data:{labels:['Juni 2026','Juli 2026'],datasets:[{label:'Advertentiebudget (€)',data:[4118.73,2442.42],backgroundColor:'#1B294A',borderRadius:8,yAxisID:'y'},{label:'Aanvragen',data:[77,55],backgroundColor:'#84BA8A',borderRadius:8,yAxisID:'y1'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:gridColor}},y1:{beginAtZero:true,position:'right',grid:{display:false}}}}
+  });
+
+  new Chart(document.getElementById('organicTrendChart'),{
+    type:'line',
+    data:{labels:["aug '25","sep '25","okt '25","nov '25","dec '25","jan '26","feb '26","mrt '26","apr '26","mei '26","jun '26","jul '26"],datasets:[{label:'Organische klikken via Google Search',data:[362,552,603,897,792,1030,880,902,881,1171,1407,1847],borderColor:'#1B294A',backgroundColor:'rgba(132,186,138,.20)',fill:true,tension:.35,pointRadius:3,pointBackgroundColor:'#84BA8A',pointBorderColor:'#fff',pointBorderWidth:2,yAxisID:'y'},{label:'Organische leads',data:[3,5,6,9,8,10,9,16,10,13,14,12],borderColor:'#84BA8A',backgroundColor:'#84BA8A',tension:.35,pointRadius:3,pointBackgroundColor:'#1B294A',pointBorderColor:'#fff',pointBorderWidth:2,yAxisID:'y1'}]},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom',labels:{boxWidth:10,usePointStyle:true}}},scales:{x:{grid:{display:false}},y:{beginAtZero:false,grid:{color:gridColor}},y1:{beginAtZero:true,position:'right',grid:{display:false},suggestedMax:20}}}
+  });
+
+  function renderCampaignTable(d){
+    const body=document.getElementById('campaignTableBody');
+    const rows=d.campaigns.map(r=>`<tr><td class="campaign-name">${r[0]}<small>${r[1]}</small></td>${r.slice(2).map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+    body.innerHTML=`${rows}<tr class="total-row"><td>Totaal</td><td>${fmtCurrency(d.spend)}</td><td>${fmtNumber(d.impressions)}</td><td>${fmtNumber(d.clicks)}</td><td>${fmtNumber(d.linkClicks)}</td><td>${fmtNumber(d.leads)}</td><td>${fmtCurrency(d.cpl)}</td><td>${fmtDecimal(d.ctr)}%</td><td>${fmtCurrency(d.cpc)}</td><td>${fmtCurrency(d.cpm)}</td></tr>`;
+  }
+
+  function applyMonth(key){
+    const report=reportData[key],m=report.meta,o=report.organic;
+    document.getElementById('heroTitle').textContent=report.label;
+    document.getElementById('periodContext').textContent=report.period;
+    document.getElementById('paidPeriod').textContent=report.paidPeriod;
+    document.getElementById('overviewMetaSpend').textContent=fmtCurrency(m.spend);
+    document.getElementById('overviewMetaSpendNote').textContent=m.spendChange;
+    document.getElementById('overviewMetaLeads').textContent=fmtNumber(m.leads);
+    document.getElementById('overviewMetaLeadsNote').textContent=m.leadChange;
+    document.getElementById('overviewMetaCpl').textContent=fmtCurrency(m.cpl);
+    document.getElementById('overviewMetaCplNote').textContent=m.cplChange;
+    document.getElementById('overviewOrganicClicks').textContent=fmtNumber(o.clicks);
+    document.getElementById('overviewOrganicClicksNote').textContent=o.clicksChange;
+    document.getElementById('overviewOrganicLeads').textContent=fmtNumber(o.leads);
+    document.getElementById('overviewOrganicLeadsNote').textContent=o.leadChange;
+    document.getElementById('overviewOrganicPosition').textContent=fmtDecimal(o.position);
+    document.getElementById('overviewOrganicPositionNote').textContent=o.positionChange;
+    document.getElementById('metaSpend').textContent=fmtCurrency(m.spend);
+    document.getElementById('metaLeads').textContent=fmtNumber(m.leads);
+    document.getElementById('metaLeadsNote').textContent='Via Meta Ads';
+    document.getElementById('metaCpl').textContent=fmtCurrency(m.cpl);
+    document.getElementById('metaCplNote').textContent=m.cplChange;
+    document.getElementById('metaImpressions').textContent=fmtNumber(m.impressions);
+    document.getElementById('metaClicks').textContent=fmtNumber(m.clicks);
+    document.getElementById('metaClicksNote').textContent=`${fmtNumber(m.linkClicks)} linkklikken`;
+    document.getElementById('metaCtr').textContent=`${fmtDecimal(m.ctr)}%`;
+    document.getElementById('metaCpc').textContent=fmtCurrency(m.cpc);
+    document.getElementById('metaCpm').textContent=fmtCurrency(m.cpm);
+    document.getElementById('metaEfficiencyPeriod').textContent=report.label;
+    document.getElementById('organicClicks').textContent=fmtNumber(o.clicks);
+    document.getElementById('organicClicksNote').textContent=o.clicksChange;
+    document.getElementById('organicImpressions').textContent=fmtNumber(o.impressions);
+    document.getElementById('organicImpressionsNote').textContent=o.impressionsChange;
+    document.getElementById('organicCtr').textContent=`${fmtDecimal(o.ctr)}%`;
+    document.getElementById('organicCtrNote').textContent=o.ctrChange;
+    document.getElementById('organicPosition').textContent=fmtDecimal(o.position);
+    document.getElementById('organicPositionNote').textContent=o.positionChange;
+    document.getElementById('organicLeads').textContent=fmtNumber(o.leads);
+    document.getElementById('organicLeadsNote').textContent=o.leadChange;
+    document.getElementById('organicInterpretationSubtitle').textContent=o.interpretationSubtitle;
+    document.getElementById('organicCtrInsightTitle').textContent=o.ctrInsightTitle;
+    document.getElementById('organicCtrInsightText').textContent=o.ctrInsightText;
+    document.getElementById('organicCtrInsightValue').textContent=o.ctrInsightValue;
+    document.getElementById('organicLeadInsightTitle').textContent=o.leadInsightTitle;
+    document.getElementById('organicLeadInsightText').textContent=o.leadInsightText;
+    document.getElementById('organicLeadInsightValue').textContent=o.leadInsightValue;
+    document.getElementById('funnelPeriod').textContent=report.label;
+    document.getElementById('funnelMetaImpressions').textContent=fmtNumber(m.impressions);
+    document.getElementById('funnelMetaClicks').textContent=fmtNumber(m.clicks);
+    document.getElementById('funnelMetaLeads').textContent=fmtNumber(m.leads);
+    document.getElementById('funnelOrganicClicks').textContent=fmtNumber(o.clicks);
+    document.getElementById('funnelOrganicLeads').textContent=fmtNumber(o.leads);
+    renderCampaignTable(m);
+  }
+
+  document.getElementById('monthSelect').addEventListener('change',e=>applyMonth(e.target.value));
+  applyMonth('2026-07');
+
+  const links=[...document.querySelectorAll('.nav-link[href^="#"]')];
+  const sections=links.map(link=>document.querySelector(link.getAttribute('href'))).filter(Boolean);
+  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')===`#${entry.target.id}`))}),{rootMargin:'-32% 0px -58% 0px'});
+  sections.forEach(section=>observer.observe(section));
 </script>
 </body>
 </html>
