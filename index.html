@@ -39,7 +39,7 @@
       { label: '16 aug', spend: 142.63, leads: 5, cpl: 28.53 },
       { label: '17 aug*', spend: 29.86, leads: 6, cpl: 4.98 }
     ];
-    const augustAverageCpl = 31.32;
+    const augustAverageCpl = 31.39;
 
     const julyContent = {
       newBlogs: [
@@ -76,6 +76,10 @@
       } catch (error) {
         return {};
       }
+    }
+
+    function euro(value) {
+      return Number(value).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
     }
 
     function updateCumulativeOrganic(selectedMonth) {
@@ -153,6 +157,32 @@
       return true;
     }
 
+    function applyDailyCplHover() {
+      const { innerDocument, innerWindow } = getDashboardContext();
+      if (!innerDocument || !innerWindow?.Chart) return false;
+      const canvas = innerDocument.getElementById('dailyCplChart');
+      const chart = canvas ? innerWindow.Chart.getChart(canvas) : null;
+      if (!chart) return false;
+      chart.options.interaction = { mode: 'index', intersect: false };
+      chart.options.plugins.tooltip = {
+        mode: 'index',
+        intersect: false,
+        displayColors: false,
+        callbacks: {
+          title: items => items?.[0]?.label || '',
+          label: context => {
+            if (context.datasetIndex !== 0) return null;
+            const row = dailyCplAugust[context.dataIndex];
+            if (!row) return null;
+            return [`Leads: ${row.leads}`, `CPL: ${row.cpl == null ? 'niet berekenbaar' : euro(row.cpl)}`, `Spend: ${euro(row.spend)}`];
+          },
+          afterBody: () => []
+        }
+      };
+      chart.update('none');
+      return true;
+    }
+
     function ensureDailyCplChart(selectedMonth) {
       const { innerDocument, innerWindow } = getDashboardContext();
       if (!innerDocument || !innerWindow?.Chart) return false;
@@ -166,7 +196,7 @@
         panel = innerDocument.createElement('section');
         panel.id = 'dailyCplPanel';
         panel.className = 'panel daily-cpl-panel';
-        panel.innerHTML = '<h3>Dagelijkse kosten per lead</h3><p>Gecombineerde CPL van VIDEO_TEST_NOORD_MIDDEN_AUG_2026 en RT_WEBSITE_KOZIJNEN_AUG_2026</p><div class="daily-cpl-summary"><span class="daily-cpl-pill">Gemiddelde: €31,32</span><span class="daily-cpl-pill">42 leads</span><span class="daily-cpl-pill">€1.315,31 spend</span></div><div class="daily-cpl-chart-wrap"><canvas id="dailyCplChart"></canvas></div><div class="daily-cpl-note">9 augustus had €85,98 spend en 0 leads; een CPL is die dag daarom niet berekenbaar. 17 augustus is een lopende dag en staat met een * gemarkeerd.</div>';
+        panel.innerHTML = '<h3>Dagelijkse kosten per lead</h3><p>Gecombineerde CPL van VIDEO_TEST_NOORD_MIDDEN_AUG_2026 en RT_WEBSITE_KOZIJNEN_AUG_2026</p><div class="daily-cpl-summary"><span class="daily-cpl-pill">Gemiddelde: €31,39</span><span class="daily-cpl-pill">42 leads</span><span class="daily-cpl-pill">€1.318,20 spend</span></div><div class="daily-cpl-chart-wrap"><canvas id="dailyCplChart"></canvas></div><div class="daily-cpl-note">Hover over een dag om het aantal leads, de CPL en spend van die dag te zien. 9 augustus had €85,98 spend en 0 leads; een CPL is die dag daarom niet berekenbaar. 17 augustus is een lopende dag en staat met een * gemarkeerd.</div>';
         organicHeading.parentNode.insertBefore(panel, organicHeading);
         const canvas = panel.querySelector('#dailyCplChart');
         new innerWindow.Chart(canvas, {
@@ -186,7 +216,7 @@
                 spanGaps: false
               },
               {
-                label: 'Gemiddelde t/m 17 aug (€31,32)',
+                label: 'Gemiddelde t/m 17 aug (€31,39)',
                 data: dailyCplAugust.map(() => augustAverageCpl),
                 borderColor: '#84BA8A',
                 backgroundColor: '#84BA8A',
@@ -202,19 +232,7 @@
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
             plugins: {
-              legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } },
-              tooltip: {
-                callbacks: {
-                  label: context => context.datasetIndex === 0
-                    ? (context.raw == null ? 'CPL: niet berekenbaar' : `CPL: ${Number(context.raw).toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`)
-                    : `Gemiddelde: ${Number(context.raw).toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`,
-                  afterBody: items => {
-                    const index = items?.[0]?.dataIndex;
-                    const row = dailyCplAugust[index];
-                    return row ? [`Spend: ${row.spend.toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`, `Leads: ${row.leads}`] : [];
-                  }
-                }
-              }
+              legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } }
             },
             scales: {
               x: { grid: { display: false } },
@@ -229,6 +247,7 @@
         });
       }
       panel.style.display = selectedMonth === '2026-08' ? 'block' : 'none';
+      applyDailyCplHover();
       return true;
     }
 
