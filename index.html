@@ -24,6 +24,23 @@
       '2026-08': { label: 'Augustus', clicks: 809, leads: 5, partial: true }
     };
     const monthOrder = Object.keys(organicHistory);
+
+    const dailyCplAugust = [
+      { label: '6 aug', spend: 138.22, leads: 5, cpl: 27.64 },
+      { label: '7 aug', spend: 94.93, leads: 6, cpl: 15.82 },
+      { label: '8 aug', spend: 91.33, leads: 1, cpl: 91.33 },
+      { label: '9 aug', spend: 85.98, leads: 0, cpl: null },
+      { label: '10 aug', spend: 127.31, leads: 6, cpl: 21.22 },
+      { label: '11 aug', spend: 102.66, leads: 1, cpl: 102.66 },
+      { label: '12 aug', spend: 142.28, leads: 2, cpl: 71.14 },
+      { label: '13 aug', spend: 94.21, leads: 4, cpl: 23.55 },
+      { label: '14 aug', spend: 157.70, leads: 3, cpl: 52.57 },
+      { label: '15 aug', spend: 110.69, leads: 3, cpl: 36.90 },
+      { label: '16 aug', spend: 142.63, leads: 5, cpl: 28.53 },
+      { label: '17 aug*', spend: 29.86, leads: 6, cpl: 4.98 }
+    ];
+    const augustAverageCpl = 31.32;
+
     const julyContent = {
       newBlogs: [
         ['Wanneer zijn houten kozijnen echt aan vervanging toe?', 'https://directverduurzamen.nl/wanneer-kies-je-voor-kunststof-kozijnen/'],
@@ -136,6 +153,85 @@
       return true;
     }
 
+    function ensureDailyCplChart(selectedMonth) {
+      const { innerDocument, innerWindow } = getDashboardContext();
+      if (!innerDocument || !innerWindow?.Chart) return false;
+      let panel = innerDocument.getElementById('dailyCplPanel');
+      if (!panel) {
+        const organicHeading = innerDocument.getElementById('organic');
+        if (!organicHeading) return false;
+        const style = innerDocument.createElement('style');
+        style.textContent = '.daily-cpl-panel{margin-top:14px}.daily-cpl-chart-wrap{height:270px;margin-top:14px}.daily-cpl-note{margin-top:10px;color:var(--muted);font-size:9px;line-height:1.55}.daily-cpl-summary{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.daily-cpl-pill{font-size:9px;font-weight:700;color:var(--navy);background:#f4f7f5;border:1px solid rgba(27,41,74,.08);padding:7px 9px;border-radius:999px}';
+        innerDocument.head.appendChild(style);
+        panel = innerDocument.createElement('section');
+        panel.id = 'dailyCplPanel';
+        panel.className = 'panel daily-cpl-panel';
+        panel.innerHTML = '<h3>Dagelijkse kosten per lead</h3><p>Gecombineerde CPL van VIDEO_TEST_NOORD_MIDDEN_AUG_2026 en RT_WEBSITE_KOZIJNEN_AUG_2026</p><div class="daily-cpl-summary"><span class="daily-cpl-pill">Gemiddelde: €31,32</span><span class="daily-cpl-pill">42 leads</span><span class="daily-cpl-pill">€1.315,31 spend</span></div><div class="daily-cpl-chart-wrap"><canvas id="dailyCplChart"></canvas></div><div class="daily-cpl-note">9 augustus had €85,98 spend en 0 leads; een CPL is die dag daarom niet berekenbaar. 17 augustus is een lopende dag en staat met een * gemarkeerd.</div>';
+        organicHeading.parentNode.insertBefore(panel, organicHeading);
+        const canvas = panel.querySelector('#dailyCplChart');
+        new innerWindow.Chart(canvas, {
+          type: 'line',
+          data: {
+            labels: dailyCplAugust.map(row => row.label),
+            datasets: [
+              {
+                label: 'CPL per dag',
+                data: dailyCplAugust.map(row => row.cpl),
+                borderColor: '#1B294A',
+                backgroundColor: '#1B294A',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                tension: .28,
+                spanGaps: false
+              },
+              {
+                label: 'Gemiddelde t/m 17 aug (€31,32)',
+                data: dailyCplAugust.map(() => augustAverageCpl),
+                borderColor: '#84BA8A',
+                backgroundColor: '#84BA8A',
+                borderWidth: 2,
+                borderDash: [6, 6],
+                pointRadius: 0,
+                tension: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } },
+              tooltip: {
+                callbacks: {
+                  label: context => context.datasetIndex === 0
+                    ? (context.raw == null ? 'CPL: niet berekenbaar' : `CPL: ${Number(context.raw).toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`)
+                    : `Gemiddelde: ${Number(context.raw).toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`,
+                  afterBody: items => {
+                    const index = items?.[0]?.dataIndex;
+                    const row = dailyCplAugust[index];
+                    return row ? [`Spend: ${row.spend.toLocaleString('nl-NL',{style:'currency',currency:'EUR'})}`, `Leads: ${row.leads}`] : [];
+                  }
+                }
+              }
+            },
+            scales: {
+              x: { grid: { display: false } },
+              y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(27,41,74,.08)' },
+                ticks: { callback: value => `€${value}` },
+                title: { display: true, text: 'Kosten per lead' }
+              }
+            }
+          }
+        });
+      }
+      panel.style.display = selectedMonth === '2026-08' ? 'block' : 'none';
+      return true;
+    }
+
     function ensureContentUrls(selectedMonth) {
       const { innerDocument } = getDashboardContext();
       if (!innerDocument) return false;
@@ -173,6 +269,7 @@
             updateCumulativeOrganic(event.target.value);
             updateAugustOrganicLeads(event.target.value);
             updateOrganicCallout(event.target.value);
+            ensureDailyCplChart(event.target.value);
             ensureContentUrls(event.target.value);
           }, 80);
         });
@@ -180,8 +277,9 @@
       const organicReady = updateCumulativeOrganic(selector.value);
       const leadsReady = updateAugustOrganicLeads(selector.value);
       const calloutReady = updateOrganicCallout(selector.value);
+      const dailyCplReady = ensureDailyCplChart(selector.value);
       const urlsReady = ensureContentUrls(selector.value);
-      return organicReady && leadsReady && calloutReady && urlsReady;
+      return organicReady && leadsReady && calloutReady && dailyCplReady && urlsReady;
     }
 
     function startDashboardCheck() {
