@@ -21,7 +21,7 @@
       '2026-05': { label: 'Mei', clicks: 1171, leads: 13 },
       '2026-06': { label: 'Juni', clicks: 1407, leads: 14 },
       '2026-07': { label: 'Juli', clicks: 1847, leads: 12 },
-      '2026-08': { label: 'Augustus', clicks: 809, leads: null, partial: true }
+      '2026-08': { label: 'Augustus', clicks: 809, leads: 5, partial: true }
     };
     const monthOrder = Object.keys(organicHistory);
     const julyContent = {
@@ -95,7 +95,26 @@
       const heading = panel?.querySelector('h3');
       const subtitle = panel?.querySelector('p');
       if (heading) heading.textContent = 'Ontwikkeling organische groei';
-      if (subtitle) subtitle.textContent = selectedMonth === '2026-08' ? 'Cumulatief januari t/m 16 augustus 2026' : `Cumulatief januari t/m ${organicHistory[selectedMonth].label.toLowerCase()} 2026`;
+      if (subtitle) subtitle.textContent = selectedMonth === '2026-08' ? 'Cumulatief januari t/m 16 augustus 2026 · leads GA4 t/m 17 augustus' : `Cumulatief januari t/m ${organicHistory[selectedMonth].label.toLowerCase()} 2026`;
+      return true;
+    }
+
+    function updateAugustOrganicLeads(selectedMonth) {
+      if (selectedMonth !== '2026-08') return true;
+      const { innerDocument } = getDashboardContext();
+      if (!innerDocument) return false;
+      const set = (id, value) => {
+        const el = innerDocument.getElementById(id);
+        if (el) el.textContent = value;
+      };
+      set('overviewOrganicLeads', '5');
+      set('overviewOrganicLeadsNote', 'GA4 t/m 17 augustus');
+      set('organicLeads', '5');
+      set('organicLeadsNote', '5 unieke organische gebruikers op /succes/');
+      set('organicLeadInsightTitle', 'Organische leads via GA4');
+      set('organicLeadInsightText', 'Organic Search → /succes/ · unieke gebruikers t/m 17 augustus');
+      set('organicLeadInsightValue', '5 leads');
+      set('funnelOrganicLeads', '5');
       return true;
     }
 
@@ -109,7 +128,7 @@
       const text = callout.querySelector('p');
       if (selectedMonth === '2026-08') {
         if (title) title.textContent = 'Zichtbaarheid stabiel, CTR lager';
-        if (text) text.textContent = 'Vergeleken met 1–16 juli zijn de vertoningen 5,4% hoger en de gemiddelde positie iets beter, maar de klikken liggen 14,5% lager doordat de CTR terugvalt van 0,95% naar 0,77%. De eerstvolgende SEO-check richt zich daarom op CTR-kansen bij pagina’s met veel vertoningen.';
+        if (text) text.textContent = 'Vergeleken met 1–16 juli zijn de vertoningen 5,4% hoger en de gemiddelde positie iets beter, maar de klikken liggen 14,5% lager doordat de CTR terugvalt van 0,95% naar 0,77%. GA4 registreert daarnaast 5 unieke organische gebruikers op de succespagina t/m 17 augustus.';
       } else {
         if (title) title.textContent = 'Volgende kans';
         if (text) text.textContent = 'De organische zichtbaarheid groeit sterk. De volgende optimalisaties richten zich daarom op meer conversie vanuit dit verkeer, onder andere via duidelijke contactmomenten, interne links en lokale projectpagina’s.';
@@ -152,15 +171,17 @@
         selector.addEventListener('change', event => {
           setTimeout(() => {
             updateCumulativeOrganic(event.target.value);
+            updateAugustOrganicLeads(event.target.value);
             updateOrganicCallout(event.target.value);
             ensureContentUrls(event.target.value);
           }, 80);
         });
       }
       const organicReady = updateCumulativeOrganic(selector.value);
+      const leadsReady = updateAugustOrganicLeads(selector.value);
       const calloutReady = updateOrganicCallout(selector.value);
       const urlsReady = ensureContentUrls(selector.value);
-      return organicReady && calloutReady && urlsReady;
+      return organicReady && leadsReady && calloutReady && urlsReady;
     }
 
     function startDashboardCheck() {
