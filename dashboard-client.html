@@ -35,6 +35,20 @@ function applyExactNames(){
     const current=cell.textContent.trim();
     if(exactNames[current])cell.textContent=exactNames[current];
   });
+  const selected=doc.getElementById('monthSelect')?.value;
+  const insightPanel=doc.getElementById('organicInterpretationSubtitle')?.closest('.panel');
+  const callout=insightPanel?.querySelector('.info-callout');
+  if(callout){
+    const title=callout.querySelector('strong');
+    const text=callout.querySelector('p');
+    if(selected==='2026-08'){
+      if(title)title.textContent='Nog geen augustusconclusie';
+      if(text)text.textContent='Zodra de augustusdata uit Google Search Console is verwerkt, vullen we hier de belangrijkste organische ontwikkeling en vervolgstap aan.';
+    }else{
+      if(title)title.textContent='Volgende kans';
+      if(text)text.textContent='De organische zichtbaarheid groeit sterk. De volgende optimalisaties richten zich daarom op meer conversie vanuit dit verkeer, onder andere via duidelijke contactmomenten, interne links en lokale projectpagina’s.';
+    }
+  }
 }
 function watch(){
   const outer=document.getElementById('report');
