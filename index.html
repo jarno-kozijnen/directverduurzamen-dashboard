@@ -23,17 +23,18 @@ const exactNames={
   'Informatie aanvragen':'MH | Info | Avond | Almelo 40km | MA-Do+WE'
 };
 
+// Augustusrapportage: dezelfde afbakening als de bestaande augustus-tussenstand.
+// Alleen VIDEO_TEST_NOORD_MIDDEN_AUG_2026 + RT_WEBSITE_KOZIJNEN_AUG_2026.
 const AUGUST={
-  spend:3728.81,
+  spend:3458.86,
   leads:104,
-  impressions:238517,
-  clicks:2973,
-  linkClicks:2010,
-  ctr:1.25,
-  cpc:1.25,
-  cpm:15.63,
+  impressions:230577,
+  clicks:2861,
+  linkClicks:1923,
+  ctr:1.24,
+  cpc:1.21,
+  cpm:15.00,
   campaigns:[
-    ['META_CORE_KOZIJNEN_TWENTE_PLUS',269.95,7940,112,87,0],
     ['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',3290.03,223920,2728,1843,101],
     ['RT_WEBSITE_KOZIJNEN_AUG_2026',168.83,6657,133,80,3]
   ],
@@ -159,7 +160,7 @@ function updateAugustCharts(doc,win){
     if(pills[1])pills[1].textContent='104 leads';
     if(pills[2])pills[2].textContent='€3.458,86 spend';
     const note=dailyPanel.querySelector('.daily-cpl-note');
-    if(note)note.textContent='De dagtrend toont de nieuwe video-prospectingcampagne en retargeting vanaf 6 augustus. De eerdere META_CORE-campagne (€269,95 spend) staat wel in het maandtotaal, maar niet in deze dagtrend. Op 9 augustus was er spend zonder lead; daarom is voor die dag geen CPL berekenbaar.';
+    if(note)note.textContent='De dagtrend en het augustus-maandtotaal gebruiken dezelfde afbakening: VIDEO_TEST_NOORD_MIDDEN_AUG_2026 en RT_WEBSITE_KOZIJNEN_AUG_2026. Op 9 augustus was er spend zonder lead; daarom is voor die dag geen CPL berekenbaar.';
   }
 }
 
@@ -178,16 +179,16 @@ function applyAugustData(){
   if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): nog aan te vullen';
 
   setText(doc,'overviewMetaSpend',eur(AUGUST.spend));
-  setText(doc,'overviewMetaSpendNote','+52,7% t.o.v. juli');
+  setText(doc,'overviewMetaSpendNote','+41,6% t.o.v. juli');
   setText(doc,'overviewMetaLeads',fmt(AUGUST.leads));
   setText(doc,'overviewMetaLeadsNote','+89,1% t.o.v. juli');
   setText(doc,'overviewMetaCpl',eur(AUGUST.spend/AUGUST.leads));
-  setText(doc,'overviewMetaCplNote','19,3% beter dan juli');
+  setText(doc,'overviewMetaCplNote','25,1% beter dan juli');
   setText(doc,'metaSpend',eur(AUGUST.spend));
   setText(doc,'metaLeads',fmt(AUGUST.leads));
-  setText(doc,'metaLeadsNote','Via Meta Ads · volledige maand');
+  setText(doc,'metaLeadsNote','Via de twee augustuscampagnes');
   setText(doc,'metaCpl',eur(AUGUST.spend/AUGUST.leads));
-  setText(doc,'metaCplNote','19,3% beter dan juli');
+  setText(doc,'metaCplNote','25,1% beter dan juli');
   setText(doc,'metaImpressions',fmt(AUGUST.impressions));
   setText(doc,'metaClicks',fmt(AUGUST.clicks));
   setText(doc,'metaClicksNote',`${fmt(AUGUST.linkClicks)} linkklikken`);
@@ -201,7 +202,7 @@ function applyAugustData(){
   setText(doc,'funnelMetaLeads',fmt(AUGUST.leads));
 
   const msg=doc.querySelector('#monthMessage p');
-  if(msg)msg.textContent='Augustus is volledig verwerkt voor Meta Ads en Google Search Console. De volledige organische leadteller uit GA4 is nog niet beschikbaar en wordt daarom niet geschat.';
+  if(msg)msg.textContent='Augustus is volledig verwerkt voor de twee augustuscampagnes en Google Search Console. De volledige organische leadteller uit GA4 is nog niet beschikbaar en wordt daarom niet geschat.';
 
   const o=AUGUST.organic;
   setText(doc,'overviewOrganicClicks',fmt(o.clicks));
