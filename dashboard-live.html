@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Direct Verduurzamen | Maandrapportage</title>
+  <style>html,body{margin:0;height:100%;overflow:hidden;background:#f3f5f7}iframe{width:100%;height:100%;border:0;display:block}</style>
+</head>
+<body>
+<iframe id="client" src="/index.html" title="Maandrapportage Direct Verduurzamen"></iframe>
+<script>
+const AUG_ORGANIC_LEADS=8;
+
+function getDashboard(){
+  try{
+    const client=document.getElementById('client');
+    const indexDoc=client?.contentDocument;
+    const report=indexDoc?.getElementById('report');
+    const reportDoc=report?.contentDocument;
+    const dashboard=reportDoc?.getElementById('dashboard');
+    const doc=dashboard?.contentDocument;
+    const win=dashboard?.contentWindow;
+    return {doc,win};
+  }catch(e){return {};}
+}
+
+function setText(doc,id,value){const el=doc?.getElementById(id);if(el)el.textContent=value;}
+
+function patchAugustOrganic(){
+  const {doc,win}=getDashboard();
+  if(!doc)return false;
+  const selector=doc.getElementById('monthSelect');
+  if(!selector)return false;
+
+  if(!selector.dataset.ga4OrganicBound){
+    selector.dataset.ga4OrganicBound='1';
+    selector.addEventListener('change',()=>{
+      setTimeout(patchAugustOrganic,120);
+      setTimeout(patchAugustOrganic,500);
+      setTimeout(patchAugustOrganic,1100);
+    });
+  }
+
+  if(selector.value!=='2026-08')return true;
+
+  setText(doc,'overviewOrganicLeads',String(AUG_ORGANIC_LEADS));
+  setText(doc,'overviewOrganicLeadsNote','GA4 · Organic Search → /succes/');
+  setText(doc,'organicLeads',String(AUG_ORGANIC_LEADS));
+  setText(doc,'organicLeadsNote','8 unieke organische gebruikers op /succes/');
+  setText(doc,'organicLeadInsightTitle','Organische leads via GA4');
+  setText(doc,'organicLeadInsightText','Organic Search → /succes/ · volledige maand augustus');
+  setText(doc,'organicLeadInsightValue','8 leads');
+  setText(doc,'funnelOrganicLeads',String(AUG_ORGANIC_LEADS));
+
+  const status=doc.querySelector('.hero-status strong');
+  if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): volledig augustus';
+
+  const msg=doc.querySelector('#monthMessage p');
+  if(msg)msg.textContent='Augustus is volledig verwerkt voor de twee augustuscampagnes, Google Search Console en organische leads uit GA4. Organische leads zijn gemeten als unieke Organic Search-gebruikers op /succes/.';
+
+  if(win?.Chart){
+    const canvas=doc.getElementById('organicTrendChart');
+    const chart=canvas?win.Chart.getChart(canvas):null;
+    if(chart?.data?.datasets?.[1]){
+      chart.data.datasets[1].data=[AUG_ORGANIC_LEADS];
+      chart.update('none');
+    }
+  }
+  return true;
+}
+
+function start(){
+  let attempts=0;
+  const timer=setInterval(()=>{
+    attempts++;
+    patchAugustOrganic();
+    if(attempts>=40)clearInterval(timer);
+  },250);
+}
+
+document.getElementById('client').addEventListener('load',()=>{start();setTimeout(patchAugustOrganic,1500);});
+start();
+</script>
+</body>
+</html>
