@@ -20,6 +20,35 @@ const ORGANIC_HISTORY=[
   {key:'2026-08',label:'Augustus',clicks:1824,leads:8}
 ];
 
+const DAILY_AUG=[
+  {label:'6 aug',spend:138.22,leads:5,cpl:27.64},
+  {label:'7 aug',spend:94.93,leads:6,cpl:15.82},
+  {label:'8 aug',spend:91.33,leads:1,cpl:91.33},
+  {label:'9 aug',spend:85.98,leads:0,cpl:null},
+  {label:'10 aug',spend:127.31,leads:6,cpl:21.22},
+  {label:'11 aug',spend:102.66,leads:1,cpl:102.66},
+  {label:'12 aug',spend:142.28,leads:2,cpl:71.14},
+  {label:'13 aug',spend:94.21,leads:4,cpl:23.55},
+  {label:'14 aug',spend:157.70,leads:3,cpl:52.57},
+  {label:'15 aug',spend:110.69,leads:3,cpl:36.90},
+  {label:'16 aug',spend:142.74,leads:5,cpl:28.55},
+  {label:'17 aug',spend:174.35,leads:9,cpl:19.37},
+  {label:'18 aug',spend:180.57,leads:5,cpl:36.11},
+  {label:'19 aug',spend:123.88,leads:4,cpl:30.97},
+  {label:'20 aug',spend:97.54,leads:4,cpl:24.39},
+  {label:'21 aug',spend:116.10,leads:8,cpl:14.51},
+  {label:'22 aug',spend:111.85,leads:3,cpl:37.28},
+  {label:'23 aug',spend:142.06,leads:3,cpl:47.35},
+  {label:'24 aug',spend:151.74,leads:5,cpl:30.35},
+  {label:'25 aug',spend:158.00,leads:6,cpl:26.33},
+  {label:'26 aug',spend:125.35,leads:4,cpl:31.34},
+  {label:'27 aug',spend:141.33,leads:3,cpl:47.11},
+  {label:'28 aug',spend:140.77,leads:4,cpl:35.19},
+  {label:'29 aug',spend:136.08,leads:3,cpl:45.36},
+  {label:'30 aug',spend:197.27,leads:1,cpl:197.27},
+  {label:'31 aug',spend:173.92,leads:6,cpl:28.99}
+];
+
 function getDashboard(){
   try{
     const client=document.getElementById('client');
@@ -34,6 +63,7 @@ function getDashboard(){
 }
 
 function setText(doc,id,value){const el=doc?.getElementById(id);if(el)el.textContent=value;}
+function eur(n){return Number(n).toLocaleString('nl-NL',{style:'currency',currency:'EUR'});}
 
 function patchOrganicHistory(){
   const {doc,win}=getDashboard();
@@ -47,6 +77,8 @@ function patchOrganicHistory(){
       setTimeout(patchOrganicHistory,120);
       setTimeout(patchOrganicHistory,500);
       setTimeout(patchOrganicHistory,1100);
+      setTimeout(patchDailyChart,140);
+      setTimeout(patchDailyChart,550);
     });
   }
 
@@ -95,16 +127,85 @@ function patchOrganicHistory(){
   return true;
 }
 
+function updateDailyReadout(doc,index){
+  const row=DAILY_AUG[index];
+  const box=doc?.getElementById('dailyCplReadout');
+  if(!row||!box)return;
+  const cpl=row.cpl==null?'niet berekenbaar':eur(row.cpl);
+  box.innerHTML=`<strong>${row.label}</strong><span><b>${row.leads} ${row.leads===1?'lead':'leads'}</b><i></i>CPL: <b>${cpl}</b><i></i>Spend: <b>${eur(row.spend)}</b></span>`;
+}
+
+function patchDailyChart(){
+  const {doc,win}=getDashboard();
+  if(!doc||!win?.Chart)return false;
+  const selector=doc.getElementById('monthSelect');
+  if(!selector||selector.value!=='2026-08')return true;
+
+  const canvas=doc.getElementById('dailyCplChart');
+  const chart=canvas?win.Chart.getChart(canvas):null;
+  const panel=doc.getElementById('dailyCplPanel');
+  if(!canvas||!chart||!panel)return false;
+
+  if(!doc.getElementById('dailyCplReadoutStyle')){
+    const style=doc.createElement('style');
+    style.id='dailyCplReadoutStyle';
+    style.textContent='.daily-cpl-readout{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:12px 0 2px;padding:11px 13px;border:1px solid rgba(27,41,74,.1);border-radius:11px;background:#f8fafb;color:#1B294A}.daily-cpl-readout strong{font-size:11px;min-width:52px}.daily-cpl-readout span{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:9px;color:#596174}.daily-cpl-readout span b{color:#1B294A}.daily-cpl-readout i{width:4px;height:4px;border-radius:50%;background:#84BA8A}.daily-cpl-chart-wrap canvas{cursor:crosshair}';
+    doc.head.appendChild(style);
+  }
+
+  let readout=doc.getElementById('dailyCplReadout');
+  if(!readout){
+    readout=doc.createElement('div');
+    readout.id='dailyCplReadout';
+    readout.className='daily-cpl-readout';
+    const wrap=panel.querySelector('.daily-cpl-chart-wrap');
+    wrap?.insertAdjacentElement('beforebegin',readout);
+  }
+
+  const subtitle=panel.querySelector('.panel-head p');
+  if(subtitle)subtitle.textContent='Beweeg over een dag voor leads, CPL en spend · 6 t/m 31 augustus';
+
+  chart.options.interaction={mode:'index',intersect:false};
+  chart.options.plugins.tooltip={enabled:false};
+  chart.data.datasets[0].pointRadius=4;
+  chart.data.datasets[0].pointHoverRadius=7;
+  chart.data.datasets[0].pointHitRadius=18;
+  chart.data.datasets[0].spanGaps=false;
+  chart.update('none');
+
+  const note=panel.querySelector('.daily-cpl-note');
+  if(note)note.textContent='Beweeg over een dag om leads, CPL en spend te bekijken. 9 augustus had €85,98 spend en 0 leads, waardoor geen CPL berekenbaar is. 30 augustus is de uitschieter: €197,27 CPL bij 1 lead.';
+
+  updateDailyReadout(doc,DAILY_AUG.length-1);
+
+  if(!canvas.dataset.dailyReadoutBound){
+    canvas.dataset.dailyReadoutBound='1';
+    const handle=(event)=>{
+      const points=chart.getElementsAtEventForMode(event,'index',{intersect:false},true);
+      if(points?.length)updateDailyReadout(doc,points[0].index);
+    };
+    canvas.addEventListener('pointermove',handle);
+    canvas.addEventListener('click',handle);
+    canvas.addEventListener('touchstart',handle,{passive:true});
+  }
+  return true;
+}
+
 function start(){
   let attempts=0;
   const timer=setInterval(()=>{
     attempts++;
     patchOrganicHistory();
+    patchDailyChart();
     if(attempts>=40)clearInterval(timer);
   },250);
 }
 
-document.getElementById('client').addEventListener('load',()=>{start();setTimeout(patchOrganicHistory,1500);});
+document.getElementById('client').addEventListener('load',()=>{
+  start();
+  setTimeout(patchOrganicHistory,1500);
+  setTimeout(patchDailyChart,1700);
+});
 start();
 </script>
 </body>
