@@ -22,12 +22,73 @@ const exactNames={
   'Afspraak aanvragen':'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',
   'Informatie aanvragen':'MH | Info | Avond | Almelo 40km | MA-Do+WE'
 };
-function applyExactNames(){
+
+const AUGUST={
+  spend:3728.81,
+  leads:104,
+  impressions:238517,
+  clicks:2973,
+  linkClicks:2010,
+  ctr:1.25,
+  cpc:1.25,
+  cpm:15.63,
+  campaigns:[
+    ['META_CORE_KOZIJNEN_TWENTE_PLUS',269.95,7940,112,87,0],
+    ['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',3290.03,223920,2728,1843,101],
+    ['RT_WEBSITE_KOZIJNEN_AUG_2026',168.83,6657,133,80,3]
+  ],
+  organic:{clicks:1824,impressions:219688,ctr:0.83,position:13.08}
+};
+
+const AUG_DAILY=[
+  {label:'6 aug',spend:138.22,leads:5,cpl:27.64},
+  {label:'7 aug',spend:94.93,leads:6,cpl:15.82},
+  {label:'8 aug',spend:91.33,leads:1,cpl:91.33},
+  {label:'9 aug',spend:85.98,leads:0,cpl:null},
+  {label:'10 aug',spend:127.31,leads:6,cpl:21.22},
+  {label:'11 aug',spend:102.66,leads:1,cpl:102.66},
+  {label:'12 aug',spend:142.28,leads:2,cpl:71.14},
+  {label:'13 aug',spend:94.21,leads:4,cpl:23.55},
+  {label:'14 aug',spend:157.70,leads:3,cpl:52.57},
+  {label:'15 aug',spend:110.69,leads:3,cpl:36.90},
+  {label:'16 aug',spend:142.74,leads:5,cpl:28.55},
+  {label:'17 aug',spend:174.35,leads:9,cpl:19.37},
+  {label:'18 aug',spend:180.57,leads:5,cpl:36.11},
+  {label:'19 aug',spend:123.88,leads:4,cpl:30.97},
+  {label:'20 aug',spend:97.54,leads:4,cpl:24.39},
+  {label:'21 aug',spend:116.10,leads:8,cpl:14.51},
+  {label:'22 aug',spend:111.85,leads:3,cpl:37.28},
+  {label:'23 aug',spend:142.06,leads:3,cpl:47.35},
+  {label:'24 aug',spend:151.74,leads:5,cpl:30.35},
+  {label:'25 aug',spend:158.00,leads:6,cpl:26.33},
+  {label:'26 aug',spend:125.35,leads:4,cpl:31.34},
+  {label:'27 aug',spend:141.33,leads:3,cpl:47.11},
+  {label:'28 aug',spend:140.77,leads:4,cpl:35.19},
+  {label:'29 aug',spend:136.08,leads:3,cpl:45.36},
+  {label:'30 aug',spend:197.27,leads:1,cpl:197.27},
+  {label:'31 aug',spend:173.92,leads:6,cpl:28.99}
+];
+const AUG_DAILY_SPEND=3458.86;
+const AUG_DAILY_CPL=33.26;
+
+const fmt=n=>Number(n).toLocaleString('nl-NL');
+const eur=n=>Number(n).toLocaleString('nl-NL',{style:'currency',currency:'EUR'});
+const dec=(n,d=2)=>Number(n).toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+function getContext(){
   const outer=document.getElementById('report');
-  const outerDoc=outer.contentDocument;
-  if(!outerDoc)return;
-  const inner=outerDoc.getElementById('dashboard');
+  const outerDoc=outer&&outer.contentDocument;
+  const inner=outerDoc&&outerDoc.getElementById('dashboard');
   const doc=inner&&inner.contentDocument;
+  const win=inner&&inner.contentWindow;
+  return {outer,outerDoc,inner,doc,win};
+}
+
+function setText(doc,id,value){const el=doc.getElementById(id);if(el)el.textContent=value}
+function setTone(doc,id,tone){const el=doc.getElementById(id);if(!el)return;el.classList.remove('positive','negative');if(tone)el.classList.add(tone)}
+
+function applyExactNames(){
+  const {doc}=getContext();
   if(!doc)return;
   const heading=[...doc.querySelectorAll('th')].find(th=>th.textContent.trim()==='Campagnegroep');
   if(heading)heading.textContent='Campagne';
@@ -35,41 +96,192 @@ function applyExactNames(){
     const current=cell.textContent.trim();
     if(exactNames[current])cell.textContent=exactNames[current];
   });
+}
+
+function renderAugustCampaignTable(doc){
+  const tbody=doc.getElementById('campaignTableBody');
+  if(!tbody)return;
+  const rows=AUGUST.campaigns.map(r=>{
+    const cpl=r[5]?eur(r[1]/r[5]):'—';
+    return `<tr><td class="campaign-name">${r[0]}</td><td>${eur(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(r[3])}</td><td>${fmt(r[4])}</td><td>${fmt(r[5])}</td><td>${cpl}</td></tr>`;
+  }).join('');
+  tbody.innerHTML=rows+`<tr class="total-row"><td>Totaal</td><td>${eur(AUGUST.spend)}</td><td>${fmt(AUGUST.impressions)}</td><td>${fmt(AUGUST.clicks)}</td><td>${fmt(AUGUST.linkClicks)}</td><td>${fmt(AUGUST.leads)}</td><td>${eur(AUGUST.spend/AUGUST.leads)}</td></tr>`;
+}
+
+function updateAugustCharts(doc,win){
+  if(!win||!win.Chart)return;
+  const metaCanvas=doc.getElementById('metaTrendChart');
+  const metaChart=metaCanvas?win.Chart.getChart(metaCanvas):null;
+  if(metaChart){
+    metaChart.data.labels=['Augustus 2026'];
+    metaChart.data.datasets[0].data=[AUGUST.spend];
+    metaChart.data.datasets[1].data=[AUGUST.leads];
+    metaChart.update('none');
+    const p=metaCanvas.closest('.panel')?.querySelector('.panel-head p');
+    if(p)p.textContent='Volledige maand augustus 2026';
+  }
+
+  const organicCanvas=doc.getElementById('organicTrendChart');
+  const organicChart=organicCanvas?win.Chart.getChart(organicCanvas):null;
+  if(organicChart){
+    organicChart.data.labels=['Augustus 2026'];
+    organicChart.data.datasets[0].data=[AUGUST.organic.clicks];
+    organicChart.data.datasets[1].data=[null];
+    organicChart.update('none');
+    const p=organicCanvas.closest('.panel')?.querySelector('.panel-head p');
+    if(p)p.textContent='Google Search Console · volledige maand augustus';
+  }
+
+  const dailyCanvas=doc.getElementById('dailyCplChart');
+  const dailyChart=dailyCanvas?win.Chart.getChart(dailyCanvas):null;
+  if(dailyChart){
+    dailyChart.data.labels=AUG_DAILY.map(x=>x.label);
+    dailyChart.data.datasets[0].data=AUG_DAILY.map(x=>x.cpl);
+    dailyChart.data.datasets[1].label='Gemiddelde CPL (€33,26)';
+    dailyChart.data.datasets[1].data=AUG_DAILY.map(()=>AUG_DAILY_CPL);
+    dailyChart.options.interaction={mode:'index',intersect:false};
+    dailyChart.options.plugins.tooltip={
+      mode:'index',intersect:false,displayColors:false,
+      callbacks:{
+        title:items=>items?.[0]?.label||'',
+        label:context=>{
+          if(context.datasetIndex!==0)return null;
+          const row=AUG_DAILY[context.dataIndex];
+          if(!row)return null;
+          return [`Leads: ${row.leads}`,`CPL: ${row.cpl==null?'niet berekenbaar':eur(row.cpl)}`,`Spend: ${eur(row.spend)}`];
+        },
+        afterBody:()=>[]
+      }
+    };
+    dailyChart.update('none');
+  }
+
+  const dailyPanel=doc.getElementById('dailyCplPanel');
+  if(dailyPanel){
+    const title=dailyPanel.querySelector('.panel-head h3');
+    const subtitle=dailyPanel.querySelector('.panel-head p');
+    if(title)title.textContent='Dagelijkse kosten per lead';
+    if(subtitle)subtitle.textContent='VIDEO_TEST_NOORD_MIDDEN_AUG_2026 + retargeting · 6 t/m 31 augustus';
+    const pills=dailyPanel.querySelectorAll('.daily-cpl-pill');
+    if(pills[0])pills[0].textContent='Gemiddelde CPL: €33,26';
+    if(pills[1])pills[1].textContent='104 leads';
+    if(pills[2])pills[2].textContent='€3.458,86 spend';
+    const note=dailyPanel.querySelector('.daily-cpl-note');
+    if(note)note.textContent='De dagtrend toont de nieuwe video-prospectingcampagne en retargeting vanaf 6 augustus. De eerdere META_CORE-campagne (€269,95 spend) staat wel in het maandtotaal, maar niet in deze dagtrend. Op 9 augustus was er spend zonder lead; daarom is voor die dag geen CPL berekenbaar.';
+  }
+}
+
+function applyAugustData(){
+  const {doc,win}=getContext();
+  if(!doc)return;
   const selected=doc.getElementById('monthSelect')?.value;
+  if(selected!=='2026-08'){applyExactNames();return;}
+
+  setText(doc,'heroTitle','Augustus 2026');
+  setText(doc,'periodContext','1 t/m 31 augustus 2026');
+  setText(doc,'paidPeriod','Meta Ads en Google Search Console · volledige maand');
+  const contextStrong=doc.querySelectorAll('.context-item strong');
+  if(contextStrong[2])contextStrong[2].textContent='4 september 2026';
+  const status=doc.querySelector('.hero-status strong');
+  if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): nog aan te vullen';
+
+  setText(doc,'overviewMetaSpend',eur(AUGUST.spend));
+  setText(doc,'overviewMetaSpendNote','+52,7% t.o.v. juli');
+  setText(doc,'overviewMetaLeads',fmt(AUGUST.leads));
+  setText(doc,'overviewMetaLeadsNote','+89,1% t.o.v. juli');
+  setText(doc,'overviewMetaCpl',eur(AUGUST.spend/AUGUST.leads));
+  setText(doc,'overviewMetaCplNote','19,3% beter dan juli');
+
+  setText(doc,'metaSpend',eur(AUGUST.spend));
+  setText(doc,'metaLeads',fmt(AUGUST.leads));
+  setText(doc,'metaLeadsNote','Via Meta Ads · volledige maand');
+  setText(doc,'metaCpl',eur(AUGUST.spend/AUGUST.leads));
+  setText(doc,'metaCplNote','19,3% beter dan juli');
+  setText(doc,'metaImpressions',fmt(AUGUST.impressions));
+  setText(doc,'metaClicks',fmt(AUGUST.clicks));
+  setText(doc,'metaClicksNote',`${fmt(AUGUST.linkClicks)} linkklikken`);
+  setText(doc,'metaEfficiencyPeriod','Augustus 2026');
+  setText(doc,'metaCtr',`${dec(AUGUST.ctr)}%`);
+  setText(doc,'metaCpc',eur(AUGUST.cpc));
+  setText(doc,'metaCpm',eur(AUGUST.cpm));
+  setText(doc,'funnelPeriod','Augustus 2026');
+  setText(doc,'funnelMetaImpressions',fmt(AUGUST.impressions));
+  setText(doc,'funnelMetaClicks',fmt(AUGUST.clicks));
+  setText(doc,'funnelMetaLeads',fmt(AUGUST.leads));
+
+  const msg=doc.querySelector('#monthMessage p');
+  if(msg)msg.textContent='Augustus is volledig verwerkt voor Meta Ads en Google Search Console. De volledige organische leadteller uit GA4 is nog niet beschikbaar en wordt daarom niet geschat.';
+
+  const o=AUGUST.organic;
+  setText(doc,'overviewOrganicClicks',fmt(o.clicks));
+  setText(doc,'overviewOrganicClicksNote','−1,2% t.o.v. juli');
+  setText(doc,'overviewOrganicLeads','—');
+  setText(doc,'overviewOrganicLeadsNote','GA4 augustus nog aan te vullen');
+  setText(doc,'overviewOrganicPosition',dec(o.position));
+  setText(doc,'overviewOrganicPositionNote','0,08 positie lager t.o.v. juli');
+
+  setText(doc,'organicClicks',fmt(o.clicks));
+  setText(doc,'organicClicksNote','−1,2% t.o.v. juli');
+  setText(doc,'organicImpressions',fmt(o.impressions));
+  setText(doc,'organicImpressionsNote','+14,8% t.o.v. juli');
+  setText(doc,'organicCtr',`${dec(o.ctr)}%`);
+  setText(doc,'organicCtrNote','−0,14 procentpunt t.o.v. juli');
+  setText(doc,'organicPosition',dec(o.position));
+  setText(doc,'organicPositionNote','0,08 positie lager t.o.v. juli');
+  setText(doc,'organicLeads','—');
+  setText(doc,'organicLeadsNote','Volledige GA4-leadteller nog aan te vullen');
+  setText(doc,'organicInterpretationSubtitle','Ontwikkeling in augustus');
+  setText(doc,'organicCtrInsightTitle','Meer zichtbaarheid, lagere CTR');
+  setText(doc,'organicCtrInsightText','219.688 vertoningen (+14,8%), terwijl de CTR daalt van 0,97% naar 0,83%');
+  setText(doc,'organicCtrInsightValue','−0,14 pp');
+  setText(doc,'organicLeadInsightTitle','Organische leads nog niet volledig');
+  setText(doc,'organicLeadInsightText','De volledige augustus-teller uit GA4 is nog niet beschikbaar');
+  setText(doc,'organicLeadInsightValue','—');
+  setText(doc,'funnelOrganicClicks',fmt(o.clicks));
+  setText(doc,'funnelOrganicLeads','—');
+
+  setTone(doc,'organicClicksNote','negative');
+  setTone(doc,'organicImpressionsNote','positive');
+  setTone(doc,'organicCtrNote','negative');
+  setTone(doc,'organicPositionNote','negative');
+  setTone(doc,'organicLeadsNote',null);
+
   const insightPanel=doc.getElementById('organicInterpretationSubtitle')?.closest('.panel');
   const callout=insightPanel?.querySelector('.info-callout');
   if(callout){
     const title=callout.querySelector('strong');
     const text=callout.querySelector('p');
-    if(selected==='2026-08'){
-      if(title)title.textContent='Nog geen augustusconclusie';
-      if(text)text.textContent='Zodra de augustusdata uit Google Search Console is verwerkt, vullen we hier de belangrijkste organische ontwikkeling en vervolgstap aan.';
-    }else{
-      if(title)title.textContent='Volgende kans';
-      if(text)text.textContent='De organische zichtbaarheid groeit sterk. De volgende optimalisaties richten zich daarom op meer conversie vanuit dit verkeer, onder andere via duidelijke contactmomenten, interne links en lokale projectpagina’s.';
-    }
+    if(title)title.textContent='Zichtbaarheid groeit, doorklik blijft kans';
+    if(text)text.textContent='De organische vertoningen groeiden in augustus met 14,8% naar 219.688. Het aantal klikken bleef vrijwel gelijk aan juli, doordat de CTR daalde naar 0,83%. De eerstvolgende SEO-kans ligt daarom vooral in betere titles, snippets en doorstroom op pagina’s die al veel vertoningen krijgen.';
   }
+
+  renderAugustCampaignTable(doc);
+  updateAugustCharts(doc,win);
+  applyExactNames();
 }
-function watch(){
-  const outer=document.getElementById('report');
-  const outerDoc=outer.contentDocument;
-  if(!outerDoc)return;
-  const inner=outerDoc.getElementById('dashboard');
+
+function bind(){
+  const {inner,doc}=getContext();
   if(!inner)return;
   const run=()=>{
-    applyExactNames();
-    const doc=inner.contentDocument;
-    const select=doc&&doc.getElementById('monthSelect');
-    if(select&&!select.dataset.exactNamesBound){
-      select.dataset.exactNamesBound='1';
-      select.addEventListener('change',()=>setTimeout(applyExactNames,50));
+    setTimeout(applyAugustData,80);
+    setTimeout(applyAugustData,300);
+    setTimeout(applyAugustData,800);
+    const d=inner.contentDocument;
+    const select=d&&d.getElementById('monthSelect');
+    if(select&&!select.dataset.clientAugustBound){
+      select.dataset.clientAugustBound='1';
+      select.addEventListener('change',()=>{
+        setTimeout(applyAugustData,80);
+        setTimeout(applyAugustData,250);
+      });
     }
-    setTimeout(applyExactNames,150);
   };
   inner.addEventListener('load',run);
-  run();
+  if(doc)run();
 }
-document.getElementById('report').addEventListener('load',watch);
+
+document.getElementById('report').addEventListener('load',()=>{bind();setTimeout(bind,300)});
 </script>
 </body>
 </html>
