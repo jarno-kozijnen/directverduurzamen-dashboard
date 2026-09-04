@@ -2,315 +2,275 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direct Verduurzamen | Marketingrapportage 2026</title>
-  <style>
-    html,body{margin:0;height:100%;overflow:hidden;background:#f3f5f7}
-    iframe{width:100%;height:100%;border:0;display:block}
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Direct Verduurzamen | Maandrapportage</title>
+  <style>html,body{margin:0;height:100%;overflow:hidden;background:#f3f5f7}iframe{width:100%;height:100%;border:0;display:block}</style>
 </head>
 <body>
-  <iframe id="reportFrame" src="/dashboard-2026.html" title="Marketingrapportage Direct Verduurzamen"></iframe>
-  <script>
-    const frame = document.getElementById('reportFrame');
-    const organicHistory = {
-      '2026-01': { label: 'Januari', clicks: 1030, leads: 10 },
-      '2026-02': { label: 'Februari', clicks: 880, leads: 9 },
-      '2026-03': { label: 'Maart', clicks: 902, leads: 16 },
-      '2026-04': { label: 'April', clicks: 881, leads: 10 },
-      '2026-05': { label: 'Mei', clicks: 1171, leads: 13 },
-      '2026-06': { label: 'Juni', clicks: 1407, leads: 14 },
-      '2026-07': { label: 'Juli', clicks: 1847, leads: 12 },
-      '2026-08': { label: 'Augustus', clicks: 809, leads: 5, partial: true }
-    };
-    const monthOrder = Object.keys(organicHistory);
+<iframe id="report" src="/dashboard-2026.html" title="Maandrapportage Direct Verduurzamen"></iframe>
+<script>
+const exactNames={
+  'Nieuwe doelgroep en regiocampagne':'DV | TOFU | Regio Test | NL | T006',
+  'Websitebezoekers opnieuw bereiken':'Retargeting - Website Bezoekers & E-mail',
+  'Financieringspagina promotie':'DV | Finance Lander | Tofu 2026',
+  'Extra leadgeneratietest':'DV | Leadgen | test [06-02-2026]',
+  'Kozijnenvergelijker':'123kozijnenvergelijker',
+  'Statische kozijncampagne':'DV | Leads | NL | Kozijnen | Statisch',
+  'Nieuwe doelgroep Twente':'META_CORE_KOZIJNEN_TWENTE_PLUS',
+  'Video over maandbedrag':'DV | Leads | Almelo +40km | Kozijnen | Video | 40 euro per maand',
+  'Direct contact aanvragen':'MH | Bel Direct | 09-12 | Almelo 40km MA-VR',
+  'Afspraak aanvragen':'MH | Afspraak | 13-17 | Almelo 40km | MA-VR',
+  'Informatie aanvragen':'MH | Info | Avond | Almelo 40km | MA-Do+WE'
+};
 
-    const dailyCplAugust = [
-      { label: '6 aug', spend: 138.22, leads: 5, cpl: 27.64 },
-      { label: '7 aug', spend: 94.93, leads: 6, cpl: 15.82 },
-      { label: '8 aug', spend: 91.33, leads: 1, cpl: 91.33 },
-      { label: '9 aug', spend: 85.98, leads: 0, cpl: null },
-      { label: '10 aug', spend: 127.31, leads: 6, cpl: 21.22 },
-      { label: '11 aug', spend: 102.66, leads: 1, cpl: 102.66 },
-      { label: '12 aug', spend: 142.28, leads: 2, cpl: 71.14 },
-      { label: '13 aug', spend: 94.21, leads: 4, cpl: 23.55 },
-      { label: '14 aug', spend: 157.70, leads: 3, cpl: 52.57 },
-      { label: '15 aug', spend: 110.69, leads: 3, cpl: 36.90 },
-      { label: '16 aug', spend: 142.63, leads: 5, cpl: 28.53 },
-      { label: '17 aug*', spend: 29.86, leads: 6, cpl: 4.98 }
-    ];
-    const augustAverageCpl = 31.39;
+const AUGUST={
+  spend:3728.81,
+  leads:104,
+  impressions:238517,
+  clicks:2973,
+  linkClicks:2010,
+  ctr:1.25,
+  cpc:1.25,
+  cpm:15.63,
+  campaigns:[
+    ['META_CORE_KOZIJNEN_TWENTE_PLUS',269.95,7940,112,87,0],
+    ['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',3290.03,223920,2728,1843,101],
+    ['RT_WEBSITE_KOZIJNEN_AUG_2026',168.83,6657,133,80,3]
+  ],
+  organic:{clicks:1824,impressions:219688,ctr:0.83,position:13.08}
+};
 
-    const julyContent = {
-      newBlogs: [
-        ['Wanneer zijn houten kozijnen echt aan vervanging toe?', 'https://directverduurzamen.nl/wanneer-kies-je-voor-kunststof-kozijnen/'],
-        ['Kunststof kozijnen met HR++ glas', 'https://directverduurzamen.nl/kunststof-kozijnen-hr-glas/'],
-        ['Beste kunststof kozijnen: waar moet je op letten?', 'https://directverduurzamen.nl/beste-kunststof-kozijnen/'],
-        ['Wat kost een kunststof voordeur inclusief montage?', 'https://directverduurzamen.nl/kunststof-voordeur-kosten/'],
-        ['Hoe lang duurt het vervangen van kozijnen?', 'https://directverduurzamen.nl/hoe-lang-duurt-kozijnen-vervangen/'],
-        ['Kozijnen in fases vervangen', 'https://directverduurzamen.nl/kozijnen-in-fases-vervangen/'],
-        ['Kunststof kozijnen plaatsen in de winter', 'https://directverduurzamen.nl/kunststof-kozijnen-plaatsen-winter/'],
-        ['Kunststof kozijnen bij een jaren 80-woning', 'https://directverduurzamen.nl/kunststof-kozijnen-jaren-80-woning/']
-      ],
-      rewrittenBlogs: [
-        ['Kosten kunststof kozijnen', 'https://directverduurzamen.nl/kosten-kunststof-kozijnen/'],
-        ['Hoe lang gaan kunststof kozijnen mee?', 'https://directverduurzamen.nl/hoelang-gaan-kunststof-kozijnen-mee/'],
-        ['Kunststof kozijnen per maand betalen', 'https://directverduurzamen.nl/kunststof-kozijnen-per-maand-betalen/'],
-        ['Prijsverschil kunststof of houten kozijnen', 'https://directverduurzamen.nl/prijsverschil-kunststof-of-houten-kozijnen/'],
-        ['Isolatiewaarde kunststof kozijnen', 'https://directverduurzamen.nl/isolatiewaarde-kunststof-kozijnen/'],
-        ['Schuifpui of openslaande deuren', 'https://directverduurzamen.nl/schuifpui-of-tuindeuren/'],
-        ['Zelf kunststof kozijnen repareren', 'https://directverduurzamen.nl/zelf-kunststof-kozijnen-repareren/'],
-        ['Condens aan de binnenkant van het raam', 'https://directverduurzamen.nl/condens-aan-de-binnenkant-van-het-raam/']
-      ]
-    };
+const AUG_DAILY=[
+  {label:'6 aug',spend:138.22,leads:5,cpl:27.64},
+  {label:'7 aug',spend:94.93,leads:6,cpl:15.82},
+  {label:'8 aug',spend:91.33,leads:1,cpl:91.33},
+  {label:'9 aug',spend:85.98,leads:0,cpl:null},
+  {label:'10 aug',spend:127.31,leads:6,cpl:21.22},
+  {label:'11 aug',spend:102.66,leads:1,cpl:102.66},
+  {label:'12 aug',spend:142.28,leads:2,cpl:71.14},
+  {label:'13 aug',spend:94.21,leads:4,cpl:23.55},
+  {label:'14 aug',spend:157.70,leads:3,cpl:52.57},
+  {label:'15 aug',spend:110.69,leads:3,cpl:36.90},
+  {label:'16 aug',spend:142.74,leads:5,cpl:28.55},
+  {label:'17 aug',spend:174.35,leads:9,cpl:19.37},
+  {label:'18 aug',spend:180.57,leads:5,cpl:36.11},
+  {label:'19 aug',spend:123.88,leads:4,cpl:30.97},
+  {label:'20 aug',spend:97.54,leads:4,cpl:24.39},
+  {label:'21 aug',spend:116.10,leads:8,cpl:14.51},
+  {label:'22 aug',spend:111.85,leads:3,cpl:37.28},
+  {label:'23 aug',spend:142.06,leads:3,cpl:47.35},
+  {label:'24 aug',spend:151.74,leads:5,cpl:30.35},
+  {label:'25 aug',spend:158.00,leads:6,cpl:26.33},
+  {label:'26 aug',spend:125.35,leads:4,cpl:31.34},
+  {label:'27 aug',spend:141.33,leads:3,cpl:47.11},
+  {label:'28 aug',spend:140.77,leads:4,cpl:35.19},
+  {label:'29 aug',spend:136.08,leads:3,cpl:45.36},
+  {label:'30 aug',spend:197.27,leads:1,cpl:197.27},
+  {label:'31 aug',spend:173.92,leads:6,cpl:28.99}
+];
+const AUG_DAILY_CPL=33.26;
 
-    function getDashboardContext() {
-      try {
-        const wrapperWindow = frame.contentWindow;
-        const wrapperDocument = frame.contentDocument;
-        const innerFrame = wrapperDocument?.getElementById('dashboard');
-        const innerDocument = innerFrame?.contentDocument;
-        const innerWindow = innerFrame?.contentWindow;
-        const selector = innerDocument?.getElementById('monthSelect');
-        return { wrapperWindow, innerDocument, innerWindow, selector };
-      } catch (error) {
-        return {};
-      }
+const fmt=n=>Number(n).toLocaleString('nl-NL');
+const eur=n=>Number(n).toLocaleString('nl-NL',{style:'currency',currency:'EUR'});
+const dec=(n,d=2)=>Number(n).toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+function getContext(){
+  const outer=document.getElementById('report');
+  const outerDoc=outer&&outer.contentDocument;
+  const inner=outerDoc&&outerDoc.getElementById('dashboard');
+  const doc=inner&&inner.contentDocument;
+  const win=inner&&inner.contentWindow;
+  return {outer,outerDoc,inner,doc,win};
+}
+function setText(doc,id,value){const el=doc.getElementById(id);if(el)el.textContent=value}
+function setTone(doc,id,tone){const el=doc.getElementById(id);if(!el)return;el.classList.remove('positive','negative');if(tone)el.classList.add(tone)}
+
+function applyExactNames(){
+  const {doc}=getContext();
+  if(!doc)return;
+  const heading=[...doc.querySelectorAll('th')].find(th=>th.textContent.trim()==='Campagnegroep');
+  if(heading)heading.textContent='Campagne';
+  doc.querySelectorAll('#campaignTableBody .campaign-name').forEach(cell=>{
+    const current=cell.textContent.trim();
+    if(exactNames[current])cell.textContent=exactNames[current];
+  });
+}
+
+function renderAugustCampaignTable(doc){
+  const tbody=doc.getElementById('campaignTableBody');
+  if(!tbody)return;
+  const rows=AUGUST.campaigns.map(r=>{
+    const cpl=r[5]?eur(r[1]/r[5]):'—';
+    return `<tr><td class="campaign-name">${r[0]}</td><td>${eur(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(r[3])}</td><td>${fmt(r[4])}</td><td>${fmt(r[5])}</td><td>${cpl}</td></tr>`;
+  }).join('');
+  tbody.innerHTML=rows+`<tr class="total-row"><td>Totaal</td><td>${eur(AUGUST.spend)}</td><td>${fmt(AUGUST.impressions)}</td><td>${fmt(AUGUST.clicks)}</td><td>${fmt(AUGUST.linkClicks)}</td><td>${fmt(AUGUST.leads)}</td><td>${eur(AUGUST.spend/AUGUST.leads)}</td></tr>`;
+}
+
+function updateAugustCharts(doc,win){
+  if(!win||!win.Chart)return;
+  const metaCanvas=doc.getElementById('metaTrendChart');
+  const metaChart=metaCanvas?win.Chart.getChart(metaCanvas):null;
+  if(metaChart){
+    metaChart.data.labels=['Augustus 2026'];
+    metaChart.data.datasets[0].data=[AUGUST.spend];
+    metaChart.data.datasets[1].data=[AUGUST.leads];
+    metaChart.update('none');
+    const p=metaCanvas.closest('.panel')?.querySelector('.panel-head p');
+    if(p)p.textContent='Volledige maand augustus 2026';
+  }
+  const organicCanvas=doc.getElementById('organicTrendChart');
+  const organicChart=organicCanvas?win.Chart.getChart(organicCanvas):null;
+  if(organicChart){
+    organicChart.data.labels=['Augustus 2026'];
+    organicChart.data.datasets[0].data=[AUGUST.organic.clicks];
+    organicChart.data.datasets[1].data=[null];
+    organicChart.update('none');
+    const p=organicCanvas.closest('.panel')?.querySelector('.panel-head p');
+    if(p)p.textContent='Google Search Console · volledige maand augustus';
+  }
+  const dailyCanvas=doc.getElementById('dailyCplChart');
+  const dailyChart=dailyCanvas?win.Chart.getChart(dailyCanvas):null;
+  if(dailyChart){
+    dailyChart.data.labels=AUG_DAILY.map(x=>x.label);
+    dailyChart.data.datasets[0].data=AUG_DAILY.map(x=>x.cpl);
+    dailyChart.data.datasets[1].label='Gemiddelde CPL (€33,26)';
+    dailyChart.data.datasets[1].data=AUG_DAILY.map(()=>AUG_DAILY_CPL);
+    dailyChart.options.interaction={mode:'index',intersect:false};
+    dailyChart.options.plugins.tooltip={mode:'index',intersect:false,displayColors:false,callbacks:{
+      title:items=>items?.[0]?.label||'',
+      label:context=>{
+        if(context.datasetIndex!==0)return null;
+        const row=AUG_DAILY[context.dataIndex];
+        if(!row)return null;
+        return [`Leads: ${row.leads}`,`CPL: ${row.cpl==null?'niet berekenbaar':eur(row.cpl)}`,`Spend: ${eur(row.spend)}`];
+      },
+      afterBody:()=>[]
+    }};
+    dailyChart.update('none');
+  }
+  const dailyPanel=doc.getElementById('dailyCplPanel');
+  if(dailyPanel){
+    const title=dailyPanel.querySelector('.panel-head h3')||dailyPanel.querySelector('h3');
+    const subtitle=dailyPanel.querySelector('.panel-head p')||dailyPanel.querySelector('p');
+    if(title)title.textContent='Dagelijkse kosten per lead';
+    if(subtitle)subtitle.textContent='VIDEO_TEST_NOORD_MIDDEN_AUG_2026 + retargeting · 6 t/m 31 augustus';
+    const pills=dailyPanel.querySelectorAll('.daily-cpl-pill');
+    if(pills[0])pills[0].textContent='Gemiddelde CPL: €33,26';
+    if(pills[1])pills[1].textContent='104 leads';
+    if(pills[2])pills[2].textContent='€3.458,86 spend';
+    const note=dailyPanel.querySelector('.daily-cpl-note');
+    if(note)note.textContent='De dagtrend toont de nieuwe video-prospectingcampagne en retargeting vanaf 6 augustus. De eerdere META_CORE-campagne (€269,95 spend) staat wel in het maandtotaal, maar niet in deze dagtrend. Op 9 augustus was er spend zonder lead; daarom is voor die dag geen CPL berekenbaar.';
+  }
+}
+
+function applyAugustData(){
+  const {doc,win}=getContext();
+  if(!doc)return;
+  const selected=doc.getElementById('monthSelect')?.value;
+  if(selected!=='2026-08'){applyExactNames();return;}
+
+  setText(doc,'heroTitle','Augustus 2026');
+  setText(doc,'periodContext','1 t/m 31 augustus 2026');
+  setText(doc,'paidPeriod','Meta Ads en Google Search Console · volledige maand');
+  const contextStrong=doc.querySelectorAll('.context-item strong');
+  if(contextStrong[2])contextStrong[2].textContent='4 september 2026';
+  const status=doc.querySelector('.hero-status strong');
+  if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): nog aan te vullen';
+
+  setText(doc,'overviewMetaSpend',eur(AUGUST.spend));
+  setText(doc,'overviewMetaSpendNote','+52,7% t.o.v. juli');
+  setText(doc,'overviewMetaLeads',fmt(AUGUST.leads));
+  setText(doc,'overviewMetaLeadsNote','+89,1% t.o.v. juli');
+  setText(doc,'overviewMetaCpl',eur(AUGUST.spend/AUGUST.leads));
+  setText(doc,'overviewMetaCplNote','19,3% beter dan juli');
+  setText(doc,'metaSpend',eur(AUGUST.spend));
+  setText(doc,'metaLeads',fmt(AUGUST.leads));
+  setText(doc,'metaLeadsNote','Via Meta Ads · volledige maand');
+  setText(doc,'metaCpl',eur(AUGUST.spend/AUGUST.leads));
+  setText(doc,'metaCplNote','19,3% beter dan juli');
+  setText(doc,'metaImpressions',fmt(AUGUST.impressions));
+  setText(doc,'metaClicks',fmt(AUGUST.clicks));
+  setText(doc,'metaClicksNote',`${fmt(AUGUST.linkClicks)} linkklikken`);
+  setText(doc,'metaEfficiencyPeriod','Augustus 2026');
+  setText(doc,'metaCtr',`${dec(AUGUST.ctr)}%`);
+  setText(doc,'metaCpc',eur(AUGUST.cpc));
+  setText(doc,'metaCpm',eur(AUGUST.cpm));
+  setText(doc,'funnelPeriod','Augustus 2026');
+  setText(doc,'funnelMetaImpressions',fmt(AUGUST.impressions));
+  setText(doc,'funnelMetaClicks',fmt(AUGUST.clicks));
+  setText(doc,'funnelMetaLeads',fmt(AUGUST.leads));
+
+  const msg=doc.querySelector('#monthMessage p');
+  if(msg)msg.textContent='Augustus is volledig verwerkt voor Meta Ads en Google Search Console. De volledige organische leadteller uit GA4 is nog niet beschikbaar en wordt daarom niet geschat.';
+
+  const o=AUGUST.organic;
+  setText(doc,'overviewOrganicClicks',fmt(o.clicks));
+  setText(doc,'overviewOrganicClicksNote','−1,2% t.o.v. juli');
+  setText(doc,'overviewOrganicLeads','—');
+  setText(doc,'overviewOrganicLeadsNote','GA4 augustus nog aan te vullen');
+  setText(doc,'overviewOrganicPosition',dec(o.position));
+  setText(doc,'overviewOrganicPositionNote','0,08 positie lager t.o.v. juli');
+  setText(doc,'organicClicks',fmt(o.clicks));
+  setText(doc,'organicClicksNote','−1,2% t.o.v. juli');
+  setText(doc,'organicImpressions',fmt(o.impressions));
+  setText(doc,'organicImpressionsNote','+14,8% t.o.v. juli');
+  setText(doc,'organicCtr',`${dec(o.ctr)}%`);
+  setText(doc,'organicCtrNote','−0,14 procentpunt t.o.v. juli');
+  setText(doc,'organicPosition',dec(o.position));
+  setText(doc,'organicPositionNote','0,08 positie lager t.o.v. juli');
+  setText(doc,'organicLeads','—');
+  setText(doc,'organicLeadsNote','Volledige GA4-leadteller nog aan te vullen');
+  setText(doc,'organicInterpretationSubtitle','Ontwikkeling in augustus');
+  setText(doc,'organicCtrInsightTitle','Meer zichtbaarheid, lagere CTR');
+  setText(doc,'organicCtrInsightText','219.688 vertoningen (+14,8%), terwijl de CTR daalt van 0,97% naar 0,83%');
+  setText(doc,'organicCtrInsightValue','−0,14 pp');
+  setText(doc,'organicLeadInsightTitle','Organische leads nog niet volledig');
+  setText(doc,'organicLeadInsightText','De volledige augustus-teller uit GA4 is nog niet beschikbaar');
+  setText(doc,'organicLeadInsightValue','—');
+  setText(doc,'funnelOrganicClicks',fmt(o.clicks));
+  setText(doc,'funnelOrganicLeads','—');
+  setTone(doc,'organicClicksNote','negative');
+  setTone(doc,'organicImpressionsNote','positive');
+  setTone(doc,'organicCtrNote','negative');
+  setTone(doc,'organicPositionNote','negative');
+  setTone(doc,'organicLeadsNote',null);
+
+  const insightPanel=doc.getElementById('organicInterpretationSubtitle')?.closest('.panel');
+  const callout=insightPanel?.querySelector('.info-callout');
+  if(callout){
+    const title=callout.querySelector('strong');
+    const text=callout.querySelector('p');
+    if(title)title.textContent='Zichtbaarheid groeit, doorklik blijft kans';
+    if(text)text.textContent='De organische vertoningen groeiden in augustus met 14,8% naar 219.688. Het aantal klikken bleef vrijwel gelijk aan juli, doordat de CTR daalde naar 0,83%. De eerstvolgende SEO-kans ligt daarom vooral in betere titles, snippets en doorstroom op pagina’s die al veel vertoningen krijgen.';
+  }
+
+  renderAugustCampaignTable(doc);
+  updateAugustCharts(doc,win);
+  applyExactNames();
+}
+
+function bind(){
+  const {inner,doc}=getContext();
+  if(!inner)return;
+  const run=()=>{
+    setTimeout(applyAugustData,80);
+    setTimeout(applyAugustData,300);
+    setTimeout(applyAugustData,800);
+    const d=inner.contentDocument;
+    const select=d&&d.getElementById('monthSelect');
+    if(select&&!select.dataset.clientAugustBound){
+      select.dataset.clientAugustBound='1';
+      select.addEventListener('change',()=>{
+        setTimeout(applyAugustData,80);
+        setTimeout(applyAugustData,250);
+      });
     }
+  };
+  inner.addEventListener('load',run);
+  if(doc)run();
+}
 
-    function euro(value) {
-      return Number(value).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
-    }
-
-    function updateCumulativeOrganic(selectedMonth) {
-      if (!organicHistory[selectedMonth]) return false;
-      const { innerDocument, innerWindow } = getDashboardContext();
-      if (!innerDocument || !innerWindow?.Chart) return false;
-      const canvas = innerDocument.getElementById('organicTrendChart');
-      const chart = canvas ? innerWindow.Chart.getChart(canvas) : null;
-      if (!chart) return false;
-      const endIndex = monthOrder.indexOf(selectedMonth);
-      if (endIndex < 0) return false;
-      const months = monthOrder.slice(0, endIndex + 1);
-      chart.config.type = 'line';
-      chart.data.labels = months.map(key => organicHistory[key].label);
-      chart.data.datasets[0].label = 'Organische klikken';
-      chart.data.datasets[0].data = months.map(key => organicHistory[key].clicks);
-      chart.data.datasets[0].borderColor = '#1B294A';
-      chart.data.datasets[0].backgroundColor = 'rgba(132,186,138,.18)';
-      chart.data.datasets[0].fill = true;
-      chart.data.datasets[0].tension = .35;
-      chart.data.datasets[0].pointRadius = 4;
-      chart.data.datasets[0].yAxisID = 'y';
-      chart.data.datasets[1].label = 'Organische leads';
-      chart.data.datasets[1].data = months.map(key => organicHistory[key].leads);
-      chart.data.datasets[1].borderColor = '#84BA8A';
-      chart.data.datasets[1].backgroundColor = '#84BA8A';
-      chart.data.datasets[1].fill = false;
-      chart.data.datasets[1].tension = .35;
-      chart.data.datasets[1].pointRadius = 4;
-      chart.data.datasets[1].yAxisID = 'y1';
-      chart.options.interaction = { mode: 'index', intersect: false };
-      chart.update();
-      const panel = canvas.closest('.panel');
-      const heading = panel?.querySelector('h3');
-      const subtitle = panel?.querySelector('p');
-      if (heading) heading.textContent = 'Ontwikkeling organische groei';
-      if (subtitle) subtitle.textContent = selectedMonth === '2026-08' ? 'Cumulatief januari t/m 16 augustus 2026 · leads GA4 t/m 17 augustus' : `Cumulatief januari t/m ${organicHistory[selectedMonth].label.toLowerCase()} 2026`;
-      return true;
-    }
-
-    function updateAugustOrganicLeads(selectedMonth) {
-      if (selectedMonth !== '2026-08') return true;
-      const { innerDocument } = getDashboardContext();
-      if (!innerDocument) return false;
-      const set = (id, value) => {
-        const el = innerDocument.getElementById(id);
-        if (el) el.textContent = value;
-      };
-      set('overviewOrganicLeads', '5');
-      set('overviewOrganicLeadsNote', 'GA4 t/m 17 augustus');
-      set('organicLeads', '5');
-      set('organicLeadsNote', '5 unieke organische gebruikers op /succes/');
-      set('organicLeadInsightTitle', 'Organische leads via GA4');
-      set('organicLeadInsightText', 'Organic Search → /succes/ · unieke gebruikers t/m 17 augustus');
-      set('organicLeadInsightValue', '5 leads');
-      set('funnelOrganicLeads', '5');
-      return true;
-    }
-
-    function updateOrganicCallout(selectedMonth) {
-      const { innerDocument } = getDashboardContext();
-      if (!innerDocument) return false;
-      const panel = innerDocument.getElementById('organicInterpretationSubtitle')?.closest('.panel');
-      const callout = panel?.querySelector('.info-callout');
-      if (!callout) return true;
-      const title = callout.querySelector('strong');
-      const text = callout.querySelector('p');
-      if (selectedMonth === '2026-08') {
-        if (title) title.textContent = 'Zichtbaarheid stabiel, CTR lager';
-        if (text) text.textContent = 'Vergeleken met 1–16 juli zijn de vertoningen 5,4% hoger en de gemiddelde positie iets beter, maar de klikken liggen 14,5% lager doordat de CTR terugvalt van 0,95% naar 0,77%. GA4 registreert daarnaast 5 unieke organische gebruikers op de succespagina t/m 17 augustus.';
-      } else {
-        if (title) title.textContent = 'Volgende kans';
-        if (text) text.textContent = 'De organische zichtbaarheid groeit sterk. De volgende optimalisaties richten zich daarom op meer conversie vanuit dit verkeer, onder andere via duidelijke contactmomenten, interne links en lokale projectpagina’s.';
-      }
-      return true;
-    }
-
-    function applyDailyCplHover() {
-      const { innerDocument, innerWindow } = getDashboardContext();
-      if (!innerDocument || !innerWindow?.Chart) return false;
-      const canvas = innerDocument.getElementById('dailyCplChart');
-      const chart = canvas ? innerWindow.Chart.getChart(canvas) : null;
-      if (!chart) return false;
-      chart.options.interaction = { mode: 'index', intersect: false };
-      chart.options.plugins.tooltip = {
-        mode: 'index',
-        intersect: false,
-        displayColors: false,
-        callbacks: {
-          title: items => items?.[0]?.label || '',
-          label: context => {
-            if (context.datasetIndex !== 0) return null;
-            const row = dailyCplAugust[context.dataIndex];
-            if (!row) return null;
-            return [`Leads: ${row.leads}`, `CPL: ${row.cpl == null ? 'niet berekenbaar' : euro(row.cpl)}`, `Spend: ${euro(row.spend)}`];
-          },
-          afterBody: () => []
-        }
-      };
-      chart.update('none');
-      return true;
-    }
-
-    function ensureDailyCplChart(selectedMonth) {
-      const { innerDocument, innerWindow } = getDashboardContext();
-      if (!innerDocument || !innerWindow?.Chart) return false;
-      let panel = innerDocument.getElementById('dailyCplPanel');
-      if (!panel) {
-        const organicHeading = innerDocument.getElementById('organic');
-        if (!organicHeading) return false;
-        const style = innerDocument.createElement('style');
-        style.textContent = '.daily-cpl-panel{margin-top:14px}.daily-cpl-chart-wrap{height:270px;margin-top:14px}.daily-cpl-note{margin-top:10px;color:var(--muted);font-size:9px;line-height:1.55}.daily-cpl-summary{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.daily-cpl-pill{font-size:9px;font-weight:700;color:var(--navy);background:#f4f7f5;border:1px solid rgba(27,41,74,.08);padding:7px 9px;border-radius:999px}';
-        innerDocument.head.appendChild(style);
-        panel = innerDocument.createElement('section');
-        panel.id = 'dailyCplPanel';
-        panel.className = 'panel daily-cpl-panel';
-        panel.innerHTML = '<h3>Dagelijkse kosten per lead</h3><p>Gecombineerde CPL van VIDEO_TEST_NOORD_MIDDEN_AUG_2026 en RT_WEBSITE_KOZIJNEN_AUG_2026</p><div class="daily-cpl-summary"><span class="daily-cpl-pill">Gemiddelde: €31,39</span><span class="daily-cpl-pill">42 leads</span><span class="daily-cpl-pill">€1.318,20 spend</span></div><div class="daily-cpl-chart-wrap"><canvas id="dailyCplChart"></canvas></div><div class="daily-cpl-note">Hover over een dag om het aantal leads, de CPL en spend van die dag te zien. 9 augustus had €85,98 spend en 0 leads; een CPL is die dag daarom niet berekenbaar. 17 augustus is een lopende dag en staat met een * gemarkeerd.</div>';
-        organicHeading.parentNode.insertBefore(panel, organicHeading);
-        const canvas = panel.querySelector('#dailyCplChart');
-        new innerWindow.Chart(canvas, {
-          type: 'line',
-          data: {
-            labels: dailyCplAugust.map(row => row.label),
-            datasets: [
-              {
-                label: 'CPL per dag',
-                data: dailyCplAugust.map(row => row.cpl),
-                borderColor: '#1B294A',
-                backgroundColor: '#1B294A',
-                borderWidth: 2.5,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-                tension: .28,
-                spanGaps: false
-              },
-              {
-                label: 'Gemiddelde t/m 17 aug (€31,39)',
-                data: dailyCplAugust.map(() => augustAverageCpl),
-                borderColor: '#84BA8A',
-                backgroundColor: '#84BA8A',
-                borderWidth: 2,
-                borderDash: [6, 6],
-                pointRadius: 0,
-                tension: 0
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-              legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } }
-            },
-            scales: {
-              x: { grid: { display: false } },
-              y: {
-                beginAtZero: true,
-                grid: { color: 'rgba(27,41,74,.08)' },
-                ticks: { callback: value => `€${value}` },
-                title: { display: true, text: 'Kosten per lead' }
-              }
-            }
-          }
-        });
-      }
-      panel.style.display = selectedMonth === '2026-08' ? 'block' : 'none';
-      applyDailyCplHover();
-      return true;
-    }
-
-    function ensureContentUrls(selectedMonth) {
-      const { innerDocument } = getDashboardContext();
-      if (!innerDocument) return false;
-      let block = innerDocument.getElementById('julyContentUrls');
-      if (!block) {
-        const heading = innerDocument.getElementById('uitvoering');
-        if (!heading) return false;
-        const style = innerDocument.createElement('style');
-        style.textContent = '.content-url-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.content-url-card{padding:18px}.content-url-card h3{margin:0 0 12px;color:var(--navy);font-size:15px}.content-url-list{display:grid;gap:8px}.content-url-list a{display:block;color:var(--navy);font-size:10px;font-weight:600;line-height:1.4;text-decoration:none;padding:9px 10px;border:1px solid rgba(27,41,74,.1);border-radius:8px;background:#fff}.content-url-list a:hover{text-decoration:underline;border-color:#84BA8A}@media(max-width:800px){.content-url-grid{grid-template-columns:1fr}}';
-        innerDocument.head.appendChild(style);
-        const makeLinks = items => items.map(([title,url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>`).join('');
-        block = innerDocument.createElement('section');
-        block.id = 'julyContentUrls';
-        block.className = 'content-url-grid';
-        block.innerHTML = `<article class="card content-url-card"><h3>8 nieuwe blogs</h3><div class="content-url-list">${makeLinks(julyContent.newBlogs)}</div></article><article class="card content-url-card"><h3>8 herschreven blogs</h3><div class="content-url-list">${makeLinks(julyContent.rewrittenBlogs)}</div></article>`;
-        let node = heading.nextElementSibling;
-        while (node && !node.classList.contains('section-heading')) node = node.nextElementSibling;
-        if (node) heading.parentNode.insertBefore(block, node); else heading.parentNode.appendChild(block);
-      }
-      block.style.display = selectedMonth === '2026-07' ? 'grid' : 'none';
-      return true;
-    }
-
-    function ensureDashboard() {
-      const { wrapperWindow, selector } = getDashboardContext();
-      if (!wrapperWindow || !selector) return false;
-      if (selector.options.length < 8 && typeof wrapperWindow.init === 'function') {
-        wrapperWindow.init();
-        return false;
-      }
-      if (!selector.dataset.cumulativeOrganicBound) {
-        selector.dataset.cumulativeOrganicBound = 'true';
-        selector.addEventListener('change', event => {
-          setTimeout(() => {
-            updateCumulativeOrganic(event.target.value);
-            updateAugustOrganicLeads(event.target.value);
-            updateOrganicCallout(event.target.value);
-            ensureDailyCplChart(event.target.value);
-            ensureContentUrls(event.target.value);
-          }, 80);
-        });
-      }
-      const organicReady = updateCumulativeOrganic(selector.value);
-      const leadsReady = updateAugustOrganicLeads(selector.value);
-      const calloutReady = updateOrganicCallout(selector.value);
-      const dailyCplReady = ensureDailyCplChart(selector.value);
-      const urlsReady = ensureContentUrls(selector.value);
-      return organicReady && leadsReady && calloutReady && dailyCplReady && urlsReady;
-    }
-
-    function startDashboardCheck() {
-      let attempts = 0;
-      const timer = setInterval(() => {
-        attempts += 1;
-        if (ensureDashboard() || attempts >= 50) clearInterval(timer);
-      }, 150);
-    }
-
-    frame.addEventListener('load', startDashboardCheck);
-    startDashboardCheck();
-  </script>
+document.getElementById('report').addEventListener('load',()=>{bind();setTimeout(bind,300)});
+</script>
 </body>
 </html>
