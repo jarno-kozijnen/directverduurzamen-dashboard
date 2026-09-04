@@ -38,7 +38,7 @@ const AUGUST={
     ['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',3290.03,223920,2728,1843,101],
     ['RT_WEBSITE_KOZIJNEN_AUG_2026',168.83,6657,133,80,3]
   ],
-  organic:{clicks:1824,impressions:219688,ctr:0.83,position:13.08}
+  organic:{clicks:1824,impressions:219688,ctr:0.83,position:13.08,leads:8}
 };
 
 const AUG_DAILY=[
@@ -124,10 +124,10 @@ function updateAugustCharts(doc,win){
   if(organicChart){
     organicChart.data.labels=['Augustus 2026'];
     organicChart.data.datasets[0].data=[AUGUST.organic.clicks];
-    organicChart.data.datasets[1].data=[null];
+    organicChart.data.datasets[1].data=[AUGUST.organic.leads];
     organicChart.update('none');
     const p=organicCanvas.closest('.panel')?.querySelector('.panel-head p');
-    if(p)p.textContent='Google Search Console · volledige maand augustus';
+    if(p)p.textContent='Google Search Console + GA4 · volledige maand augustus';
   }
   const dailyCanvas=doc.getElementById('dailyCplChart');
   const dailyChart=dailyCanvas?win.Chart.getChart(dailyCanvas):null;
@@ -172,11 +172,11 @@ function applyAugustData(){
 
   setText(doc,'heroTitle','Augustus 2026');
   setText(doc,'periodContext','1 t/m 31 augustus 2026');
-  setText(doc,'paidPeriod','Meta Ads en Google Search Console · volledige maand');
+  setText(doc,'paidPeriod','Meta Ads, GSC en GA4 · volledige maand');
   const contextStrong=doc.querySelectorAll('.context-item strong');
   if(contextStrong[2])contextStrong[2].textContent='4 september 2026';
   const status=doc.querySelector('.hero-status strong');
-  if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): nog aan te vullen';
+  if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): volledig augustus';
 
   setText(doc,'overviewMetaSpend',eur(AUGUST.spend));
   setText(doc,'overviewMetaSpendNote','+41,6% t.o.v. juli');
@@ -202,13 +202,13 @@ function applyAugustData(){
   setText(doc,'funnelMetaLeads',fmt(AUGUST.leads));
 
   const msg=doc.querySelector('#monthMessage p');
-  if(msg)msg.textContent='Augustus is volledig verwerkt voor de twee augustuscampagnes en Google Search Console. De volledige organische leadteller uit GA4 is nog niet beschikbaar en wordt daarom niet geschat.';
+  if(msg)msg.textContent='Augustus is volledig verwerkt voor de twee augustuscampagnes, Google Search Console en organische leads uit GA4. Organische leads zijn gemeten als unieke Organic Search-gebruikers op /succes/.';
 
   const o=AUGUST.organic;
   setText(doc,'overviewOrganicClicks',fmt(o.clicks));
   setText(doc,'overviewOrganicClicksNote','−1,2% t.o.v. juli');
-  setText(doc,'overviewOrganicLeads','—');
-  setText(doc,'overviewOrganicLeadsNote','GA4 augustus nog aan te vullen');
+  setText(doc,'overviewOrganicLeads',fmt(o.leads));
+  setText(doc,'overviewOrganicLeadsNote','GA4 · Organic Search → /succes/');
   setText(doc,'overviewOrganicPosition',dec(o.position));
   setText(doc,'overviewOrganicPositionNote','0,08 positie lager t.o.v. juli');
   setText(doc,'organicClicks',fmt(o.clicks));
@@ -219,17 +219,17 @@ function applyAugustData(){
   setText(doc,'organicCtrNote','−0,14 procentpunt t.o.v. juli');
   setText(doc,'organicPosition',dec(o.position));
   setText(doc,'organicPositionNote','0,08 positie lager t.o.v. juli');
-  setText(doc,'organicLeads','—');
-  setText(doc,'organicLeadsNote','Volledige GA4-leadteller nog aan te vullen');
+  setText(doc,'organicLeads',fmt(o.leads));
+  setText(doc,'organicLeadsNote','8 unieke organische gebruikers op /succes/');
   setText(doc,'organicInterpretationSubtitle','Ontwikkeling in augustus');
   setText(doc,'organicCtrInsightTitle','Meer zichtbaarheid, lagere CTR');
   setText(doc,'organicCtrInsightText','219.688 vertoningen (+14,8%), terwijl de CTR daalt van 0,97% naar 0,83%');
   setText(doc,'organicCtrInsightValue','−0,14 pp');
-  setText(doc,'organicLeadInsightTitle','Organische leads nog niet volledig');
-  setText(doc,'organicLeadInsightText','De volledige augustus-teller uit GA4 is nog niet beschikbaar');
-  setText(doc,'organicLeadInsightValue','—');
+  setText(doc,'organicLeadInsightTitle','Organische leads via GA4');
+  setText(doc,'organicLeadInsightText','Organic Search → /succes/ · volledige maand augustus');
+  setText(doc,'organicLeadInsightValue','8 leads');
   setText(doc,'funnelOrganicClicks',fmt(o.clicks));
-  setText(doc,'funnelOrganicLeads','—');
+  setText(doc,'funnelOrganicLeads',fmt(o.leads));
   setTone(doc,'organicClicksNote','negative');
   setTone(doc,'organicImpressionsNote','positive');
   setTone(doc,'organicCtrNote','negative');
@@ -242,7 +242,7 @@ function applyAugustData(){
     const title=callout.querySelector('strong');
     const text=callout.querySelector('p');
     if(title)title.textContent='Zichtbaarheid groeit, doorklik blijft kans';
-    if(text)text.textContent='De organische vertoningen groeiden in augustus met 14,8% naar 219.688. Het aantal klikken bleef vrijwel gelijk aan juli, doordat de CTR daalde naar 0,83%. De eerstvolgende SEO-kans ligt daarom vooral in betere titles, snippets en doorstroom op pagina’s die al veel vertoningen krijgen.';
+    if(text)text.textContent='De organische vertoningen groeiden in augustus met 14,8% naar 219.688. Het aantal klikken bleef vrijwel gelijk aan juli, doordat de CTR daalde naar 0,83%. GA4 registreert 8 unieke Organic Search-gebruikers op de succespagina. De eerstvolgende SEO-kans ligt daarom vooral in betere titles, snippets en doorstroom op pagina’s die al veel vertoningen krijgen.';
   }
 
   renderAugustCampaignTable(doc);
