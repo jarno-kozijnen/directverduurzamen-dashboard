@@ -197,6 +197,12 @@ function patchOrganicWork(){
 function patchSeptemberSeoWork(){
   const {doc}=getDashboard();
   if(!doc)return false;
+  const selector=doc.getElementById('monthSelect');
+  if(!selector)return false;
+  if(!selector.dataset.septemberSeoBound){
+    selector.dataset.septemberSeoBound='1';
+    selector.addEventListener('change',()=>[80,250,600].forEach(ms=>setTimeout(patchSeptemberSeoWork,ms)));
+  }
   if(!doc.getElementById('organicWorkStyle'))patchOrganicWork();
   let section=doc.getElementById('septemberSeoWorkSection');
   if(!section){
@@ -211,7 +217,7 @@ function patchSeptemberSeoWork(){
     if(augustSection)augustSection.insertAdjacentElement('afterend',section);
     else (organicCanvas?.closest('.grid-2')||organicCanvas?.closest('.panel'))?.insertAdjacentElement('afterend',section);
   }
-  section.style.display='block';
+  section.style.display=selector.value==='2026-09'?'block':'none';
   let nav=doc.getElementById('seoSeptemberNav');
   if(!nav){
     const organicNav=[...doc.querySelectorAll('.nav-link')].find(a=>a.getAttribute('href')==='#organisch');
@@ -225,7 +231,7 @@ function patchSeptemberSeoWork(){
       (augNav||organicNav).insertAdjacentElement('afterend',nav);
     }
   }
-  if(nav)nav.style.display='flex';
+  if(nav)nav.style.display=selector.value==='2026-09'?'flex':'none';
   return true;
 }
 
