@@ -45,6 +45,29 @@ const AUGUST_REWRITES=[
   {id:'H08',title:'Kunststof kozijnen Overijssel',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/'}
 ];
 
+
+const SEPTEMBER_BLOGS=[
+  {id:'N01',title:'ISDE-subsidie 2027 voor kozijnen en glas: wat verandert er?',url:'https://directverduurzamen.nl/isde-subsidie-2027-kozijnen-glas/'},
+  {id:'N02',title:'Garantie op kunststof kozijnen: waar moet je op letten?',url:'https://directverduurzamen.nl/garantie-kunststof-kozijnen/'},
+  {id:'N03',title:'Afwerking kunststof kozijnen binnen en buiten',url:'https://directverduurzamen.nl/afwerking-kunststof-kozijnen/'},
+  {id:'N04',title:'Screens op kunststof kozijnen',url:'https://directverduurzamen.nl/screens-op-kunststof-kozijnen/'},
+  {id:'N05',title:'Kunststof kozijnen in appartement en VvE',url:'https://directverduurzamen.nl/kunststof-kozijnen-appartement-vve/'},
+  {id:'N06',title:'Kunststof kozijnen voor en na',url:'https://directverduurzamen.nl/kunststof-kozijnen-voor-en-na/'},
+  {id:'N07',title:'Zelf kunststof kozijnen plaatsen of laten monteren',url:'https://directverduurzamen.nl/zelf-kunststof-kozijnen-plaatsen-of-laten-monteren/'},
+  {id:'N08',title:'Overzetkozijnen of volledig vervangen',url:'https://directverduurzamen.nl/overzetkozijnen-of-volledig-vervangen/'}
+];
+
+const SEPTEMBER_REWRITES=[
+  {id:'H01',title:'Offerte kunststof kozijnen aanvragen',url:'https://directverduurzamen.nl/offerte-aanvragen/'},
+  {id:'H02',title:'Kunststof kozijnen Kampen',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/kampen/'},
+  {id:'H03',title:'Kunststof kozijnen Hengelo',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/hengelo/'},
+  {id:'H04',title:'Kunststof kozijnen Enschede',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/enschede/'},
+  {id:'H05',title:'Kunststof kozijnen Deventer',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/deventer/'},
+  {id:'H06',title:'Kunststof kozijnen Oldenzaal',url:'https://directverduurzamen.nl/kunststof-kozijnen-overijssel/oldenzaal/'},
+  {id:'H07',title:'Subsidie voor kunststof kozijnen',url:'https://directverduurzamen.nl/subsidie-voor-kunststof-kozijnen/'},
+  {id:'H08',title:'Lekkage bij kunststof kozijnen',url:'https://directverduurzamen.nl/lekkage-bij-kunststof-kozijnen/'}
+];
+
 const AUGUST_FACEBOOK_POSTS=[
   {id:'FB01',date:'7 aug',title:'Project: nieuwe kozijnen en Keralit in staalblauw',impressions:149,reach:95,engagements:3,clicks:2,shares:1,url:'https://www.facebook.com/1063030576672402/posts/1076470755328384'},
   {id:'FB02',date:'10 aug',title:'Isoleren jouw kozijnen nog goed?',impressions:178,reach:99,engagements:5,clicks:1,shares:2,url:'https://www.facebook.com/1063030576672402/posts/1079060081736118'},
@@ -170,6 +193,42 @@ function patchOrganicWork(){
   return true;
 }
 
+
+function patchSeptemberSeoWork(){
+  const {doc}=getDashboard();
+  if(!doc)return false;
+  if(!doc.getElementById('organicWorkStyle'))patchOrganicWork();
+  let section=doc.getElementById('septemberSeoWorkSection');
+  if(!section){
+    section=doc.createElement('div');
+    section.id='septemberSeoWorkSection';
+    section.className='organic-work-wrap';
+    const blogRows=SEPTEMBER_BLOGS.map(blog=>`<div class="organic-blog-item"><div class="organic-blog-id">${blog.id}</div><div><strong>${blog.title}</strong></div><a href="${blog.url}" target="_blank" rel="noopener">Bekijk blog →</a></div>`).join('');
+    const rewriteRows=SEPTEMBER_REWRITES.map(page=>`<div class="organic-blog-item"><div class="organic-blog-id">${page.id}</div><div><strong>${page.title}</strong></div><a href="${page.url}" target="_blank" rel="noopener">Bekijk pagina →</a></div>`).join('');
+    section.innerHTML=`<div class="section-heading"><div><h2>Actuele SEO-output september 2026</h2><p>SEO-contentbatch gepubliceerd op 12 september. Afbeeldingen, bestandsnamen, alt-teksten en visuele live-QA volgen in één aparte beeldronde.</p></div><span class="source-label">SEO planning · bijgewerkt 12 september 2026</span></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>nieuwe blogs gepubliceerd</span></div><div class="organic-work-copy"><h3>Nieuwe blogs september</h3><p>Nieuwe onderwerpen zijn vooraf gecontroleerd op bestaande content, zoekintentie, actuele SERP, commerciële waarde, interne links en kannibalisatie.</p><div class="organic-blog-grid">${blogRows}</div></div></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>bestaande pagina's herschreven</span></div><div class="organic-work-copy"><h3>Herschrijvingen september</h3><p>De acht pagina's zijn aangescherpt op GSC-signalen, zoekintentie, interne links en de route naar advies of offerte. Eerste GSC-effectmeting staat op 10 oktober 2026.</p><div class="organic-blog-grid">${rewriteRows}</div></div></div>`;
+    const augustSection=doc.getElementById('organicWorkSection');
+    const organicCanvas=doc.getElementById('organicTrendChart');
+    if(augustSection)augustSection.insertAdjacentElement('afterend',section);
+    else (organicCanvas?.closest('.grid-2')||organicCanvas?.closest('.panel'))?.insertAdjacentElement('afterend',section);
+  }
+  section.style.display='block';
+  let nav=doc.getElementById('seoSeptemberNav');
+  if(!nav){
+    const organicNav=[...doc.querySelectorAll('.nav-link')].find(a=>a.getAttribute('href')==='#organisch');
+    if(organicNav){
+      nav=doc.createElement('a');
+      nav.id='seoSeptemberNav';
+      nav.className='nav-link';
+      nav.href='#septemberSeoWorkSection';
+      nav.textContent='SEO september';
+      const augNav=doc.getElementById('organicWorkNav');
+      (augNav||organicNav).insertAdjacentElement('afterend',nav);
+    }
+  }
+  if(nav)nav.style.display='flex';
+  return true;
+}
+
 function updateDailyReadout(doc,index){
   const row=DAILY_AUG[index],box=doc?.getElementById('dailyCplReadout');
   if(!row||!box)return;
@@ -211,9 +270,9 @@ function patchDailyChart(){
 }
 function start(){
   let attempts=0;
-  const timer=setInterval(()=>{attempts++;patchOrganicHistory();patchOrganicWork();patchDailyChart();if(attempts>=40)clearInterval(timer);},250);
+  const timer=setInterval(()=>{attempts++;patchOrganicHistory();patchOrganicWork();patchSeptemberSeoWork();patchDailyChart();if(attempts>=40)clearInterval(timer);},250);
 }
-document.getElementById('client').addEventListener('load',()=>{start();setTimeout(patchOrganicHistory,1500);setTimeout(patchOrganicWork,1600);setTimeout(patchDailyChart,1700);});
+document.getElementById('client').addEventListener('load',()=>{start();setTimeout(patchOrganicHistory,1500);setTimeout(patchOrganicWork,1600);setTimeout(patchSeptemberSeoWork,1650);setTimeout(patchDailyChart,1700);});
 start();
 </script>
 </body>
