@@ -18,7 +18,7 @@ const DATA={
 '2026-06':{label:'Juni 2026',meta:{spend:4118.73,leads:77,impressions:149805,clicks:2405,links:1671,ctr:1.61,cpc:1.71,cpm:27.49,campaigns:[['Nieuwe doelgroep Twente',3810.95,142961,2273,1586,68],['Websitebezoekers opnieuw bereiken',307.78,6844,132,85,9]]},organic:{clicks:1407,impressions:162980,ctr:.86,position:13.91,leads:14,clicksNote:'+20,2% t.o.v. mei',impressionsNote:'+20,7% t.o.v. mei',ctrNote:'−0,01 procentpunt',positionNote:'3,17 posities verbeterd',leadsNote:'1 meer dan mei'}},
 '2026-07':{label:'Juli 2026',meta:{spend:2442.42,leads:55,impressions:69401,clicks:1223,links:814,ctr:1.76,cpc:2.00,cpm:35.19,campaigns:[['Nieuwe doelgroep Twente',2309.47,65238,1157,762,55],['Websitebezoekers opnieuw bereiken',132.95,4163,66,52,0]]},organic:{clicks:1847,impressions:191347,ctr:.97,position:13.00,leads:12,clicksNote:'+31,3% t.o.v. juni',impressionsNote:'+17,4% t.o.v. juni',ctrNote:'+0,11 procentpunt',positionNote:'0,91 positie verbeterd',leadsNote:'2 minder dan juni'}},
 '2026-08':{label:'Augustus 2026',partial:true,period:'1 t/m 17 augustus 2026',paidPeriod:'Meta t/m 17 augustus · GSC t/m 16 augustus · GA4 t/m 17 augustus',lastCheck:'17 augustus 2026',meta:{spend:1318.20,leads:42,impressions:89936,clicks:1173,links:775,ctr:1.30,cpc:1.12,cpm:14.66,campaigns:[['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',1247.69,87504,1115,736,41],['RT_WEBSITE_KOZIJNEN_AUG_2026',70.51,2432,58,39,1]]},organic:{clicks:809,impressions:105093,ctr:.77,position:13.33,leads:5,clicksNote:'−14,5% t.o.v. 1–16 juli',impressionsNote:'+5,4% t.o.v. 1–16 juli',ctrNote:'−0,18 procentpunt t.o.v. 1–16 juli',positionNote:'0,22 positie verbeterd t.o.v. 1–16 juli',leadsNote:'GA4: 5 unieke organische gebruikers op /succes/ t/m 17 augustus'}}
-'2026-09':{label:'September 2026',contentOnly:true,period:'1 t/m 12 september 2026',paidPeriod:'September loopt nog',lastCheck:'12 september 2026',meta:null,organic:null}
+'2026-09':{label:'September 2026',contentOnly:true,period:'1 t/m 12 september 2026',paidPeriod:'Meta Ads t/m 12 september 2026',lastCheck:'12 september 2026',meta:{spend:1788.94,leads:47,impressions:97044,clicks:1294,links:893,ctr:1.33,cpc:1.38,cpm:18.43,campaigns:[['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',1733.65,94824,1228,860,45],['RT_WEBSITE_KOZIJNEN_AUG_2026',55.29,2220,66,33,2]]},organic:{clicks:722,impressions:87560,ctr:.82,position:13.50,leads:null},capi:{qualified:4,invalid:3,appointments:5,offers:1,converted:0},excludedMeta:{campaign:'VAC | Kozijnenmonteur | Almelo | Leads | 09-2026',spend:50.47,leads:3}}
 };
 const ORDER=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'];
 const DAILY_CPL_AUG=[
@@ -54,44 +54,71 @@ function init(){
  function renderOrganic(r,o){if(!o)return;const hasLeads=o.leads!=null;set('overviewOrganicClicks',fmt(o.clicks));set('overviewOrganicClicksNote',o.clicksNote);set('overviewOrganicLeads',hasLeads?fmt(o.leads):'—');set('overviewOrganicLeadsNote',o.leadsNote);set('overviewOrganicPosition',dec(o.position));set('overviewOrganicPositionNote',o.positionNote);set('organicClicks',fmt(o.clicks));set('organicClicksNote',o.clicksNote);set('organicImpressions',fmt(o.impressions));set('organicImpressionsNote',o.impressionsNote);set('organicCtr',`${dec(o.ctr)}%`);set('organicCtrNote',o.ctrNote);set('organicPosition',dec(o.position));set('organicPositionNote',o.positionNote);set('organicLeads',hasLeads?fmt(o.leads):'—');set('organicLeadsNote',o.leadsNote);set('organicInterpretationSubtitle',r.partial?'Google Search Console t/m 16 augustus · GA4 t/m 17 augustus':`Ontwikkeling in ${r.label.toLowerCase()}`);set('organicCtrInsightTitle',o.ctrNote.startsWith('+')?'Doorklikpercentage stijgt':'Doorklikpercentage daalt');set('organicCtrInsightText',r.partial?'CTR 0,77% tegenover 0,95% in 1–16 juli':`Organische CTR: ${dec(o.ctr)}%`);set('organicCtrInsightValue',o.ctrNote.split(' t.o.v.')[0]);set('organicLeadInsightTitle',r.partial?'Organische leads via GA4':(o.leadsNote.includes('meer')?'Meer organische leads':'Minder organische leads'));set('organicLeadInsightText',r.partial?'Organic Search → /succes/ · unieke gebruikers t/m 17 augustus':o.leadsNote);set('organicLeadInsightValue',hasLeads?`${fmt(o.leads)} leads`:'—');set('funnelOrganicClicks',fmt(o.clicks));set('funnelOrganicLeads',hasLeads?fmt(o.leads):'—');if(organicCallout){const strong=organicCallout.querySelector('strong'),text=organicCallout.querySelector('p');if(r.partial){if(strong)strong.textContent='Zichtbaarheid stabiel, CTR lager';if(text)text.textContent='Vergeleken met 1–16 juli zijn de vertoningen 5,4% hoger en de gemiddelde positie iets beter, maar de klikken liggen 14,5% lager doordat de CTR terugvalt van 0,95% naar 0,77%. GA4 registreert daarnaast 5 unieke organische gebruikers op de succespagina t/m 17 augustus.'}}organicChart.data.labels=[r.label];organicChart.data.datasets[0].data=[o.clicks];organicChart.data.datasets[1].data=[hasLeads?o.leads:null];organicChart.update()}
  function render(key){const i=ORDER.indexOf(key),r=DATA[key];
  if(r.contentOnly){
+   const m=r.meta,o=r.organic,metaCpl=m&&m.leads?m.spend/m.leads:null;
    set('heroTitle',r.label);
    set('periodContext',r.period);
    set('paidPeriod',r.paidPeriod);
    const contextStrong=d.querySelectorAll('.context-item strong');if(contextStrong[2])contextStrong[2].textContent=r.lastCheck;
-   const status=d.querySelector('.hero-status strong');if(status)status.innerHTML='SEO-uitvoering: bijgewerkt t/m 12 september<br>8 nieuwe blogs + 8 herschrijvingen<br>Maandresultaten: nog lopend';
-   ['overviewMetaSpend','overviewMetaLeads','overviewMetaCpl','metaSpend','metaLeads','metaCpl','metaImpressions','metaClicks','metaCtr','metaCpc','metaCpm','funnelMetaImpressions','funnelMetaClicks','funnelMetaLeads','overviewOrganicClicks','overviewOrganicLeads','overviewOrganicPosition','organicClicks','organicImpressions','organicCtr','organicPosition','organicLeads','funnelOrganicClicks','funnelOrganicLeads'].forEach(id=>set(id,'—'));
-   set('overviewMetaSpendNote','September loopt nog');
-   set('overviewMetaLeadsNote','Nog niet afgesloten');
-   set('overviewMetaCplNote','Nog niet afgesloten');
-   set('metaLeadsNote','September loopt nog');
-   set('metaCplNote','Nog niet afgesloten');
-   set('metaClicksNote','Nog niet afgesloten');
-   set('metaEfficiencyPeriod','September 2026 — lopend');
-   set('funnelPeriod','September 2026 — lopend');
-   set('overviewOrganicClicksNote','September loopt nog');
-   set('overviewOrganicLeadsNote','Nog niet afgesloten');
-   set('overviewOrganicPositionNote','Nog niet afgesloten');
-   set('organicClicksNote','September loopt nog');
-   set('organicImpressionsNote','September loopt nog');
-   set('organicCtrNote','Nog niet afgesloten');
-   set('organicPositionNote','Nog niet afgesloten');
-   set('organicLeadsNote','Nog niet afgesloten');
-   set('organicInterpretationSubtitle','September 2026 — maand loopt nog');
-   set('organicCtrInsightTitle','Resultaten volgen na maandafsluiting');
-   set('organicCtrInsightText','SEO-uitvoering is al bijgewerkt; GSC- en GA4-maandcijfers worden pas na voldoende datavolume toegevoegd.');
-   set('organicCtrInsightValue','—');
-   set('organicLeadInsightTitle','Organische leads september');
-   set('organicLeadInsightText','Nog niet als volledige maand gerapporteerd.');
+   const status=d.querySelector('.hero-status strong');if(status)status.innerHTML='Meta Ads: actueel t/m 12 september<br>Google Search Console: actueel t/m 12 september<br>SEO-output: 8 nieuwe blogs + 8 herschrijvingen<br>GA4 organische leads: Direct Verduurzamen-property nog niet gekoppeld';
+   set('overviewMetaSpend',eur(m.spend));
+   set('overviewMetaSpendNote','Tussenstand t/m 12 september');
+   set('overviewMetaLeads',fmt(m.leads));
+   set('overviewMetaLeadsNote','Commerciële Meta-campagnes');
+   set('overviewMetaCpl',metaCpl!=null?eur(metaCpl):'—');
+   set('overviewMetaCplNote','Tussenstand t/m 12 september');
+   set('metaSpend',eur(m.spend));
+   set('metaLeads',fmt(m.leads));
+   set('metaLeadsNote','47 commerciële Meta-leads t/m 12 september');
+   set('metaCpl',metaCpl!=null?eur(metaCpl):'—');
+   set('metaCplNote','Tussenstand t/m 12 september');
+   set('metaImpressions',fmt(m.impressions));
+   set('metaClicks',fmt(m.clicks));
+   set('metaClicksNote',`${fmt(m.links)} linkklikken`);
+   set('metaEfficiencyPeriod','1 t/m 12 september 2026');
+   set('metaCtr',`${dec(m.ctr)}%`);
+   set('metaCpc',eur(m.cpc));
+   set('metaCpm',eur(m.cpm));
+   set('funnelPeriod','September 2026 — t/m 12 september');
+   set('funnelMetaImpressions',fmt(m.impressions));
+   set('funnelMetaClicks',fmt(m.clicks));
+   set('funnelMetaLeads',fmt(m.leads));
+
+   set('overviewOrganicClicks',fmt(o.clicks));
+   set('overviewOrganicClicksNote','GSC t/m 12 september');
+   set('overviewOrganicLeads','—');
+   set('overviewOrganicLeadsNote','GA4-property nog niet gekoppeld');
+   set('overviewOrganicPosition',dec(o.position));
+   set('overviewOrganicPositionNote','GSC t/m 12 september');
+   set('organicClicks',fmt(o.clicks));
+   set('organicClicksNote','GSC t/m 12 september');
+   set('organicImpressions',fmt(o.impressions));
+   set('organicImpressionsNote','GSC t/m 12 september');
+   set('organicCtr',`${dec(o.ctr)}%`);
+   set('organicCtrNote','Tussenstand september');
+   set('organicPosition',dec(o.position));
+   set('organicPositionNote','Tussenstand september');
+   set('organicLeads','—');
+   set('organicLeadsNote','Direct Verduurzamen GA4-property nog niet gekoppeld');
+   set('organicInterpretationSubtitle','Google Search Console · 1 t/m 12 september 2026');
+   set('organicCtrInsightTitle','Organische zichtbaarheid september');
+   set('organicCtrInsightText',`${fmt(o.impressions)} vertoningen en ${fmt(o.clicks)} klikken t/m 12 september`);
+   set('organicCtrInsightValue',`${dec(o.ctr)}% CTR`);
+   set('organicLeadInsightTitle','Organische leads via GA4');
+   set('organicLeadInsightText','Kan nog niet live worden uitgelezen: de Direct Verduurzamen-property is niet gekoppeld in de huidige GA4-connector.');
    set('organicLeadInsightValue','—');
-   const msg=d.querySelector('#monthMessage p');if(msg)msg.textContent='September is aangemaakt als lopende maand. De SEO-output van 12 september staat al in het dashboard; Meta Ads-, GSC-, GA4- en salesresultaten worden niet tussentijds als maandtotalen ingevuld.';
-   metaPanel.querySelector('p').textContent='September loopt nog';
-   organicPanel.querySelector('p').textContent='September loopt nog';
-   const tbody=d.getElementById('campaignTableBody');if(tbody)tbody.innerHTML='<tr><td colspan="7">September-resultaten worden toegevoegd zodra de maandrapportage wordt bijgewerkt.</td></tr>';
+   set('funnelOrganicClicks',fmt(o.clicks));
+   set('funnelOrganicLeads','—');
+
+   const msg=d.querySelector('#monthMessage p');if(msg)msg.textContent='September is actueel t/m 12 september. Meta Ads: €1.788,94 spend, 47 commerciële leads en €38,06 CPL. GSC: 722 klikken, 87.560 vertoningen, 0,82% CTR en gemiddelde positie 13,50. CAPI-signalen binnen de commerciële campagnes: 4 QUALIFIED, 3 ongeldig/fake, 5 afspraken en 1 offerte. De vacaturecampagne (€50,47 spend, 3 sollicitatieleads) is bewust buiten de commerciële Meta-totalen gehouden. GA4-organische leads volgen zodra de Direct Verduurzamen-property is gekoppeld.';
+   metaPanel.querySelector('p').textContent='Commerciële campagnes · t/m 12 september';
+   organicPanel.querySelector('p').textContent='Google Search Console · t/m 12 september';
+
+   campaigns(m);
    toggleDetailSections(key);
    dailyPanel.classList.add('hidden-month-section');
    const dailyNav=d.getElementById('dailyCplNav');if(dailyNav)dailyNav.classList.add('hidden-month-section');
-   metaChart.data.labels=[r.label];metaChart.data.datasets[0].data=[null];metaChart.data.datasets[1].data=[null];metaChart.update();
-   organicChart.data.labels=[r.label];organicChart.data.datasets[0].data=[null];organicChart.data.datasets[1].data=[null];organicChart.update();
+   metaChart.data.labels=[r.label];metaChart.data.datasets[0].data=[m.spend];metaChart.data.datasets[1].data=[m.leads];metaChart.update();
+   organicChart.data.labels=[r.label];organicChart.data.datasets[0].data=[o.clicks];organicChart.data.datasets[1].data=[null];organicChart.update();
    return;
  }
  const m=r.meta,o=r.organic,p=i>0?DATA[ORDER[i-1]]:null,metaCpl=cpl(m),prevCpl=p&&p.meta?cpl(p.meta):null;set('heroTitle',r.label);set('periodContext',r.period||`1 t/m ${new Date(Number(key.slice(0,4)),Number(key.slice(5,7)),0).getDate()} ${r.label.toLowerCase()}`);set('paidPeriod',r.paidPeriod||`Volledige maand ${r.label.toLowerCase()}`);const contextStrong=d.querySelectorAll('.context-item strong');if(contextStrong[2])contextStrong[2].textContent=r.lastCheck||'4 augustus 2026';const status=d.querySelector('.hero-status strong');if(status)status.innerHTML=r.partial?'Meta Ads: actueel t/m 17 augustus<br>Organisch (GSC): actueel t/m 16 augustus<br>Organische leads (GA4): t/m 17 augustus':'Marketingresultaten: compleet<br>Uitvoering: bijgewerkt<br>Salesresultaten: volgen';const partialNote=r.partial?'Tussenstand t/m 17 augustus':null;set('overviewMetaSpend',eur(m.spend));set('overviewMetaSpendNote',partialNote||changeText(m.spend,p?.meta.spend));set('overviewMetaLeads',fmt(m.leads));set('overviewMetaLeadsNote',partialNote||changeText(m.leads,p?.meta.leads));set('overviewMetaCpl',metaCpl!=null?eur(metaCpl):'—');set('overviewMetaCplNote',changeText(metaCpl,prevCpl,true));set('metaSpend',eur(m.spend));set('metaLeads',fmt(m.leads));set('metaLeadsNote',r.partial?'Meta-leads t/m 17 augustus':key==='2026-05'?'Alleen commerciële aanvragen':'Via Meta Ads');set('metaCpl',metaCpl!=null?eur(metaCpl):'—');set('metaCplNote',changeText(metaCpl,prevCpl,true));set('metaImpressions',fmt(m.impressions));set('metaClicks',fmt(m.clicks));set('metaClicksNote',`${fmt(m.links)} linkklikken`);set('metaEfficiencyPeriod',r.partial?'Tussenstand augustus 2026':r.label);set('metaCtr',`${dec(m.ctr)}%`);set('metaCpc',eur(m.cpc));set('metaCpm',eur(m.cpm));set('funnelPeriod',r.partial?'Augustus 2026 — tussenstand':r.label);set('funnelMetaImpressions',fmt(m.impressions));set('funnelMetaClicks',fmt(m.clicks));set('funnelMetaLeads',fmt(m.leads));const msg=d.querySelector('#monthMessage p');if(msg)msg.textContent=r.partial?'Tussenstand augustus: Meta Ads t/m 17 augustus, Search Console t/m 16 augustus en organische leads uit GA4 t/m 17 augustus.':'De rapportage bevat alleen campagnes die gericht zijn op commerciële aanvragen.';metaPanel.querySelector('p').textContent=r.partial?'Tussenstand t/m 17 augustus':'Alleen de geselecteerde maand';organicPanel.querySelector('p').textContent=r.partial?'Google Search Console t/m 16 augustus · leads uit GA4 t/m 17 augustus':'Alleen de geselecteerde maand';campaigns(m);toggleDetailSections(key);renderOrganic(r,o);dailyPanel.classList.toggle('hidden-month-section',key!=='2026-08');const dailyNav=d.getElementById('dailyCplNav');if(dailyNav)dailyNav.classList.toggle('hidden-month-section',key!=='2026-08');metaChart.data.labels=[r.label];metaChart.data.datasets[0].data=[m.spend];metaChart.data.datasets[1].data=[m.leads];metaChart.update();if(key==='2026-08')dailyChart.resize()}
