@@ -18,7 +18,7 @@ const ORGANIC_HISTORY=[
   {key:'2026-06',label:'Juni',clicks:1407,leads:14},
   {key:'2026-07',label:'Juli',clicks:1847,leads:9},
   {key:'2026-08',label:'Augustus',clicks:1824,leads:8},
-  {key:'2026-09',label:'September',clicks:722,leads:6}
+  {key:'2026-09',label:'September',clicks:778,leads:6}
 ];
 
 const AUGUST_BLOGS=[
@@ -157,7 +157,7 @@ function patchOrganicHistory(){
       const heading=panel?.querySelector('h3');
       const subtitle=panel?.querySelector('p');
       if(heading)heading.textContent='Ontwikkeling organische groei';
-      if(subtitle)subtitle.textContent=`Januari t/m ${selected.label.toLowerCase()} 2026 · GSC-klikken + GA4-organische leads`;
+      if(subtitle)subtitle.textContent=`${history.length} maanden · januari t/m ${selected.label.toLowerCase()} 2026 · GSC-klikken + GA4-organische leads`;
     }
   }
   return true;
