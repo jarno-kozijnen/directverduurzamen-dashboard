@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direct Verduurzamen | Checklistcampagne</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--navy:#172744;--navy2:#0f1c34;--green:#83B886;--green2:#4E8A5A;--ink:#172033;--muted:#697386;--bg:#f3f6f4;--soft:#eef5ef;--white:#fff;--line:#dfe7e2;--shadow:0 18px 55px rgba(23,39,68,.12);--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Montserrat,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.55}a{color:inherit}.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.top{background:var(--navy2);color:#fff;padding:10px 0;font-size:13px}.top .wrap{display:flex;justify-content:space-between;gap:20px;align-items:center}.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(131,184,134,.16);color:#dff3e1;font-weight:800}.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #edf1ee}.head{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:21px;font-weight:900;color:var(--navy);letter-spacing:-.02em}.brand span{color:var(--green2)}nav{display:flex;gap:20px;align-items:center;font-size:14px;font-weight:750;color:#475168}nav a{text-decoration:none}.navbtn{background:var(--navy);color:#fff!important;padding:10px 14px;border-radius:11px}
+.hero{background:linear-gradient(125deg,#edf6ef 0%,#fff 52%,#edf2f9 100%);padding:74px 0 60px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.11em;color:var(--green2);font-weight:900}.hero h1{font-size:clamp(40px,6vw,70px);line-height:1.01;letter-spacing:-.045em;color:var(--navy);margin:12px 0 18px}.hero p{font-size:19px;color:#526078;max-width:700px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;justify-content:center;align-items:center;gap:9px;text-decoration:none;border-radius:13px;padding:13px 17px;font-weight:850;border:1px solid transparent}.btn.primary{background:var(--navy);color:#fff}.btn.secondary{background:#fff;border-color:var(--line);color:var(--navy)}.hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.tag{font-size:13px;border:1px solid #d6e6d9;background:#fff;border-radius:999px;padding:8px 11px;color:#43516a;font-weight:700}
+.hero-stack{position:relative;min-height:520px}.paper{position:absolute;background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;border:1px solid #e1e9e4}.paper img{display:block;width:100%}.paper.a{width:57%;right:8%;top:0;transform:rotate(3deg)}.paper.b{width:54%;left:3%;top:86px;transform:rotate(-6deg)}.paper.c{width:50%;right:0;bottom:0;transform:rotate(7deg)}
+section{padding:76px 0}.soft{background:var(--bg)}.section-head{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:30px}.section-head h2{font-size:clamp(30px,4vw,46px);line-height:1.06;color:var(--navy);margin:5px 0}.section-head p{max-width:660px;color:var(--muted);font-size:17px;margin:0}
+.overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.metric{padding:22px;border:1px solid var(--line);border-radius:18px;background:#fff}.metric strong{display:block;font-size:24px;color:var(--navy);margin-bottom:4px}.metric span{color:var(--muted);font-size:14px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}.flow-card{position:relative;padding:18px;background:#fff;border:1px solid var(--line);border-radius:17px;min-height:142px}.flow-card b{display:block;color:var(--navy);margin:8px 0 5px}.flow-card span{font-size:13px;color:var(--muted)}.nr{width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:var(--soft);color:var(--green2);font-weight:900}
+.pdf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.pdf-card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 10px 35px rgba(23,39,68,.07)}.pdf-preview{aspect-ratio:1/1.35;background:#eef2ef;overflow:hidden}.pdf-preview img{width:100%;height:100%;object-fit:cover;object-position:top}.pdf-body{padding:21px}.pdf-body h3{font-size:20px;color:var(--navy);line-height:1.15;margin:0 0 8px}.pdf-body p{color:var(--muted);font-size:14px;margin:0 0 16px}.badge{display:inline-block;font-size:11px;font-weight:900;color:var(--green2);background:var(--soft);padding:6px 8px;border-radius:999px;margin-bottom:10px}.pdf-links{display:flex;gap:9px;flex-wrap:wrap}.pdf-links a,.pdf-action{font-size:13px;padding:9px 11px;border-radius:9px;text-decoration:none;font-weight:800;border:0;cursor:pointer;font-family:inherit}.download{background:var(--navy);color:#fff}.view{background:#f5f7f6;border:1px solid var(--line);color:var(--navy)}
+.ads{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.ad-shell{border:1px solid #dce2df;border-radius:20px;background:#fff;box-shadow:0 12px 40px rgba(23,39,68,.08);overflow:hidden}.ad-head{padding:13px 14px;display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);display:grid;place-items:center;color:#fff;font-weight:900}.ad-meta b{display:block;font-size:13px}.ad-meta span{font-size:11px;color:var(--muted)}.ad-copy{padding:0 14px 12px;font-size:13px;color:#343e52;min-height:74px}.creative{position:relative;aspect-ratio:4/5;overflow:hidden;background:linear-gradient(135deg,#163052,#86b98a)}.creative.photo{background-image:linear-gradient(to top,rgba(13,27,49,.88),rgba(13,27,49,.12)),url('https://directverduurzamen.nl/wp-content/uploads/2025/09/dir_ban_btm_img.png');background-size:cover;background-position:center}.creative.person{background-image:linear-gradient(to top,rgba(13,27,49,.85),rgba(13,27,49,.08)),url('https://directverduurzamen.nl/wp-content/themes/Direct/assets/images/mega_menu_man.png');background-size:cover;background-position:center top}.creative.clean{background:#f2f7f3}.creative.offer{background:linear-gradient(145deg,#fff 0 52%,#e8f3e9 52%)}.creative-inner{position:absolute;inset:0;padding:28px;display:flex;flex-direction:column;justify-content:flex-end}.creative.clean .creative-inner,.creative.offer .creative-inner{justify-content:center}.creative h4{font-size:clamp(25px,3vw,39px);line-height:1.02;letter-spacing:-.04em;color:#fff;margin:0 0 10px}.creative.clean h4,.creative.offer h4{color:var(--navy)}.creative p{font-size:15px;color:#eef4f0;margin:0 0 14px}.creative.clean p,.creative.offer p{color:#58657a}.creative .cta-chip{align-self:flex-start;background:var(--green);color:var(--navy);padding:10px 13px;border-radius:10px;font-weight:900;font-size:13px}.sticker{position:absolute;right:18px;top:18px;background:#fff;color:var(--navy);font-size:11px;font-weight:900;border-radius:999px;padding:8px 10px;box-shadow:0 8px 18px rgba(0,0,0,.1)}.fake-list{display:grid;gap:10px;margin-top:14px}.fake-list span{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid #dde7df;border-radius:12px;padding:10px;color:#35415a;font-weight:750;font-size:13px}.fake-list i{width:20px;height:20px;border-radius:6px;background:var(--green);font-style:normal;display:grid;place-items:center;color:#fff}.ad-bottom{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#f6f7f7}.ad-bottom span{font-size:11px;color:var(--muted)}.ad-bottom b{font-size:12px;color:var(--navy);background:#e3e7ea;padding:7px 10px;border-radius:8px}
+.form-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:32px;align-items:start}.phone{max-width:410px;margin:auto;border:10px solid var(--navy2);border-radius:36px;background:#fff;box-shadow:var(--shadow);overflow:hidden}.phone-top{height:28px;background:var(--navy2)}.form-card{padding:24px}.progress{height:7px;border-radius:99px;background:#e8eee9;overflow:hidden}.progress span{display:block;height:100%;width:64%;background:var(--green)}.form-card h3{font-size:23px;line-height:1.12;color:var(--navy);margin:18px 0 6px}.form-card p{font-size:13px;color:var(--muted)}.field{border:1px solid #d6dfd9;border-radius:11px;padding:12px 13px;margin:9px 0;color:#3c475b;font-size:13px}.choice{display:flex;align-items:center;gap:8px}.radio{width:17px;height:17px;border-radius:50%;border:2px solid #b8c6bc}.form-btn{background:var(--navy);color:#fff;border-radius:11px;padding:12px;margin-top:15px;text-align:center;font-weight:850}.field-table{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}.field-row{display:grid;grid-template-columns:1.05fr 1.45fr;border-bottom:1px solid var(--line)}.field-row:last-child{border-bottom:0}.field-row>div{padding:13px 15px;font-size:13px}.field-row>div:first-child{font-weight:850;color:var(--navy);background:#fafcfb}.field-row>div:last-child{color:#566177}
+.email-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.email{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px}.email .day{font-size:11px;font-weight:900;color:var(--green2);text-transform:uppercase;letter-spacing:.09em}.email h3{font-size:17px;color:var(--navy);line-height:1.2;margin:7px 0}.email p{font-size:13px;color:var(--muted);margin:0}.email .mail-cta{display:inline-block;margin-top:15px;font-size:12px;font-weight:850;color:var(--navy);background:var(--soft);padding:8px 10px;border-radius:9px}
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:22px}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}.panel h3{color:var(--navy);margin:0 0 10px}.panel p,.panel li{font-size:14px;color:#58657a}.panel ul{padding-left:19px}.code{background:#101b31;color:#d7e5da;border-radius:14px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;overflow:auto;white-space:pre-wrap}.warning{border-left:4px solid #d7a92f;background:#fff9e9;padding:14px;border-radius:10px;font-size:13px;color:#5d5134}.decision{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.decision .panel{min-height:150px}.footer{background:var(--navy2);color:#b9c5d9;padding:30px 0;font-size:13px}.footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:960px){nav{display:none}.hero-grid,.form-grid,.tech{grid-template-columns:1fr}.hero-stack{min-height:460px}.overview-grid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}.pdf-grid,.ads{grid-template-columns:1fr 1fr}.email-grid{grid-template-columns:1fr 1fr}.decision{grid-template-columns:1fr}}
+@media(max-width:620px){.top .wrap{display:block;text-align:center}.hero{padding-top:45px}.hero h1{font-size:42px}.hero-stack{min-height:390px}.paper.a{width:58%}.paper.b{width:56%;top:72px}.paper.c{width:54%}.overview-grid,.pdf-grid,.ads,.email-grid,.flow{grid-template-columns:1fr}.section-head{display:block}.field-row{grid-template-columns:1fr}.field-row>div:first-child{padding-bottom:4px}.field-row>div:last-child{padding-top:4px}.hero-actions .btn{width:100%}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><span class="pill"><span class="dot"></span> Checklistcampagne • concept klaar voor review</span><span>Direct Verduurzamen • september 2026</span></div></div>
+<header><div class="wrap head"><div class="brand">Direct <span>Verduurzamen</span></div><nav><a href="#checklists">Checklists</a><a href="#ads">Advertenties</a><a href="#formulier">Leadform</a><a href="#email">E-mail</a><a href="#techniek">Techniek</a><a class="navbtn" href="#besluit">Klaar voor livegang</a></nav></div></header>
+
+<main>
+<section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow">Leadmagnet naast de harde leadcampagne</div><h1>Checklistfunnel voor de oriënterende woningeigenaar</h1><p>Een laagdrempelige campagne waarmee Direct Verduurzamen mensen eerder in de klantreis pakt. Eerst waarde leveren met een praktische checklist, daarna verdiepen via extra vragen, e-mail en retargeting richting een vrijblijvend adviesgesprek.</p><div class="hero-actions"><a class="btn primary" href="#checklists">Bekijk de 3 checklists</a><a class="btn secondary" href="#ads">Bekijk advertentiemock-ups</a></div><div class="hero-tags"><span class="tag">Meta leadform</span><span class="tag">Progressive profiling</span><span class="tag">Aparte CSV-feed</span><span class="tag">E-mail nurture</span><span class="tag">Retargeting</span></div></div><div class="hero-stack"><div class="paper a"><div style="background:#172744;color:#fff;padding:34px 26px;height:100%"><div class="eyebrow" style="color:#83B886">GRATIS CHECKLIST</div><h3 style="font-size:29px;line-height:1.04;margin:16px 0">7 dingen om te checken vóór je kunststof kozijnen laat plaatsen</h3><p style="color:#dbe4ef;font-size:13px">Product • montage • garantie • offerte</p></div></div><div class="paper b"><div style="background:#f2f7f3;padding:30px 24px;height:100%"><div class="eyebrow">OFFERTECHECK</div><h3 style="font-size:27px;line-height:1.05;color:#172744;margin:15px 0">11 punten om offertes eerlijk te vergelijken</h3><div class="fake-list"><span><i>✓</i> Montage</span><span><i>✓</i> Afwerking</span><span><i>✓</i> Garantie</span></div></div></div><div class="paper c"><div style="background:#fff;padding:30px 24px;height:100%"><div class="eyebrow">KEUZEHULP</div><h3 style="font-size:27px;line-height:1.05;color:#172744;margin:15px 0">7 signalen van een betrouwbaar kozijnbedrijf</h3><p style="font-size:13px;color:#697386">Waar let je op vóór je tekent?</p></div></div></div></div></section>
+
+<section><div class="wrap"><div class="section-head"><div><div class="eyebrow">Doel en opzet</div><h2>Niet dezelfde lead opnieuw inkopen, maar eerder in de funnel instappen</h2></div><p>De reguliere campagne blijft gericht op directe aanvragen. Deze campagne krijgt een eigen boodschap, eigen leadform, eigen CSV-feed en eigen nurture zodat we zuiver kunnen meten wat de zachtere insteek toevoegt.</p></div><div class="overview-grid"><div class="metric"><strong>1</strong><span>Aparte checklistcampagne</span></div><div class="metric"><strong>3</strong><span>Leadmagnet-varianten om te testen</span></div><div class="metric"><strong>6</strong><span>Advertentieconcepten als startset</span></div><div class="metric"><strong>4</strong><span>Nurture-mails na download</span></div></div><div style="height:28px"></div><div class="flow"><div class="flow-card"><div class="nr">1</div><b>Advertentie</b><span>Probleem, nieuwsgierigheid of keuzehulp als hook.</span></div><div class="flow-card"><div class="nr">2</div><b>Checklist aanvragen</b><span>Voornaam, e-mail en telefoon als eerste conversie.</span></div><div class="flow-card"><div class="nr">3</div><b>Extra vragen</b><span>Eigendom, termijn, interesse, reden en financiering/subsidie.</span></div><div class="flow-card"><div class="nr">4</div><b>Checklist + nurture</b><span>PDF direct leveren en vertrouwen opbouwen via e-mail.</span></div><div class="flow-card"><div class="nr">5</div><b>Adviesgesprek</b><span>Warme lead krijgt een logische, vrijblijvende vervolgstap.</span></div></div></div></section>
+
+<section class="soft" id="checklists"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Leadmagnetbibliotheek</div><h2>Drie complete checklistvarianten</h2></div><p>Variant A is de brede hoofdversie. B en C zijn alternatieve hooks die later los getest kunnen worden zonder de hele funnel opnieuw te bouwen.</p></div><div class="pdf-grid">
+<div class="pdf-card"><div class="pdf-preview" style="padding:24px;background:#172744;color:#fff"><div class="eyebrow" style="color:#83B886">GRATIS CHECKLIST</div><h3 style="font-size:30px;line-height:1.05;margin:18px 0">7 dingen om te checken vóór je kunststof kozijnen laat plaatsen</h3><p style="color:#dce6ef">Direct Verduurzamen</p></div><div class="pdf-body"><span class="badge">Variant A • hoofdtest</span><h3>7 dingen om te checken vóór je kunststof kozijnen laat plaatsen</h3><p>Breed, toegankelijk en geschikt voor mensen die nog geen offerte hebben of net beginnen met vergelijken.</p><div class="pdf-links"><button class="download pdf-action" onclick="makePdf(\'a\',false)">Download PDF</button><button class="view pdf-action" onclick="makePdf(\'a\',true)">Open PDF</button></div></div></div>
+<div class="pdf-card"><div class="pdf-preview" style="padding:24px;background:#f2f7f3"><div class="eyebrow">OFFERTECHECK</div><h3 style="font-size:30px;line-height:1.05;color:#172744;margin:18px 0">11 punten om offertes eerlijk te vergelijken</h3><div class="fake-list"><span><i>✓</i> Product</span><span><i>✓</i> Montage</span><span><i>✓</i> Totaalprijs</span></div></div><div class="pdf-body"><span class="badge">Variant B • vergelijking</span><h3>11 punten om offertes voor kunststof kozijnen eerlijk te vergelijken</h3><p>Meer intentie. Interessant voor mensen die al offertes opvragen of meerdere aanbieders naast elkaar leggen.</p><div class="pdf-links"><button class="download pdf-action" onclick="makePdf(\'b\',false)">Download PDF</button><button class="view pdf-action" onclick="makePdf(\'b\',true)">Open PDF</button></div></div></div>
+<div class="pdf-card"><div class="pdf-preview" style="padding:24px;background:#fff"><div class="eyebrow">KEUZEHULP</div><h3 style="font-size:30px;line-height:1.05;color:#172744;margin:18px 0">7 signalen van een betrouwbaar kozijnbedrijf</h3><p style="color:#697386">Transparantie • montage • service</p></div><div class="pdf-body"><span class="badge">Variant C • vertrouwen</span><h3>7 signalen van een betrouwbaar kozijnbedrijf</h3><p>Haakt in op onzekerheid rond aanbieders, montage, garantie, service en transparantie.</p><div class="pdf-links"><button class="download pdf-action" onclick="makePdf(\'c\',false)">Download PDF</button><button class="view pdf-action" onclick="makePdf(\'c\',true)">Open PDF</button></div></div></div>
+</div></div></section>
+
+<section id="ads"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Meta Ads</div><h2>Zes advertentiemock-ups voor de eerste test</h2></div><p>De advertenties hoeven niet allemaal dezelfde stijl te hebben. De set varieert bewust in hook, hoeveelheid tekst, visuele opbouw en funnelrol.</p></div><div class="ads">
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Van plan je kozijnen te vervangen? Met deze gratis checklist weet je welke 7 punten je vooraf wilt controleren.</div><div class="creative photo"><div class="sticker">GRATIS PDF</div><div class="creative-inner"><h4>Nieuwe kozijnen?<br>Check deze 7 punten eerst.</h4><p>Voorkom onduidelijke offertes en verrassingen bij montage.</p><span class="cta-chip">Download gratis checklist</span></div></div><div class="ad-bottom"><span>directverduurzamen.nl</span><b>Meer informatie</b></div></div>
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Een goedkope offerte is niet automatisch de voordeligste. Vergelijk eerst wat er écht in staat.</div><div class="creative offer"><div class="creative-inner"><div class="eyebrow">Offerte vergelijken?</div><h4>Appels met appels.<br>Niet alleen de totaalprijs.</h4><div class="fake-list"><span><i>✓</i> Profiel & glas</span><span><i>✓</i> Montage & afwerking</span><span><i>✓</i> Garantie & service</span></div></div></div><div class="ad-bottom"><span>Gratis checklist</span><b>Downloaden</b></div></div>
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Hoe weet je of je met een betrouwbaar kozijnbedrijf te maken hebt? Begin met deze 7 signalen.</div><div class="creative person"><div class="sticker">7 SIGNALEN</div><div class="creative-inner"><h4>Een goed kozijnbedrijf herken je vóór de montage.</h4><span class="cta-chip">Bekijk de checklist</span></div></div><div class="ad-bottom"><span>Keuzehulp voor huiseigenaren</span><b>Meer informatie</b></div></div>
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Nog aan het oriënteren? Dan hoef je nog geen offerte aan te vragen. Begin met de checklist.</div><div class="creative clean"><div class="creative-inner"><div class="eyebrow">Voor huiseigenaren</div><h4>Nog geen offerte nodig.<br>Wel weten waar je op moet letten.</h4><p>Praktische uitleg over product, montage, garantie en offerte.</p><span class="cta-chip">Stuur mij de checklist</span></div></div><div class="ad-bottom"><span>Gratis en vrijblijvend</span><b>Downloaden</b></div></div>
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Wat staat er eigenlijk níet in die offerte? Deze checklist helpt je de juiste vragen te stellen.</div><div class="creative photo"><div class="creative-inner"><h4>Wat ontbreekt er in jouw kozijnenofferte?</h4><p>11 punten waarmee je aanbieders eerlijk vergelijkt.</p><span class="cta-chip">Gratis vergelijkingcheck</span></div></div><div class="ad-bottom"><span>Checklist PDF</span><b>Meer informatie</b></div></div>
+<div class="ad-shell"><div class="ad-head"><div class="avatar">DV</div><div class="ad-meta"><b>Direct Verduurzamen</b><span>Gesponsord</span></div></div><div class="ad-copy">Van montage tot garantie: dit zijn de onderwerpen die je wilt hebben gecontroleerd vóór je tekent.</div><div class="creative clean"><div class="creative-inner"><div class="eyebrow">1 minuut check</div><h4>7 vinkjes vóór je ‘ja’ zegt tegen nieuwe kozijnen.</h4><div class="fake-list"><span><i>1</i> Montage</span><span><i>2</i> Afwerking</span><span><i>3</i> Garantie</span></div></div></div><div class="ad-bottom"><span>Direct Verduurzamen</span><b>Checklist</b></div></div>
+</div></div></section>
+
+<section class="soft" id="formulier"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Meta leadform</div><h2>Conversie eerst, kwalificatie direct daarna</h2></div><p>De checklistdownload blijft laagdrempelig. Naam, e-mail en telefoon zijn de eerste conversie. Daarna vragen we extra informatie die sales later direct helpt om de lead te begrijpen.</p></div><div class="form-grid"><div class="phone"><div class="phone-top"></div><div class="form-card"><div class="progress"><span></span></div><h3>Bijna klaar. Nog een paar korte vragen.</h3><p>Zo kunnen we de informatie beter laten aansluiten op jouw situatie.</p><div class="field"><b>Wanneer wil je eventueel je kozijnen vervangen?</b><div class="choice"><span class="radio"></span> Binnen 3 maanden</div></div><div class="field"><b>Waar ben je vooral in geïnteresseerd?</b><div class="choice"><span class="radio"></span> Kunststof kozijnen</div></div><div class="field"><b>Waar wil je meer informatie over?</b><div class="choice"><span class="radio"></span> Gratis financieringsplan</div></div><div class="form-btn">Verder</div></div></div><div><div class="field-table"><div class="field-row"><div>Leadtype</div><div>Vaste waarde: <b>Checklist</b></div></div><div class="field-row"><div>Checklistvariant</div><div>Bijv. <b>7 punten kunststof kozijnen</b></div></div><div class="field-row"><div>Eigenaar woning</div><div>Ja / Nee</div></div><div class="field-row"><div>Wanneer kozijnen vervangen</div><div>Binnen 3 maanden / 3-6 maanden / 6-12 maanden / later / oriënterend</div></div><div class="field-row"><div>Interesse</div><div>Kozijnen / deur / schuifpui / meerdere / weet ik nog niet</div></div><div class="field-row"><div>Belangrijkste reden</div><div>Onderhoud / isolatie / comfort / vervanging / uitstraling / kosten</div></div><div class="field-row"><div>Financiering_subsidie</div><div><b>Eigen middelen / Gratis financieringsplan / Gratis subsidieservice</b></div></div></div><p class="warning" style="margin-top:14px"><b>Technische afspraak:</b> checklistleads krijgen een aparte CSV-feed. Zo kan in het CRM direct zichtbaar worden gemaakt dat het om een checklistlead gaat en blijven de aanvullende antwoorden als losse velden beschikbaar.</p></div></div></div></section>
+
+<section id="email"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Nurture</div><h2>Vier e-mails die de download doorzetten naar vertrouwen en actie</h2></div><p>Geen harde verkoopreeks. Eerst de beloofde informatie leveren, daarna helpen vergelijken, bewijs geven en pas vervolgens uitnodigen voor vrijblijvend advies.</p></div><div class="email-grid"><div class="email"><div class="day">Direct na aanvraag</div><h3>Hier is je checklist</h3><p>Lever de PDF, benoem kort wat iemand ermee kan en geef één simpele vervolgstap: bewaren of direct bekijken.</p><span class="mail-cta">Bekijk de checklist</span></div><div class="email"><div class="day">Dag 2</div><h3>3 punten die vaak over het hoofd worden gezien</h3><p>Montage, afwerking en garantie. Verdieping op de checklist zonder opnieuw alles te vertellen.</p><span class="mail-cta">Lees de 3 aandachtspunten</span></div><div class="email"><div class="day">Dag 5</div><h3>Zo ziet een compleet traject eruit</h3><p>Laat het proces en een echt project zien. Doel: onzekerheid verlagen en vakmanschap tastbaar maken.</p><span class="mail-cta">Bekijk een project</span></div><div class="email"><div class="day">Dag 9</div><h3>Wil je weten wat bij jouw woning past?</h3><p>Zachte CTA naar een vrijblijvend adviesgesprek. Geen urgentiedruk; wel concreet maken wat de volgende stap oplevert.</p><span class="mail-cta">Vrijblijvend advies</span></div></div></div></section>
+
+<section class="soft" id="techniek"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Tracking en techniek</div><h2>Zo blijft de checklistfunnel los meetbaar van de reguliere leads</h2></div><p>De basisvelden blijven gelijk aan de bestaande Meta-inrichting. De nieuwe checklistvragen worden als losse velden meegenomen, zodat Make en de CRM-import één-op-één kunnen mappen.</p></div><div class="tech"><div class="panel"><h3>Datastroom</h3><div class="code">Meta checklist leadform
+        ↓
+Make scenario
+        ↓
+Aparte Google Sheet
+        ↓
+Aparte CSV-feed
+        ↓
+CRM-import als checklistlead</div><p>UTM’s, campagne-, adset- en advertentiegegevens blijven op dezelfde manier beschikbaar als bij reguliere leads.</p></div><div class="panel"><h3>Wat moet in één oogopslag zichtbaar zijn?</h3><ul><li>Leadtype = Checklist</li><li>Checklistvariant</li><li>Wanneer kozijnen vervangen</li><li>Interesse</li><li>Belangrijkste reden</li><li>Financiering_subsidie</li></ul><p>Daarmee weet sales direct dat deze persoon eerder in de funnel zit en welke context bij de download is meegegeven.</p></div></div></div></section>
+
+<section id="besluit"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Livegang</div><h2>Wat staat klaar en wat moet nog worden bevestigd?</h2></div><p>De campagne kan technisch worden opgebouwd zodra de formmapping en checklistkeuze definitief zijn. Budget, doelgroep en livegang blijven aparte beslismomenten.</p></div><div class="decision"><div class="panel"><h3>Klaar</h3><ul><li>3 PDF-checklists</li><li>6 creative-richtingen</li><li>Leadformvragen</li><li>CSV-veldstructuur</li><li>Nurture-opzet</li></ul></div><div class="panel"><h3>Nog controleren</h3><ul><li>Make mapping met testlead</li><li>CRM-weergave checklistlead</li><li>Privacy/marketingtoestemming voor nurture</li><li>Definitieve checklistvariant voor eerste test</li></ul></div><div class="panel"><h3>Pas na akkoord wijzigen</h3><ul><li>Meta-budget</li><li>Campagnestructuur/livezetten</li><li>Doelgroep/regio</li><li>Bestaande advertenties pauzeren of aanpassen</li></ul></div></div></div></section>
+</main>
+<footer class="footer"><div class="wrap"><span>Direct Verduurzamen • Checklistcampagne concept</span><span>Financierings- en subsidiemogelijkheden zijn afhankelijk van actuele voorwaarden.</span></div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+const pdfData={
+  a:{
+    file:"checklist-7-punten-kunststof-kozijnen.pdf",
+    label:"GRATIS CHECKLIST",
+    title:"7 dingen om te checken vóór je kunststof kozijnen laat plaatsen",
+    sub:"Een praktische keuzehulp voor woningeigenaren die zich oriënteren.",
+    intro:"Nieuwe kozijnen koop je niet ieder jaar. Daarom loont het om vóór een afspraak of offerte een paar punten goed te controleren. Niet alleen de prijs telt: productkeuze, montage, afwerking, garantie en planning bepalen samen of het eindresultaat goed voelt.",
+    sections:[
+      ["Kijk verder dan alleen de totaalprijs","Controleer of demonteren, afvoer, montage, afwerking en eventuele extra werkzaamheden in de prijs zijn opgenomen."],
+      ["Vraag welk profiel en glas worden toegepast","Vraag niet alleen naar 'kunststof kozijnen', maar naar de concrete uitvoering van profiel, glas, ventilatie en beslag."],
+      ["Beoordeel de montage net zo kritisch als het kozijn","Vraag wie monteert, hoe aansluitingen worden afgewerkt en hoe de woning tijdens het werk wordt beschermd."],
+      ["Zet garantie en service zwart op wit","Controleer waarop de garantie geldt, welke uitzonderingen bestaan en hoe service na oplevering is geregeld."],
+      ["Bespreek planning en voorbereiding vooraf","Vraag naar levertijd, montageduur, bereikbaarheid en wat je vooraf zelf moet doen."],
+      ["Controleer subsidie en financiering op actualiteit","Regelingen en voorwaarden kunnen wijzigen. Laat daarom altijd controleren wat op het moment van aanvragen werkelijk geldt."],
+      ["Vraag om bewijs dat past bij jouw woning","Projectfoto's, reviews en vergelijkbare woningen helpen om vakmanschap en aanpak te beoordelen."]
+    ],
+    checks:["Offertes zijn inhoudelijk vergelijkbaar","Productkeuze en glas zijn duidelijk","Montage en afwerking zijn concreet beschreven","Garantie en service zijn helder","Planning en voorbereiding zijn besproken","Subsidie/financiering zijn actueel gecontroleerd","Je hebt vertrouwen in het bedrijf en de uitvoering"]
+  },
+  b:{
+    file:"checklist-offertes-kozijnen-vergelijken.pdf",
+    label:"OFFERTECHECK",
+    title:"11 punten om offertes voor kunststof kozijnen eerlijk te vergelijken",
+    sub:"Voorkom appels met peren vergelijken: controleer wat er achter de totaalprijs zit.",
+    intro:"Twee offertes met verschillende totaalprijzen lijken makkelijk te vergelijken, maar vaak zitten er inhoudelijke verschillen achter. Loop daarom eerst de inhoud langs en kijk pas daarna naar het totaalbedrag.",
+    sections:[
+      ["Profiel en systeem","Controleer of beide offertes hetzelfde type product en vergelijkbare profielen beschrijven."],
+      ["Glas en isolatie","Vergelijk glastype, samenstelling en eventuele ventilatievoorzieningen."],
+      ["Beslag en veiligheid","Vraag welke scharnieren, sloten en veiligheidsvoorzieningen zijn opgenomen."],
+      ["Demonteren en afvoeren","Controleer of verwijderen van bestaande kozijnen, glas en afval volledig in de prijs zit."],
+      ["Montage","Laat beschrijven hoe de kozijnen worden gesteld, bevestigd en aangesloten."],
+      ["Binnenafwerking","Denk aan dagkanten, vensterbanken, aftimmering en herstelwerk."],
+      ["Buitenafwerking","Controleer kitwerk, aansluitprofielen en afwerking rondom gevel of metselwerk."],
+      ["Planning","Vergelijk levertijd, startmoment, montageduur en afspraken bij uitloop."],
+      ["Garantie en service","Bekijk garantieduur, dekking, uitzonderingen en serviceprocedure."],
+      ["Subsidie en financiering","Laat actuele mogelijkheden apart toelichten en controleer de voorwaarden."],
+      ["Totaal en betaling","Controleer btw, meerwerk, betaalmomenten en mogelijke stelposten."]
+    ],
+    checks:["Producten en glas zijn gelijkwaardig","Montage en afwerking zijn inhoudelijk vergelijkbaar","Demontage en afvoer zitten in beide offertes","Garantie en service zijn duidelijk","Planning is realistisch","Subsidie/financiering zijn actueel en apart toegelicht","Totaalprijs bevat geen onduidelijke posten"]
+  },
+  c:{
+    file:"checklist-betrouwbaar-kozijnbedrijf-kiezen.pdf",
+    label:"KEUZEHULP",
+    title:"7 signalen van een betrouwbaar kozijnbedrijf",
+    sub:"Waar let je op vóór je een afspraak of offerte bevestigt?",
+    intro:"Een website of advertentie kan er professioneel uitzien, maar betrouwbaarheid zie je vooral terug in transparantie, voorbereiding, montage, communicatie en service.",
+    sections:[
+      ["Het bedrijf wil eerst jouw situatie begrijpen","Een betrouwbare partij stelt vragen over de woning, huidige kozijnen, wensen en planning voordat er een oplossing wordt gepresenteerd."],
+      ["De offerte is transparant en uitlegbaar","Producten, werkzaamheden, afwerking en voorwaarden zijn concreet beschreven."],
+      ["De montageorganisatie is duidelijk","Je weet wie monteert, wie aanspreekpunt is en hoe kwaliteit wordt bewaakt."],
+      ["Garantie wordt inhoudelijk uitgelegd","Niet alleen een aantal jaren noemen, maar uitleggen waarop garantie geldt en hoe service werkt."],
+      ["Projecten en ervaringen zijn controleerbaar","Er zijn echte voorbeelden, projectfoto's en reviews beschikbaar."],
+      ["Financiële informatie is zorgvuldig","Subsidie en financiering worden uitgelegd met voorwaarden en actuele controle, niet als garantie."],
+      ["Ook na akkoord is het proces helder","Je weet wat er gebeurt tussen inmeten, bestellen, plannen, montage, oplevering en service."]
+    ],
+    checks:["Mijn situatie is eerst goed besproken","De offerte is concreet en transparant","Montage en aanspreekpunt zijn duidelijk","Garantie en service zijn uitgelegd","Er is controleerbaar bewijs van werk","Financiële informatie is genuanceerd","Het proces na akkoord is duidelijk"]
+  }
+};
+
+function addBrand(doc,pageNo){
+  doc.setFillColor(27,41,74); doc.rect(0,0,210,17,"F");
+  doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.text("Direct Verduurzamen",17,11);
+  doc.setFillColor(132,186,138); doc.circle(192,8.5,3,"F");
+  doc.setTextColor(95,105,123); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.text(String(pageNo),193,287,{align:"right"});
+}
+function addWrapped(doc,text,x,y,w,size=11,style="normal",color=[23,32,51],line=5.5){
+  doc.setTextColor(...color); doc.setFont("helvetica",style); doc.setFontSize(size);
+  const lines=doc.splitTextToSize(text,w); doc.text(lines,x,y);
+  return y+lines.length*line;
+}
+function addFooterBox(doc){
+  doc.setFillColor(27,41,74); doc.roundedRect(18,226,174,45,2,2,"F");
+  addWrapped(doc,"Benieuwd wat er bij jouw woning mogelijk is?",26,242,67,16,"bold",[255,255,255],7);
+  addWrapped(doc,"Direct Verduurzamen helpt je vrijblijvend met advies. Subsidie- en financieringsmogelijkheden zijn afhankelijk van actuele voorwaarden.",105,239,76,9.5,"normal",[255,255,255],4.5);
+}
+function makePdf(key,openOnly){
+  const {jsPDF}=window.jspdf||{};
+  if(!jsPDF){ alert("De PDF-module kon niet laden. Probeer de pagina opnieuw."); return; }
+  const d=pdfData[key],doc=new jsPDF({unit:"mm",format:"a4"});
+  let page=1; addBrand(doc,page);
+  doc.setFillColor(27,41,74); doc.roundedRect(18,42,174,144,2,2,"F");
+  addWrapped(doc,d.label,32,69,140,10,"bold",[82,151,97],5);
+  addWrapped(doc,d.title,32,88,145,25,"bold",[255,255,255],10);
+  addWrapped(doc,d.sub,32,142,143,12,"normal",[235,241,247],6);
+  doc.setFillColor(242,247,243);doc.roundedRect(18,198,174,28,1,1,"F");
+  addWrapped(doc,"Geen aanbetaling • eigen montage & fabricage • 20 jaar garantie op kunststof kozijnen",26,211,155,10,"bold",[27,41,74],5);
+
+  doc.addPage(); page++; addBrand(doc,page);
+  addWrapped(doc,"Waarom deze checklist?",18,35,174,21,"bold",[27,41,74],8);
+  addWrapped(doc,d.intro,18,53,174,11,"normal",[23,32,51],6);
+  doc.setFillColor(242,247,243);doc.roundedRect(18,93,174,39,2,2,"F");
+  addWrapped(doc,"Gebruik deze checklist als gesprekshulp. Een goede aanbieder kan concreet uitleggen wat is inbegrepen, hoe de montage wordt uitgevoerd en welke voorwaarden gelden.",26,106,158,10.5,"normal",[23,32,51],5.5);
+
+  let i=0;
+  while(i<d.sections.length){
+    doc.addPage(); page++; addBrand(doc,page);
+    addWrapped(doc,"Aandachtspunten",18,35,174,21,"bold",[27,41,74],8);
+    let y=53;
+    for(let n=0;n<3 && i<d.sections.length;n++,i++){
+      const s=d.sections[i];
+      doc.setTextColor(61,128,80);doc.setFont("helvetica","bold");doc.setFontSize(18);doc.text(String(i+1).padStart(2,"0"),18,y);
+      y=addWrapped(doc,s[0],36,y,148,13.5,"bold",[27,41,74],6.3);
+      y=addWrapped(doc,s[1],36,y+2,148,10.5,"normal",[23,32,51],5.4)+7;
+      doc.setDrawColor(217,229,220);doc.line(36,y-2,192,y-2);
+    }
+  }
+
+  doc.addPage(); page++; addBrand(doc,page);
+  addWrapped(doc,key==="b"?"Offertevergelijking in 1 minuut":key==="c"?"Betrouwbaarheid in 1 minuut":"Jouw snelle eindcheck",18,35,174,21,"bold",[27,41,74],8);
+  let y=53;
+  d.checks.forEach(c=>{
+    doc.setFillColor(242,247,243);doc.setDrawColor(217,229,220);doc.rect(28,y-7,164,12,"FD");
+    doc.setTextColor(27,41,74);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("[ ]",31,y);
+    addWrapped(doc,c,43,y,142,10.5,"normal",[23,32,51],5);
+    y+=12;
+  });
+  addWrapped(doc,"Ruimte voor je eigen notities",18,y+14,174,13.5,"bold",[27,41,74],6);
+  doc.setDrawColor(217,229,220); for(let n=0;n<3;n++)doc.rect(24,y+22+n*13,168,13);
+  addFooterBox(doc);
+
+  if(openOnly){
+    const url=doc.output("bloburl"); window.open(url,"_blank","noopener");
+  }else{
+    doc.save(d.file);
+  }
+}
+</script>
+
+</body></html>
