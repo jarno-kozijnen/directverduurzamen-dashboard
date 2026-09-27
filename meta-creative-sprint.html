@@ -34,9 +34,23 @@ a{color:inherit}button,input{font:inherit}
 .checklist{display:grid;gap:7px}.check{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px}.check input{accent-color:var(--green);width:17px;height:17px;margin-top:1px}.check label{font-size:12.5px;cursor:pointer}.check.done{opacity:.64;background:#f3f8f3}.progress{height:8px;background:#e4ebe5;border-radius:999px;overflow:hidden;margin:12px 0}.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--green),var(--green2));transition:.2s}.progressmeta{font-size:11px;color:var(--muted)}
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#fff}table{width:100%;border-collapse:collapse;min-width:840px}th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #edf0ee;font-size:11.5px}th{background:#f7f9f8;color:var(--navy);font-size:10px;text-transform:uppercase;letter-spacing:.06em}td:first-child{font-weight:800;color:var(--navy)}tr:last-child td{border:0}.tiny{font-size:10px;color:var(--muted)}
 .notice{border-radius:14px;padding:14px 15px;font-size:12px}.notice.warn{background:var(--warn);border:1px solid var(--warnline)}.notice.green{background:var(--soft);border:1px solid #cfe2cd}.notice strong{color:var(--navy)}
+.preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ad-preview{background:#111827;border-radius:18px;overflow:hidden;position:relative;aspect-ratio:4/5;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.05)}
+.ad-preview:before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(9,17,31,.88),rgba(9,17,31,.08) 62%),linear-gradient(135deg,#38526f,#6b806e);opacity:.96}
+.ad-preview .scene{position:absolute;inset:18px 18px auto;z-index:1;color:#d6dde7;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.ad-preview .scene span{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);padding:6px 8px;border-radius:999px}
+.ad-preview .framecopy{position:absolute;z-index:2;left:18px;right:18px;bottom:20px;color:white}
+.ad-preview .framecopy small{display:block;color:#c7d3df;font-size:10px;margin-bottom:7px}
+.ad-preview .framecopy strong{display:block;font-size:24px;line-height:1.03;letter-spacing:-.03em}
+.ad-preview .framecopy em{display:inline-block;margin-top:10px;background:var(--green);color:#fff;font-style:normal;font-weight:900;font-size:10px;padding:7px 9px;border-radius:8px}
+.ad-preview .accent{color:#a7d19f}
+.launch-board{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.launch-primary{background:linear-gradient(135deg,#172744,#22385f);color:#fff;border-radius:18px;padding:22px}
+.launch-primary h3{margin:0 0 8px}.launch-primary p{margin:0;color:#dbe3ed;font-size:13px}
+.launch-secondary{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
 .footer{padding:25px 0 8px;color:var(--muted);font-size:11px;text-align:center}
-@media(max-width:900px){.shell{padding:16px}.topbar .inner{padding:11px 16px}.hero{padding:24px}.hero h1{font-size:31px}.hero-grid,.grid4,.grid3,.grid2,.calc{grid-template-columns:1fr 1fr}.nav{display:none}}
-@media(max-width:620px){.hero-grid,.grid4,.grid3,.grid2,.calc{grid-template-columns:1fr}.hero h1{font-size:27px}.section-head{align-items:flex-start;flex-direction:column}.creative-head{flex-direction:column}.shell{padding:12px}.hero{border-radius:18px}}
+@media(max-width:900px){.preview-grid{grid-template-columns:1fr 1fr}.launch-board{grid-template-columns:1fr}.shell{padding:16px}.topbar .inner{padding:11px 16px}.hero{padding:24px}.hero h1{font-size:31px}.hero-grid,.grid4,.grid3,.grid2,.calc{grid-template-columns:1fr 1fr}.nav{display:none}}
+@media(max-width:620px){.preview-grid{grid-template-columns:1fr}.hero-grid,.grid4,.grid3,.grid2,.calc{grid-template-columns:1fr}.hero h1{font-size:27px}.section-head{align-items:flex-start;flex-direction:column}.creative-head{flex-direction:column}.shell{padding:12px}.hero{border-radius:18px}}
 </style>
 </head>
 <body>
@@ -52,10 +66,10 @@ a{color:inherit}button,input{font:inherit}
 <main class="shell">
 <section class="hero">
   <div class="eyebrow">Meta Ads creative sprint · 27 september 2026</div>
-  <h1>4 nieuwe motion creatives, zonder de winnende structuur open te breken</h1>
-  <p>Plan voor twee financiële en twee onderhoudshoeken op basis van bestaand montage-b-roll. De bestaande broad adset blijft intact. V6 en V7 blijven vrij meedraaien; nieuwe ads krijgen gecontroleerd genoeg spend om echt beoordeeld te kunnen worden.</p>
+  <h1>4 creatives klaarzetten, maar slechts 2 tegelijk live testen</h1>
+  <p>Plan voor twee financiële en twee onderhoudshoeken op basis van bestaand montage-b-roll. We produceren alle vier, maar activeren eerst alleen V10 en V12. Zo blijft de bestaande broad adset rustig en krijgen de twee nieuwe invalshoeken gecontroleerd genoeg spend om echt beoordeeld te kunnen worden.</p>
   <div class="hero-grid">
-    <div class="hero-stat"><b>4</b><span>nieuwe motion ads</span></div>
+    <div class="hero-stat"><b>4 gemaakt</b><span>2 tegelijk live</span></div>
     <div class="hero-stat"><b>5–7 sec</b><span>b-roll + tekstfade</span></div>
     <div class="hero-stat"><b>5%</b><span>minimale spend per test-ad</span></div>
     <div class="hero-stat"><b>1 adset</b><span>BROAD_NOORD_MIDDEN_VIDEO_TEST_AUG_2026</span></div>
@@ -89,6 +103,20 @@ a{color:inherit}button,input{font:inherit}
   <div class="notice warn" style="margin-top:12px"><strong>*27 september is gedeeltelijk.</strong> In de periode 24–27 september gaat circa 68% van de spend naar V7 en circa 30% naar V6. De rest van de actieve set krijgt vrijwel geen delivery. Dat is precies waarom een gecontroleerde 5%-minimumspend op geselecteerde nieuwe creatives nuttig kan zijn.</div>
 </section>
 
+<section class="section" id="besluitnu">
+  <div class="section-head"><div><h2>Wat er vanavond daadwerkelijk live gaat</h2><p>Dit is de productie- en publicatiebeslissing na de laatste kwaliteitscheck.</p></div><span class="pill">Definitieve fase 1</span></div>
+  <div class="launch-board">
+    <div class="launch-primary">
+      <h3>Live: V10 Financieel + V12 Onderhoud</h3>
+      <p>Beide in de bestaande broad adset, beide 5% minimumspend. Bij €150 dagbudget is dat €7,50 per ad per dag. V6 en V7 blijven ongewijzigd als vrije benchmark.</p>
+    </div>
+    <div class="launch-secondary">
+      <h3>Wel maken, nog niet live</h3>
+      <p>V11 Financieel en V13 Onderhoud volledig exporteren en klaarzetten. Pas activeren zodra V10/V12 ongeveer €35–€50 spend per creative hebben of er eerder een duidelijke conclusie ligt.</p>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="strategie">
   <div class="section-head"><div><h2>Waarom deze test nu</h2><p>De advertentiekant trekt nog verkeer; de grootste terugval zit sinds half september in klik → lead.</p></div><span class="pill">Structuur stabiel houden</span></div>
   <div class="grid4">
@@ -109,8 +137,19 @@ a{color:inherit}button,input{font:inherit}
   </div>
 </section>
 
+<section class="section" id="mockups">
+  <div class="section-head"><div><h2>Visuele richting per creative</h2><p>Wireframes voor de compositie. Gebruik echte DV-b-roll; dit is de plaatsing en informatiedichtheid, niet het uiteindelijke beeld.</p></div><span class="pill">1 boodschap per frame</span></div>
+  <div class="preview-grid">
+    <div class="ad-preview"><div class="scene"><span>Breed montageshot</span></div><div class="framecopy"><small>0–2 sec</small><strong>Kunststof kozijnen<br><span class="accent">vanaf €30 p/m?</span></strong><em>Bekijk wat mogelijk is</em></div></div>
+    <div class="ad-preview"><div class="scene"><span>Close-up plaatsing</span></div><div class="framecopy"><small>0–2 sec</small><strong>Liever niet alles<br><span class="accent">in één keer betalen?</span></strong><em>Bekijk jouw mogelijkheden</em></div></div>
+    <div class="ad-preview"><div class="scene"><span>Nieuw kozijn / detail</span></div><div class="framecopy"><small>0–2 sec</small><strong>Nooit meer<br><span class="accent">schilderen?</span></strong><em>Gratis advies</em></div></div>
+    <div class="ad-preview"><div class="scene"><span>Afwerking door monteur</span></div><div class="framecopy"><small>0–2 sec</small><strong>Steeds weer je kozijnen<br><span class="accent">schilderen?</span></strong><em>20 jaar garantie</em></div></div>
+  </div>
+  <div class="notice warn" style="margin-top:12px"><strong>Financiële claim-check:</strong> gebruik “vanaf €30 p/m?” alleen wanneer de actuele financieringsvoorwaarden en rekenvoorbeelden dit op het moment van publicatie ondersteunen. De advertentie moet daarnaast duidelijk maken dat het uiteindelijke maandbedrag afhangt van bedrag, looptijd, rente en beoordeling.</div>
+</section>
+
 <section class="section" id="creatives">
-  <div class="section-head"><div><h2>De 4 creatives</h2><p>Zelfde editritme, andere invalshoek. Echt montagebeeld, direct beweging in de eerste seconde.</p></div><span class="pill">4:5 basis · 9:16 extra export</span></div>
+  <div class="section-head"><div><h2>De 4 creatives</h2><p>Zelfde editritme, andere invalshoek. Echt montagebeeld, direct beweging in de eerste seconde.</p></div><span class="pill">9:16 master · 4:5 feed export</span></div>
   <div class="grid2">
 
     <article class="card creative">
@@ -189,7 +228,7 @@ a{color:inherit}button,input{font:inherit}
     <div class="card"><h3>V12 · nooit meer schilderen</h3><p><strong>Shot:</strong> close-up van nieuw kozijn/profiel of schoon eindresultaat.<br><br><strong>Tekst:</strong> “Nooit meer schilderen?” → “Onderhoudsarme kunststof kozijnen” → “Gratis advies”.</p></div>
     <div class="card"><h3>V13 · schilderirritatie</h3><p><strong>Shot:</strong> afwerking/detailwerk door monteur, liefst zichtbaar kit/controle/afwerking.<br><br><strong>Tekst:</strong> “Steeds weer je kozijnen schilderen?” → “Met kunststof is dat verleden tijd” → “20 jaar garantie”.</p></div>
   </div>
-  <div class="notice green" style="margin-top:12px"><strong>Designregel:</strong> full-screen echt b-roll, subtiele donkere gradient achter tekst, grote witte headline, maximaal één groen accentwoord, klein logo en pas op het eind een CTA. Geen stapel iconen of badges over de video.</div>
+  <div class="notice green" style="margin-top:12px"><strong>Designregel:</strong> full-screen echt b-roll, subtiele donkere gradient achter tekst, grote witte headline, maximaal één groen accentwoord, klein logo en pas op het eind een CTA. Geen stapel iconen of badges over de video. Gebruik per creative een duidelijk ander openingsshot, anders test je vooral copy in plaats van creative.</div>
 </section>
 
 <section class="section" id="spend">
@@ -203,10 +242,10 @@ a{color:inherit}button,input{font:inherit}
       <button class="quick" data-v="125">€125</button><button class="quick" data-v="150">€150</button><button class="quick" data-v="175">€175</button>
     </div>
     <div class="calc">
-      <div class="cell"><b id="five">€8,75</b><span>5% per creative / dag</span></div>
-      <div class="cell"><b id="two">€17,50</b><span>2 creatives tegelijk · 10%</span></div>
-      <div class="cell"><b id="three">€26,25</b><span>3 creatives tegelijk · 15%</span></div>
-      <div class="cell"><b id="four">€35,00</b><span>4 creatives tegelijk · 20%</span></div>
+      <div class="cell"><b id="five">€7,50</b><span>5% per creative / dag</span></div>
+      <div class="cell"><b id="two">€15,00</b><span>2 creatives tegelijk · 10%</span></div>
+      <div class="cell"><b id="three">€22,50</b><span>3 creatives tegelijk · 15%</span></div>
+      <div class="cell"><b id="four">€30,00</b><span>4 creatives tegelijk · 20%</span></div>
     </div>
   </div>
   <div class="grid2" style="margin-top:14px">
@@ -226,12 +265,12 @@ a{color:inherit}button,input{font:inherit}
   <div class="section-head"><div><h2>Stappenplan livegang</h2><p>Zo blijft de test schoon en vergelijkbaar.</p></div></div>
   <div class="steps">
     <div class="step"><strong>1. Maak 4 motion ads uit bestaand montage-b-roll</strong><span>5–7 seconden. Eén duidelijk shot per creative. Direct beweging vanaf frame 1. Geen lang logo-intro.</span></div>
-    <div class="step"><strong>2. Exporteer minimaal 4:5, liefst ook 9:16</strong><span>Kerntekst binnen het veilige vierkante middenvlak. Tekst groot genoeg voor mobiel.</span></div>
+    <div class="step"><strong>2. Exporteer 9:16 als master en daarnaast 4:5 voor feed</strong><span>Kerntekst binnen het veilige vierkante middenvlak, zodat dezelfde compositie ook in 4:5 werkt. Tekst groot genoeg voor mobiel.</span></div>
     <div class="step"><strong>3. Dupliceer een technisch correcte bestaande ad</strong><span>Behoud hetzelfde leadformulier, tracking, CTA-opzet en adset. Verander alleen beeld + copy.</span></div>
-    <div class="step"><strong>4. Plaats alle 4 in BROAD_NOORD_MIDDEN_VIDEO_TEST_AUG_2026</strong><span>Geen nieuwe adset. Geen doelgroepwijziging. V6/V7 blijven actief.</span></div>
+    <div class="step"><strong>4. Plaats V10 + V12 live in BROAD_NOORD_MIDDEN_VIDEO_TEST_AUG_2026</strong><span>V11 + V13 worden wel volledig gebouwd, maar blijven klaarstaan voor fase 2. Geen nieuwe adset. Geen doelgroepwijziging. V6/V7 blijven actief.</span></div>
     <div class="step"><strong>5. Geef alleen V10 en V12 in fase 1 elk 5% minimale spend</strong><span>Zo test je tegelijk één financiële en één onderhoudshoek zonder te veel budget te forceren.</span></div>
     <div class="step"><strong>6. Eerste inhoudelijke beoordeling pas na voldoende spend</strong><span>Niet op een vaste 72 uur beoordelen. Richtpunt: circa €35–€50 spend per gepushte creative, naast link CTR, linkklikken, leads, CPL en vooral geldige leads/afspraken.</span></div>
-    <div class="step"><strong>7. Roteer daarna naar V11 en V13</strong><span>Als V10/V12 genoeg delivery hebben gehad, min-spend loslaten en de tweede twee creatives dezelfde kans geven.</span></div>
+    <div class="step"><strong>7. Roteer daarna naar V11 en V13</strong><span>Als V10/V12 genoeg delivery hebben gehad, min-spend loslaten en V11/V13 activeren met dezelfde gecontroleerde kans.</span></div>
     <div class="step"><strong>8. Nieuwe video-opnames volgende week worden de echte volgende refresh</strong><span>Deze 4 ads zijn een gecontroleerde brugtest; geen reden om de bestaande structuur nu opnieuw op te bouwen.</span></div>
   </div>
 </section>
@@ -244,8 +283,8 @@ a{color:inherit}button,input{font:inherit}
     <div class="check"><input type="checkbox" id="c2"><label for="c2">Video is 5–7 seconden, zonder lange intro of overmatige branding.</label></div>
     <div class="check"><input type="checkbox" id="c3"><label for="c3">Hook is binnen maximaal 1 seconde leesbaar.</label></div>
     <div class="check"><input type="checkbox" id="c4"><label for="c4">Tekst is mobiel leesbaar en blijft binnen safe zones.</label></div>
-    <div class="check"><input type="checkbox" id="c5"><label for="c5">4:5 feedversie geëxporteerd.</label></div>
-    <div class="check"><input type="checkbox" id="c6"><label for="c6">9:16 variant geëxporteerd indien zonder extra productiewerk mogelijk.</label></div>
+    <div class="check"><input type="checkbox" id="c5"><label for="c5">9:16 masterversie geëxporteerd.</label></div>
+    <div class="check"><input type="checkbox" id="c6"><label for="c6">4:5 feedvariant uit dezelfde master geëxporteerd.</label></div>
     <div class="check"><input type="checkbox" id="c7"><label for="c7">Primaire tekst, kop, beschrijving en CTA correct ingevuld.</label></div>
     <div class="check"><input type="checkbox" id="c8"><label for="c8">Financiële tekst bevat geen absolute belofte; maandbedrag is als mogelijkheid geformuleerd.</label></div>
     <div class="check"><input type="checkbox" id="c9"><label for="c9">Juiste Instant Form / leadformulier geselecteerd.</label></div>
@@ -290,7 +329,7 @@ a{color:inherit}button,input{font:inherit}
   <div class="section-head"><div><h2>Definitief advies voor livegang</h2><p>Kritische eindcheck vanuit performance, design en klantbeleving.</p></div></div>
   <div class="grid3">
     <div class="card"><h3>Nu live houden</h3><p>Campagne + broad adset ongewijzigd. Dagbudget €150. V6 en V7 niet bewerken. Alle bestaande low-spend ads mogen blijven staan zolang ze geen relevante spend wegtrekken.</p></div>
-    <div class="card"><h3>Nu toevoegen</h3><p>Alle 4 nieuwe motion ads in dezelfde adset. Start 5% minimumspend alleen op V10 en V12. Dat is €7,50 per ad per dag en dus €15 van de €150 totaal.</p></div>
+    <div class="card"><h3>Nu toevoegen</h3><p>Bouw alle 4, maar zet in fase 1 alleen V10 en V12 live in dezelfde adset. Start op beide 5% minimumspend. Dat is €7,50 per ad per dag en dus €15 van de €150 totaal.</p></div>
     <div class="card"><h3>Wanneer beslissen</h3><p>Niet na exact 72 uur. Beoordeel V10/V12 rond €35–€50 spend per creative, plus klikdata en CRM-kwaliteit. Daarna minimumspend roteren naar V11/V13.</p></div>
   </div>
 </section>
