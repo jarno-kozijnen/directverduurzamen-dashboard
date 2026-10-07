@@ -10,16 +10,19 @@
 <iframe id="client" src="/index.html" title="Maandrapportage Direct Verduurzamen"></iframe>
 <script>
 const ORGANIC_HISTORY=[
-  {key:'2026-01',label:'Januari',clicks:1030,leads:4},
-  {key:'2026-02',label:'Februari',clicks:880,leads:3},
-  {key:'2026-03',label:'Maart',clicks:902,leads:7},
-  {key:'2026-04',label:'April',clicks:881,leads:6},
+  {key:'2025-10',label:'Oktober',clicks:605,leads:20},
+  {key:'2025-11',label:'November',clicks:880,leads:5},
+  {key:'2025-12',label:'December',clicks:809,leads:1},
+  {key:'2026-01',label:'Januari',clicks:1006,leads:4},
+  {key:'2026-02',label:'Februari',clicks:879,leads:3},
+  {key:'2026-03',label:'Maart',clicks:901,leads:7},
+  {key:'2026-04',label:'April',clicks:872,leads:6},
   {key:'2026-05',label:'Mei',clicks:1171,leads:13},
   {key:'2026-06',label:'Juni',clicks:1407,leads:14},
   {key:'2026-07',label:'Juli',clicks:1847,leads:9},
   {key:'2026-08',label:'Augustus',clicks:1824,leads:8},
-  {key:'2026-09',label:'September',clicks:2383,leads:null,leadNote:'Volledige GA4-maand niet beschikbaar; 6 gemeten t/m 13 september'}
-];
+  {key:'2026-09',label:'September',clicks:2383,leads:10,leadNote:'+25,0% t.o.v. augustus · GA4 Organic Search → /succes/'}
+]
 
 const AUGUST_BLOGS=[
   {id:'N01',title:'Wat kost een kunststof schuifpui inclusief montage?',url:'https://directverduurzamen.nl/kunststof-schuifpui-kosten/'},
@@ -83,6 +86,21 @@ const AUGUST_FACEBOOK_POSTS=[
   {id:'FB11',date:'31 aug',title:'Condens aan de buitenkant van je raam?',impressions:71,reach:41,engagements:2,clicks:0,shares:1,url:'https://www.facebook.com/1063030576672402/posts/1097717356537057'}
 ];
 
+const SEPTEMBER_FACEBOOK_POSTS=[
+  {date:'30 sep',title:'Wat is het verschil tussen een vast raam of draaikiepraam',impressions:75,reach:48,clicks:0,reactions:1,shares:0,interactions:1,url:'https://facebook.com/623900593918738/posts/1124992090476250'},
+  {date:'28 sep',title:'Project in Almelo',impressions:143,reach:79,clicks:11,reactions:1,shares:0,interactions:12,url:'https://facebook.com/623900593918738/posts/1122988154009977'},
+  {date:'25 sep',title:'Check je kozijnen voor de winter',impressions:93,reach:58,clicks:0,reactions:1,shares:0,interactions:1,url:'https://facebook.com/623900593918738/posts/1119985507643575'},
+  {date:'23 sep',title:'Welke kleur kunststof kozijnen past het beste bij jouw woning?',impressions:125,reach:72,clicks:1,reactions:1,shares:0,interactions:2,url:'https://facebook.com/623900593918738/posts/1118047697837356'},
+  {date:'21 sep',title:'Project in Rotterdam',impressions:135,reach:81,clicks:5,reactions:0,shares:0,interactions:5,url:'https://facebook.com/623900593918738/posts/1116278188014307'},
+  {date:'18 sep',title:'Klaar voor de koudere maanden?',impressions:213,reach:132,clicks:0,reactions:1,shares:2,interactions:3,url:'https://facebook.com/623900593918738/posts/1113597804949012'},
+  {date:'14 sep',title:'Project in Drachten',impressions:140,reach:93,clicks:1,reactions:0,shares:0,interactions:1,url:'https://facebook.com/623900593918738/posts/1110064215302371'},
+  {date:'11 sep',title:'Voelt het ’s avonds kouder bij het raam?',impressions:128,reach:90,clicks:0,reactions:0,shares:0,interactions:0,url:'https://facebook.com/623900593918738/posts/1107437792231680'},
+  {date:'9 sep',title:'September is een goed moment om je kozijnen extra goed te bekijken',impressions:167,reach:101,clicks:0,reactions:2,shares:0,interactions:2,url:'https://facebook.com/623900593918738/posts/1105634445745348'},
+  {date:'7 sep',title:'Vacature: inmeter / servicemonteur / meewerkend voorman',impressions:1320,reach:660,clicks:23,reactions:5,shares:6,interactions:34,vacancy:true,url:'https://facebook.com/623900593918738/posts/1104144535894339'},
+  {date:'4 sep',title:'Project in Deventer',impressions:206,reach:120,clicks:1,reactions:0,shares:0,interactions:1,url:'https://facebook.com/623900593918738/posts/1101192099522916'},
+  {date:'2 sep',title:'Nieuwe kozijnen zijn een investering waar je jarenlang op wilt kunnen vertrouwen',impressions:184,reach:115,clicks:3,reactions:2,shares:0,interactions:5,url:'https://facebook.com/623900593918738/posts/1099440656364727'}
+];
+
 const DAILY_AUG=[
   {label:'6 aug',spend:138.22,leads:5,cpl:27.64},{label:'7 aug',spend:94.93,leads:6,cpl:15.82},{label:'8 aug',spend:91.33,leads:1,cpl:91.33},{label:'9 aug',spend:85.98,leads:0,cpl:null},{label:'10 aug',spend:127.31,leads:6,cpl:21.22},{label:'11 aug',spend:102.66,leads:1,cpl:102.66},{label:'12 aug',spend:142.28,leads:2,cpl:71.14},{label:'13 aug',spend:94.21,leads:4,cpl:23.55},{label:'14 aug',spend:157.70,leads:3,cpl:52.57},{label:'15 aug',spend:110.69,leads:3,cpl:36.90},{label:'16 aug',spend:142.74,leads:5,cpl:28.55},{label:'17 aug',spend:174.35,leads:9,cpl:19.37},{label:'18 aug',spend:180.57,leads:5,cpl:36.11},{label:'19 aug',spend:123.88,leads:4,cpl:30.97},{label:'20 aug',spend:97.54,leads:4,cpl:24.39},{label:'21 aug',spend:116.10,leads:8,cpl:14.51},{label:'22 aug',spend:111.85,leads:3,cpl:37.28},{label:'23 aug',spend:142.06,leads:3,cpl:47.35},{label:'24 aug',spend:151.74,leads:5,cpl:30.35},{label:'25 aug',spend:158.00,leads:6,cpl:26.33},{label:'26 aug',spend:125.35,leads:4,cpl:31.34},{label:'27 aug',spend:141.33,leads:3,cpl:47.11},{label:'28 aug',spend:140.77,leads:4,cpl:35.19},{label:'29 aug',spend:136.08,leads:3,cpl:45.36},{label:'30 aug',spend:197.27,leads:1,cpl:197.27},{label:'31 aug',spend:173.92,leads:6,cpl:28.99}
 ];
@@ -120,7 +138,7 @@ function patchOrganicHistory(){
   const hasLeads=selected.leads!=null;
   const leadNote=selected.leadNote||(hasLeads?`${selected.leads} unieke organische gebruikers op /succes/`:'Volledige GA4-maand niet beschikbaar');
   setText(doc,'overviewOrganicLeads',hasLeads?String(selected.leads):'—');
-  setText(doc,'overviewOrganicLeadsNote',hasLeads?'GA4 · Organic Search → /succes/':leadNote);
+  setText(doc,'overviewOrganicLeadsNote',leadNote);
   setText(doc,'organicLeads',hasLeads?String(selected.leads):'—');
   setText(doc,'organicLeadsNote',leadNote);
   setText(doc,'organicLeadInsightTitle','Organische leads via GA4');
@@ -159,7 +177,7 @@ function patchOrganicHistory(){
       const heading=panel?.querySelector('h3');
       const subtitle=panel?.querySelector('p');
       if(heading)heading.textContent='Ontwikkeling organische groei';
-      if(subtitle)subtitle.textContent=`${history.length} maanden · januari t/m ${selected.label.toLowerCase()} 2026 · GSC-klikken + GA4-organische leads waar beschikbaar`;
+      if(subtitle){const first=history[0];subtitle.textContent=`${history.length} maanden · ${first.label.toLowerCase()} ${first.key.slice(0,4)} t/m ${selected.label.toLowerCase()} ${selected.key.slice(0,4)} · GSC-klikken + GA4-organische leads`; }
     }
   }
   return true;
@@ -224,7 +242,8 @@ function patchSeptemberSeoWork(){
     section.className='organic-work-wrap';
     const blogRows=SEPTEMBER_BLOGS.map(blog=>`<div class="organic-blog-item"><div class="organic-blog-id">${blog.id}</div><div><strong>${blog.title}</strong></div><a href="${blog.url}" target="_blank" rel="noopener">Bekijk blog →</a></div>`).join('');
     const rewriteRows=SEPTEMBER_REWRITES.map(page=>`<div class="organic-blog-item"><div class="organic-blog-id">${page.id}</div><div><strong>${page.title}</strong></div><a href="${page.url}" target="_blank" rel="noopener">Bekijk pagina →</a></div>`).join('');
-    section.innerHTML=`<div class="section-heading"><div><h2>Actuele SEO-output september 2026</h2><p>SEO-contentbatch gepubliceerd op 12 september. Afbeeldingen, bestandsnamen, alt-teksten en visuele live-QA volgen in één aparte beeldronde.</p></div><span class="source-label">SEO planning · bijgewerkt 12 september 2026</span></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>nieuwe blogs gepubliceerd</span></div><div class="organic-work-copy"><h3>Nieuwe blogs september</h3><p>Nieuwe onderwerpen zijn vooraf gecontroleerd op bestaande content, zoekintentie, actuele SERP, commerciële waarde, interne links en kannibalisatie.</p><div class="organic-blog-grid">${blogRows}</div></div></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>bestaande pagina's herschreven</span></div><div class="organic-work-copy"><h3>Herschrijvingen september</h3><p>De acht pagina's zijn aangescherpt op GSC-signalen, zoekintentie, interne links en de route naar advies of offerte. Eerste GSC-effectmeting staat op 10 oktober 2026.</p><div class="organic-blog-grid">${rewriteRows}</div></div></div>`;
+    const socialRows=SEPTEMBER_FACEBOOK_POSTS.map(post=>`<div class="organic-blog-item"><div class="organic-blog-id">${post.date}</div><div><strong>${post.vacancy?'Vacature · ':''}${post.title}</strong><small>${post.impressions} organische impressies · ${post.reach} bereik · ${post.clicks} kliks · ${post.interactions} interacties${post.shares?' · '+post.shares+' shares':''}</small></div><a href="${post.url}" target="_blank" rel="noopener">Bekijk post →</a></div>`).join('');
+    section.innerHTML=`<div class="section-heading"><div><h2>Organische werkzaamheden september 2026</h2><p>SEO-output en Facebook Organic zijn volledig verwerkt voor september. De Facebook-cijfers komen uit de gekoppelde Direct Verduurzamen-pagina in Metricool.</p></div><span class="source-label">SEO planning + Facebook Organic · september 2026</span></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>nieuwe blogs gepubliceerd</span></div><div class="organic-work-copy"><h3>Nieuwe blogs september</h3><p>Nieuwe onderwerpen zijn vooraf gecontroleerd op bestaande content, zoekintentie, actuele SERP, commerciële waarde, interne links en kannibalisatie.</p><div class="organic-blog-grid">${blogRows}</div></div></div><div class="organic-work-summary"><div class="organic-work-score"><strong>8/8</strong><span>bestaande pagina's herschreven</span></div><div class="organic-work-copy"><h3>Herschrijvingen september</h3><p>De acht pagina's zijn aangescherpt op GSC-signalen, zoekintentie, interne links en de route naar advies of offerte. Eerste GSC-effectmeting staat op 10 oktober 2026.</p><div class="organic-blog-grid">${rewriteRows}</div></div></div><div class="organic-work-summary"><div class="organic-work-score"><strong>11 + 1</strong><span>merk/commerciële posts + vacaturepost</span></div><div class="organic-work-copy"><h3>Facebook organisch september</h3><p>Er zijn 12 posts gepubliceerd. Voor de commerciële rapportage houden we de vacaturepost apart, omdat die met 1.320 organische impressies en 660 bereik de maandtotalen sterk beïnvloedt. Inclusief vacature kwam Facebook uit op 2.929 organische impressies, 1.649 bereik en 45 postkliks.</p><div class="organic-social-metrics"><span><b>1.609</b>commerciële organische impressies</span><span><b>989</b>commercieel organisch bereik</span><span><b>22</b>commerciële postkliks</span><span><b>33</b>commerciële interacties</span></div><p>Vacaturepost 7 september apart: 1.320 organische impressies · 660 bereik · 23 kliks · 34 interacties. Interacties = kliks, reacties, shares en comments.</p><div class="organic-blog-grid">${socialRows}</div></div></div>`;
     const augustSection=doc.getElementById('organicWorkSection');
     const organicCanvas=doc.getElementById('organicTrendChart');
     if(augustSection)augustSection.insertAdjacentElement('afterend',section);
@@ -239,7 +258,7 @@ function patchSeptemberSeoWork(){
       nav.id='seoSeptemberNav';
       nav.className='nav-link';
       nav.href='#septemberSeoWorkSection';
-      nav.textContent='SEO september';
+      nav.textContent='Organisch september';
       const augNav=doc.getElementById('organicWorkNav');
       (augNav||organicNav).insertAdjacentElement('afterend',nav);
     }
