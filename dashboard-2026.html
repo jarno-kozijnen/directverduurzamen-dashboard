@@ -21,6 +21,20 @@ const DATA={
 '2026-09':{label:'September 2026',contentOnly:true,period:'1 t/m 30 september 2026',paidPeriod:'Meta Ads, GSC, GA4 en Facebook Organic · volledige maand september',lastCheck:'7 oktober 2026',meta:{spend:4602.94,leads:108,impressions:265963,clicks:3519,links:2476,ctr:1.32,cpc:1.31,cpm:17.31,campaigns:[['VIDEO_TEST_NOORD_MIDDEN_AUG_2026',4454.23,260188,3375,2405,105],['RT_WEBSITE_KOZIJNEN_AUG_2026',148.71,5775,144,71,3]]},organic:{clicks:2383,impressions:225248,ctr:1.06,position:11.65,leads:10,clicksNote:'+30,6% t.o.v. augustus',impressionsNote:'+2,5% t.o.v. augustus',ctrNote:'+0,23 procentpunt t.o.v. augustus',positionNote:'1,43 posities verbeterd t.o.v. augustus',leadsNote:'+25,0% t.o.v. augustus · GA4 Organic Search → /succes/'},excludedMeta:{campaign:'VAC | Kozijnenmonteur | Almelo | Leads | 09-2026',spend:144.08,leads:5}}
 };
 const ORDER=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'];
+const ORGANIC_TREND_12M=[
+ {label:'Okt 2025',clicks:605,leads:20},
+ {label:'Nov 2025',clicks:880,leads:5},
+ {label:'Dec 2025',clicks:809,leads:1},
+ {label:'Jan 2026',clicks:1006,leads:4},
+ {label:'Feb 2026',clicks:879,leads:3},
+ {label:'Mrt 2026',clicks:901,leads:7},
+ {label:'Apr 2026',clicks:872,leads:6},
+ {label:'Mei 2026',clicks:1171,leads:13},
+ {label:'Jun 2026',clicks:1407,leads:14},
+ {label:'Jul 2026',clicks:1847,leads:9},
+ {label:'Aug 2026',clicks:1824,leads:8},
+ {label:'Sep 2026',clicks:2383,leads:10}
+];
 const DAILY_CPL_AUG=[
 {label:'6 aug',spend:138.22,leads:5,cpl:27.64},{label:'7 aug',spend:94.93,leads:6,cpl:15.82},{label:'8 aug',spend:91.33,leads:1,cpl:91.33},{label:'9 aug',spend:85.98,leads:0,cpl:null},{label:'10 aug',spend:127.31,leads:6,cpl:21.22},{label:'11 aug',spend:102.66,leads:1,cpl:102.66},{label:'12 aug',spend:142.28,leads:2,cpl:71.14},{label:'13 aug',spend:94.21,leads:4,cpl:23.55},{label:'14 aug',spend:157.70,leads:3,cpl:52.57},{label:'15 aug',spend:110.69,leads:3,cpl:36.90},{label:'16 aug',spend:142.63,leads:5,cpl:28.53},{label:'17 aug*',spend:29.86,leads:6,cpl:4.98}
 ];
@@ -111,14 +125,39 @@ function init(){
 
    const msg=d.querySelector('#monthMessage p');if(msg)msg.textContent='September is volledig verwerkt voor Meta Ads, Google Search Console en GA4. Commerciële Meta-campagnes: €4.602,94 spend, 108 leads en €42,62 CPL. De vacaturecampagne (€144,08 spend, 5 sollicitatieleads) staat apart. De leadexport bevat 114 septemberregels; na ontdubbelen blijven 109 unieke LeadID’s over en na uitsluiten van de testlead 108, exact gelijk aan Meta. GSC kwam uit op 2.383 klikken, 225.248 vertoningen, 1,06% CTR en gemiddelde positie 11,65. GA4 registreerde 10 organische leads via Organic Search → /succes/, tegenover 8 in augustus. Salesdoorstroom wordt toegevoegd zodra de nieuwe CRM uitleesbaar is.';
    metaPanel.querySelector('p').textContent='Commerciële kozijnencampagnes · volledige maand september';
-   organicPanel.querySelector('p').textContent='Google Search Console + GA4 · volledige maand september';
+   organicPanel.querySelector('h3').textContent='Organisch verkeer en leads';
+   organicPanel.querySelector('p').textContent='12 maanden · oktober 2025 t/m september 2026 · GSC-klikken + GA4-organische leads';
 
    campaigns(m);
    toggleDetailSections(key);
    dailyPanel.classList.add('hidden-month-section');
    const dailyNav=d.getElementById('dailyCplNav');if(dailyNav)dailyNav.classList.add('hidden-month-section');
    metaChart.data.labels=[r.label];metaChart.data.datasets[0].data=[m.spend];metaChart.data.datasets[1].data=[m.leads];metaChart.update();
-   organicChart.data.labels=[r.label];organicChart.data.datasets[0].data=[o.clicks];organicChart.data.datasets[1].data=[hasOrgLeads?o.leads:null];organicChart.update();
+
+   organicChart.config.type='line';
+   organicChart.data.labels=ORGANIC_TREND_12M.map(x=>x.label);
+   organicChart.data.datasets[0].label='Organische klikken (GSC)';
+   organicChart.data.datasets[0].data=ORGANIC_TREND_12M.map(x=>x.clicks);
+   organicChart.data.datasets[0].yAxisID='y';
+   organicChart.data.datasets[0].fill=false;
+   organicChart.data.datasets[0].borderColor=organicChart.data.datasets[0].backgroundColor;
+   organicChart.data.datasets[0].borderWidth=2;
+   organicChart.data.datasets[0].pointRadius=3;
+   organicChart.data.datasets[0].pointHoverRadius=5;
+   organicChart.data.datasets[1].label='Organische leads (GA4)';
+   organicChart.data.datasets[1].data=ORGANIC_TREND_12M.map(x=>x.leads);
+   organicChart.data.datasets[1].yAxisID='y1';
+   organicChart.data.datasets[1].fill=false;
+   organicChart.data.datasets[1].borderColor=organicChart.data.datasets[1].backgroundColor;
+   organicChart.data.datasets[1].borderWidth=2;
+   organicChart.data.datasets[1].pointRadius=3;
+   organicChart.data.datasets[1].pointHoverRadius=5;
+   organicChart.options.interaction={mode:'index',intersect:false};
+   organicChart.options.scales.x={grid:{display:false}};
+   organicChart.options.scales.y={beginAtZero:true,position:'left',title:{display:true,text:'Organische klikken'},grid:{color:'rgba(27,41,74,.08)'}};
+   organicChart.options.scales.y1={beginAtZero:true,position:'right',suggestedMax:20,title:{display:true,text:'Organische leads'},grid:{display:false}};
+   organicChart.options.plugins.legend={position:'bottom',labels:{boxWidth:10,usePointStyle:true}};
+   organicChart.update();
    return;
  }
  const m=r.meta,o=r.organic,p=i>0?DATA[ORDER[i-1]]:null,metaCpl=cpl(m),prevCpl=p&&p.meta?cpl(p.meta):null;set('heroTitle',r.label);set('periodContext',r.period||`1 t/m ${new Date(Number(key.slice(0,4)),Number(key.slice(5,7)),0).getDate()} ${r.label.toLowerCase()}`);set('paidPeriod',r.paidPeriod||`Volledige maand ${r.label.toLowerCase()}`);const contextStrong=d.querySelectorAll('.context-item strong');if(contextStrong[2])contextStrong[2].textContent=r.lastCheck||'4 augustus 2026';const status=d.querySelector('.hero-status strong');if(status)status.innerHTML=r.partial?'Meta Ads: actueel t/m 17 augustus<br>Organisch (GSC): actueel t/m 16 augustus<br>Organische leads (GA4): t/m 17 augustus':'Marketingresultaten: compleet<br>Uitvoering: bijgewerkt<br>Salesresultaten: volgen';const partialNote=r.partial?'Tussenstand t/m 17 augustus':null;set('overviewMetaSpend',eur(m.spend));set('overviewMetaSpendNote',partialNote||changeText(m.spend,p?.meta.spend));set('overviewMetaLeads',fmt(m.leads));set('overviewMetaLeadsNote',partialNote||changeText(m.leads,p?.meta.leads));set('overviewMetaCpl',metaCpl!=null?eur(metaCpl):'—');set('overviewMetaCplNote',changeText(metaCpl,prevCpl,true));set('metaSpend',eur(m.spend));set('metaLeads',fmt(m.leads));set('metaLeadsNote',r.partial?'Meta-leads t/m 17 augustus':key==='2026-05'?'Alleen commerciële aanvragen':'Via Meta Ads');set('metaCpl',metaCpl!=null?eur(metaCpl):'—');set('metaCplNote',changeText(metaCpl,prevCpl,true));set('metaImpressions',fmt(m.impressions));set('metaClicks',fmt(m.clicks));set('metaClicksNote',`${fmt(m.links)} linkklikken`);set('metaEfficiencyPeriod',r.partial?'Tussenstand augustus 2026':r.label);set('metaCtr',`${dec(m.ctr)}%`);set('metaCpc',eur(m.cpc));set('metaCpm',eur(m.cpm));set('funnelPeriod',r.partial?'Augustus 2026 — tussenstand':r.label);set('funnelMetaImpressions',fmt(m.impressions));set('funnelMetaClicks',fmt(m.clicks));set('funnelMetaLeads',fmt(m.leads));const msg=d.querySelector('#monthMessage p');if(msg)msg.textContent=r.partial?'Tussenstand augustus: Meta Ads t/m 17 augustus, Search Console t/m 16 augustus en organische leads uit GA4 t/m 17 augustus.':'De rapportage bevat alleen campagnes die gericht zijn op commerciële aanvragen.';metaPanel.querySelector('p').textContent=r.partial?'Tussenstand t/m 17 augustus':'Alleen de geselecteerde maand';organicPanel.querySelector('p').textContent=r.partial?'Google Search Console t/m 16 augustus · leads uit GA4 t/m 17 augustus':'Alleen de geselecteerde maand';campaigns(m);toggleDetailSections(key);renderOrganic(r,o);dailyPanel.classList.toggle('hidden-month-section',key!=='2026-08');const dailyNav=d.getElementById('dailyCplNav');if(dailyNav)dailyNav.classList.toggle('hidden-month-section',key!=='2026-08');metaChart.data.labels=[r.label];metaChart.data.datasets[0].data=[m.spend];metaChart.data.datasets[1].data=[m.leads];metaChart.update();if(key==='2026-08')dailyChart.resize()}
