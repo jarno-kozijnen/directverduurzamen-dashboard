@@ -18,7 +18,7 @@ const ORGANIC_HISTORY=[
   {key:'2026-06',label:'Juni',clicks:1407,leads:14},
   {key:'2026-07',label:'Juli',clicks:1847,leads:9},
   {key:'2026-08',label:'Augustus',clicks:1824,leads:8},
-  {key:'2026-09',label:'September',clicks:778,leads:6}
+  {key:'2026-09',label:'September',clicks:2383,leads:null,leadNote:'Volledige GA4-maand niet beschikbaar; 6 gemeten t/m 13 september'}
 ];
 
 const AUGUST_BLOGS=[
@@ -117,14 +117,16 @@ function patchOrganicHistory(){
   if(selectedIndex<0)return true;
   const selected=ORGANIC_HISTORY[selectedIndex];
   const history=ORGANIC_HISTORY.slice(0,selectedIndex+1);
-  setText(doc,'overviewOrganicLeads',String(selected.leads));
-  setText(doc,'overviewOrganicLeadsNote','GA4 · Organic Search → /succes/');
-  setText(doc,'organicLeads',String(selected.leads));
-  setText(doc,'organicLeadsNote',`${selected.leads} unieke organische gebruikers op /succes/`);
+  const hasLeads=selected.leads!=null;
+  const leadNote=selected.leadNote||(hasLeads?`${selected.leads} unieke organische gebruikers op /succes/`:'Volledige GA4-maand niet beschikbaar');
+  setText(doc,'overviewOrganicLeads',hasLeads?String(selected.leads):'—');
+  setText(doc,'overviewOrganicLeadsNote',hasLeads?'GA4 · Organic Search → /succes/':leadNote);
+  setText(doc,'organicLeads',hasLeads?String(selected.leads):'—');
+  setText(doc,'organicLeadsNote',leadNote);
   setText(doc,'organicLeadInsightTitle','Organische leads via GA4');
-  setText(doc,'organicLeadInsightText',`${selected.label} 2026 · Organic Search → /succes/`);
-  setText(doc,'organicLeadInsightValue',`${selected.leads} leads`);
-  setText(doc,'funnelOrganicLeads',String(selected.leads));
+  setText(doc,'organicLeadInsightText',hasLeads?`${selected.label} 2026 · Organic Search → /succes/`:leadNote);
+  setText(doc,'organicLeadInsightValue',hasLeads?`${selected.leads} leads`:'—');
+  setText(doc,'funnelOrganicLeads',hasLeads?String(selected.leads):'—');
   if(selector.value==='2026-08'){
     const status=doc.querySelector('.hero-status strong');
     if(status)status.innerHTML='Meta Ads: volledig augustus<br>Organisch (GSC): volledig augustus<br>Organische leads (GA4): volledig augustus<br>Facebook organisch: volledig augustus';
@@ -157,7 +159,7 @@ function patchOrganicHistory(){
       const heading=panel?.querySelector('h3');
       const subtitle=panel?.querySelector('p');
       if(heading)heading.textContent='Ontwikkeling organische groei';
-      if(subtitle)subtitle.textContent=`${history.length} maanden · januari t/m ${selected.label.toLowerCase()} 2026 · GSC-klikken + GA4-organische leads`;
+      if(subtitle)subtitle.textContent=`${history.length} maanden · januari t/m ${selected.label.toLowerCase()} 2026 · GSC-klikken + GA4-organische leads waar beschikbaar`;
     }
   }
   return true;
